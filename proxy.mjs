@@ -231,15 +231,16 @@ async function handleApi(req, res, url) {
   };
   let filled = false;
 
+  // stage 응답은 받는 즉시 가린다: 기록 실행과 재생 실행이 같은 값을 보도록
   if (state.mode === 'record') {
-    response = await forwardUpstream(req, url, body);
+    response = scrubResponse(await forwardUpstream(req, url, body));
     record(response);
   } else {
     const candidates = state.cassette.entries.filter((e) => e.key === key && e.epoch <= epoch);
     const hit = candidates.sort((a, b) => b.epoch - a.epoch)[0];
     if (hit) response = hit.response;
     else if (state.mode === 'fill' && req.method === 'GET') {
-      response = await forwardUpstream(req, url, body);
+      response = scrubResponse(await forwardUpstream(req, url, body));
       record(response);
       filled = true;
     } else miss = true;

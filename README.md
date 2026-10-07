@@ -26,6 +26,8 @@ corepack yarn playwright install chromium
 | `selftest.mjs` | order 대 order 자기 검증 + 변이 탐지 |
 | `verify.mjs` | 단위 검증: order 대 WEB_RECODE, 상태별 게이트 + 상태 수 대조. 루프의 PASS/FAIL 근거 |
 | `fill.mjs` | 루프 밖 전용: 후보가 추가로 부르는 GET을 카세트에 보충 |
+| `regress.mjs` | 회귀 게이트(G8): WEB_RECODE 기준 ref 대 후보 ref, 데스크톱·모바일. 판정 G0+G6, G2는 참고 |
+| `lib/freeze-time.mjs` | `next start`에 주입해 서버 시계를 고정 시각 기준으로 맞추는 훅 |
 | `lib/apps.mjs` | 프록시·앱 기동. order 고정 커밋 + 오라클 패치 빌드, WEB_RECODE 워크트리 프로덕션 빌드 |
 | `oracle-patches/` | 오라클 버그 수정 패치 (사람 승인, 루프 에이전트 수정 금지) |
 | `units/*.json` | 작업 단위 스펙 (사람이 작성, 루프 에이전트 수정 금지) |
@@ -55,6 +57,9 @@ node verify.mjs A1-shop-events --ref <branch>
 
 # 루프 밖: 후보가 추가로 부르는 GET 보충
 node fill.mjs A1-shop-events --ref <branch>
+
+# 회귀 게이트: 이전 대상이 아닌 화면이 기준과 같은지 (units/R-regression.json)
+node regress.mjs --base origin/develop --candidate <branch> [--fill] [--pages store-list,store-detail]
 ```
 
 모드: `record`(stage 전달·저장) / `replay`(저장 응답만, 루프 기본) / `fill`(재생 + 없는 GET만 보충, 루프 밖 전용).
@@ -69,3 +74,5 @@ node fill.mjs A1-shop-events --ref <branch>
 - 시각 판정은 fuzz 5% 후 다른 픽셀 0개 + 요소 목록 누락·추가 없음. 계산된 스타일·위치 차이는 진단 정보
 - Lottie·canvas·video는 픽셀 비교에서 가리고, 존재·위치·식별 정보(viewBox·레이어 수)만 요소 목록으로 검증한다
 - 상호작용으로 도달하는 상태(`states[].actions`)에 도달하지 못하면 그 상태는 실패다
+- 캡처 전 뷰포트를 페이지 높이로 늘려 정착시킨다(전체 페이지 캡처 중 `100vh` 레이아웃 재계산 경합 방지). Next `<Link>` 프리페치는 막는다(보이는 링크 수에 따라 서버 렌더가 일어남)
+- 하네스 자체를 검증할 때 넣는 변이는 실제로 화면을 바꿨는지 먼저 확인한다(보이지 않는 요소·뒤 규칙에 덮인 속성은 무효)

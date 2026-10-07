@@ -8,7 +8,8 @@ import { chromium, devices } from '@playwright/test';
 export const PROXY_ORIGIN = process.env.PARITY_PROXY_ORIGIN ?? 'http://localhost:4000';
 export const API_PATH = `${PROXY_ORIGIN}/stage`;
 export const FIXED_TIME = new Date('2026-10-07T12:00:00+09:00');
-const SETTLE_MS = 2000; // 로드 후 가짜 시계로 진행시킬 시간 (애니메이션·지연 렌더 정착)
+const SETTLE_MS = 2000;
+const MAX_VIEWPORT_HEIGHT = 20000; // 이보다 긴 페이지는 fullPage 캡처로 남긴다 // 로드 후 가짜 시계로 진행시킬 시간 (애니메이션·지연 렌더 정착)
 
 // 분석·지도·에러 수집은 결정성을 깨므로 막는다 (G4는 별도 계측으로 다룬다)
 const BLOCKED_HOSTS = [
@@ -84,6 +85,12 @@ async function routeAssets(context, { assetsDir, mode, assetLog }) {
     assetLog.push({ url, action: 'recorded' });
     return route.fulfill({ status: response.status(), headers: response.headers(), body });
   };
+
+  // Next <Link> 프리페치는 화면에 보이는 링크 수(=뷰포트 크기)에 따라 서버 렌더·API 호출을 일으킨다.
+  // 화면 결과와 무관하고 결정성을 깨므로 막는다 (실제 이동 요청은 purpose 헤더가 없어 통과)
+  await context.route(/\/_next\/data\//, (route) =>
+    route.request().headers().purpose === 'prefetch' ? route.abort('blockedbyclient') : route.continue(),
+  );
 
   // next/image는 서버가 원본을 받아 최적화하므로 page.route로 원본 요청이 보이지 않는다.
   // 원격 이미지는 원본을 그대로 돌려준다: 오라클(order)도 원본을 그리므로 비교가 공정하고, 서버 쪽 외부 요청도 없앤다
@@ -275,6 +282,17 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
     settled = (await settle(page, SETTLE_MS)) && settled;
   }
   const mutationApplied = mutate ? await mutate(page) : null;
+
+  // 전체 페이지 스크린샷은 찍는 동안 뷰포트를 늘려 100vh 기반 레이아웃이 다시 계산된다(경합 확인됨).
+  // 미리 뷰포트를 페이지 높이로 늘리고 정착시킨 뒤, 그 레이아웃에서 스크린샷·요소 목록을 함께 얻는다
+  const viewport = page.viewportSize();
+  for (let i = 0; i < 5; i += 1) {
+    const height = await page.evaluate(() => document.documentElement.scrollHeight);
+    const current = page.viewportSize().height;
+    if (height === current || height > MAX_VIEWPORT_HEIGHT) break;
+    await page.setViewportSize({ width: viewport.width, height });
+    settled = (await settle(page, 0)) && settled;
+  }
 
   // 동적 영역(Lottie·canvas·video)은 프레임이 실행마다 달라 픽셀 비교에서 가린다.
   // 존재와 위치는 요소 목록(G6 inventory)으로 계속 검증하므로 "사라져도 통과"하지 않는다.

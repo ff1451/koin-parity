@@ -60,11 +60,11 @@
 | F7 | API·쿼리 | `src/api/store`에 order 엔드포인트용 `APIRequest`: `v3/shops`, `shops/{id}/summary`, `v2/shops/{id}`, `v2/shops/search/related`, `shops/reviews/reports/categories`, `shops/{id}/reviews/{rid}`(상세), 이미지 업로드. 쿼리 키는 `getViewerScope()` 포함. 같은 `v2/shops/{id}`를 키 3개로 받던 order 구조는 하나로 합침 |
 | F8 | 하네스 보강 | 아래 하위 항목 |
 
-**F0 (첫 번째로 만든다) — 데스크톱 회귀 게이트 G8**: foundation의 F2(ISR→SSR)·F3(전역 폰트)·F5(BottomModal 확장)는 공유·데스크톱 렌더를 바꾸는데 지금은 검증 게이트가 없다. `web@base` 대 `web@candidate`를 데스크톱 기기로 비교(`selftest --app web`을 두 ref로 확장)하고, F2·F3·F5를 이 게이트로 통과시킨 뒤에 단위 루프를 시작한다.
+**F0 (완료) — 데스크톱 회귀 게이트 G8** (`regress.mjs`, 홈·상점 목록·상점 상세·혜택·식단 × 데스크톱·모바일 10케이스. 같은 ref끼리 10/10 0픽셀, 데스크톱 상점 제목 1px 변경 시 해당 케이스만 FAIL 확인): foundation의 F2(ISR→SSR)·F3(전역 폰트)·F5(BottomModal 확장)는 공유·데스크톱 렌더를 바꾸는데 지금은 검증 게이트가 없다. `web@base` 대 `web@candidate`를 데스크톱 기기로 비교(`selftest --app web`을 두 ref로 확장)하고, F2·F3·F5를 이 게이트로 통과시킨 뒤에 단위 루프를 시작한다.
 
 **F8 하위 항목**
 - 본문 영역 비교: 헤더 아래~푸터 위로 잘라 비교, 크롬 요소는 요소 목록에서 제외하고 헤더 제목·뒤로가기 존재만 검증
-- **서버 시계 고정**: `page.clock`은 브라우저만 멈춘다. WEB_RECODE는 시각 파생 값을 서버(`serverRequest.now`)에서 확정하므로 `next start`를 `node --import <시계 고정 훅>`으로 띄워 `Date`를 `FIXED_TIME` 기준으로 고정(하네스 쪽 훅, WEB_RECODE 코드는 건드리지 않음). 리뷰의 "N일 전" 등 A6~A9 필수
+- **서버 시계 고정 (완료, `lib/freeze-time.mjs`)**: `page.clock`은 브라우저만 멈춘다. WEB_RECODE는 시각 파생 값을 서버(`serverRequest.now`)에서 확정하므로 `next start`를 `node --import <시계 고정 훅>`으로 띄워 `Date`를 `FIXED_TIME` 기준으로 고정(하네스 쪽 훅, WEB_RECODE 코드는 건드리지 않음). 리뷰의 "N일 전" 등 A6~A9 필수
 - **인증 픽스처**: WEB_RECODE 서버는 access JWT 만료를 확인한 뒤에만 세션을 믿는다. 기록 시 가린 쿠키는 `exp`가 먼 미래인 형식이 맞는 더미 JWT로 바꾸고, order에는 `AUTH_TOKEN_KEY`, WEB_RECODE에는 access·CSRF 쿠키로 주입. `/v2/web/auth/session` 응답도 기록. **stage 테스트 계정 필요**(환경변수로 전달, 커밋 금지)
 - **토스트**: order 토스트 1.5초, react-toastify는 더 길어 같은 시점 캡처에서 한쪽만 남는다 → MutationObserver로 토스트 텍스트를 시간순 기록해 비교하고, 토스트 DOM은 픽셀·요소 목록에서 제외
 - G4: `window.gtag` 기록 스텁으로 `event_label` 비교
