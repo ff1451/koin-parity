@@ -254,29 +254,25 @@ async function settle(page, firstRunMs) {
   return false;
 }
 
-/**
- * @param {object} opts
- * @param {string} opts.baseURL 앱 주소
- * @param {string} opts.path 경로
- * @param {string} opts.outDir 결과 디렉터리
- * @param {string} opts.cassette 카세트 파일 경로
- * @param {string} opts.assetsDir 정적 리소스 기록 디렉터리
- * @param {'record'|'replay'} opts.mode
- * @param {string} [opts.device]
- * @param {(page: import('@playwright/test').Page) => Promise<void>} [opts.mutate] 변이 테스트용: 캡처 직전 화면을 바꾼다
- * @param {(context: import('@playwright/test').BrowserContext) => Promise<void>} [opts.beforeGoto] 변이 테스트용: 로드 전 요청 차단 등
- * @param {Array<{ click: { role: string, name: string } }>} [opts.actions] 상태에 도달하기 위한 상호작용 (단위 스펙의 states[].actions)
- * @param {Array<{ selector: string, reason: string }>} [opts.masks] 사람이 사유와 함께 선언한 마스크 (단위 스펙 masks)
- * @param {'device'|'expand'} [opts.viewportMode] device: 기기 뷰포트 유지(단위 비교 — 100vh 레이아웃이 실제 사용자와 같다),
- *   expand: 페이지 높이로 늘린 뒤 캡처(같은 앱끼리의 회귀 비교 — 전체 페이지 캡처 중 레이아웃 재계산 경합 회피)
- * @param {{ toastSelector: string, footerSelector: string }} [opts.chrome] 토스트·푸터 선택자 (units/_common.json chrome)
- * @param {'guest'|'auth'} [opts.auth] 로그인 상태 (lib/auth.mjs)
- */
-export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest' }) {
-  const maskSelectors = masks.map((m) => m.selector);
-  mkdirSync(outDir, { recursive: true });
-  await proxyControl('session', { mode, cassette, session: outDir });
 
+// 상태 도달용 상호작용. click.role+name(접근 가능한 이름) 또는 click.css(+nth, 이름 없는 아이콘 버튼 등)
+export async function performAction(page, action) {
+  if (action.click?.css) {
+    await page.locator(action.click.css).nth(action.click.nth ?? 0).click({ timeout: 5000 });
+    return;
+  }
+  if (action.click) {
+    await page
+      .getByRole(action.click.role, { name: action.click.name, exact: true })
+      .nth(action.click.nth ?? 0)
+      .click({ timeout: 5000 });
+    return;
+  }
+  throw new Error(`unknown action ${JSON.stringify(action)}`);
+}
+
+// 브라우저를 띄우고 경로를 열어 정착시킨 뒤 actions로 상태에 도달한다 (capture·explore 공용)
+export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel 5', beforeGoto, actions = [], chrome = DEFAULT_CHROME, auth = 'guest' }) {
   const browser = await chromium.launch({ args: DETERMINISTIC_ARGS });
   const context = await browser.newContext({ ...devices[device], locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
   const assetLog = [];
@@ -323,11 +319,38 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
 
   // 상태 도달: 도달하지 못하면(요소 없음) 예외 → 캡처 실패 = 해당 상태 FAIL
   for (const action of actions) {
-    if (action.click) {
-      await page.getByRole(action.click.role, { name: action.click.name, exact: true }).first().click({ timeout: 5000 });
-    }
+    await performAction(page, action);
     settled = (await settle(page, SETTLE_MS)) && settled;
   }
+
+  return { browser, context, page, assetLog, consoleErrors, settled };
+}
+
+/**
+ * @param {object} opts
+ * @param {string} opts.baseURL 앱 주소
+ * @param {string} opts.path 경로
+ * @param {string} opts.outDir 결과 디렉터리
+ * @param {string} opts.cassette 카세트 파일 경로
+ * @param {string} opts.assetsDir 정적 리소스 기록 디렉터리
+ * @param {'record'|'replay'} opts.mode
+ * @param {string} [opts.device]
+ * @param {(page: import('@playwright/test').Page) => Promise<void>} [opts.mutate] 변이 테스트용: 캡처 직전 화면을 바꾼다
+ * @param {(context: import('@playwright/test').BrowserContext) => Promise<void>} [opts.beforeGoto] 변이 테스트용: 로드 전 요청 차단 등
+ * @param {Array<{ click: { role: string, name: string } }>} [opts.actions] 상태에 도달하기 위한 상호작용 (단위 스펙의 states[].actions)
+ * @param {Array<{ selector: string, reason: string }>} [opts.masks] 사람이 사유와 함께 선언한 마스크 (단위 스펙 masks)
+ * @param {'device'|'expand'} [opts.viewportMode] device: 기기 뷰포트 유지(단위 비교 — 100vh 레이아웃이 실제 사용자와 같다),
+ *   expand: 페이지 높이로 늘린 뒤 캡처(같은 앱끼리의 회귀 비교 — 전체 페이지 캡처 중 레이아웃 재계산 경합 회피)
+ * @param {{ toastSelector: string, footerSelector: string }} [opts.chrome] 토스트·푸터 선택자 (units/_common.json chrome)
+ * @param {'guest'|'auth'} [opts.auth] 로그인 상태 (lib/auth.mjs)
+ */
+export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest' }) {
+  const maskSelectors = masks.map((m) => m.selector);
+  mkdirSync(outDir, { recursive: true });
+  await proxyControl('session', { mode, cassette, session: outDir });
+
+  const { browser, page, assetLog, consoleErrors, settled: openSettled } = await openPage({ baseURL, path, assetsDir, mode, device, beforeGoto, actions, chrome, auth });
+  let settled = openSettled;
   const mutationApplied = mutate ? await mutate(page) : null;
 
   // 전체 페이지 스크린샷은 찍는 동안 뷰포트를 늘려 100vh 기반 레이아웃이 다시 계산된다(경합 확인됨).

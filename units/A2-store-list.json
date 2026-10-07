@@ -1,0 +1,9 @@
+{
+  "id": "A2-store-list",
+  "description": "상점 목록 모바일 (초안: 상태는 explore.mjs 결과로 채운다)",
+  "oracle": { "app": "order", "commit": "1b51c34", "path": "/shops" },
+  "candidate": { "app": "web", "path": "/store" },
+  "device": "Pixel 5",
+  "states": [{ "name": "default", "auth": "guest", "params": {}, "requiredText": [] }],
+  "normalize": { "paths": {} }
+}
