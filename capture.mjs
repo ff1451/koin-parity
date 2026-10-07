@@ -9,7 +9,8 @@ export const PROXY_ORIGIN = process.env.PARITY_PROXY_ORIGIN ?? 'http://localhost
 export const API_PATH = `${PROXY_ORIGIN}/stage`;
 export const FIXED_TIME = new Date('2026-10-07T12:00:00+09:00');
 const SETTLE_MS = 2000;
-const MAX_VIEWPORT_HEIGHT = 20000; // 이보다 긴 페이지는 fullPage 캡처로 남긴다 // 로드 후 가짜 시계로 진행시킬 시간 (애니메이션·지연 렌더 정착)
+const MAX_VIEWPORT_HEIGHT = 20000; // 이보다 긴 페이지는 fullPage 캡처로 남긴다
+export const DEFAULT_CHROME = { toastSelector: '.Toastify__toast, div.fixed.bottom-6.z-150', footerSelector: 'footer' }; // 로드 후 가짜 시계로 진행시킬 시간 (애니메이션·지연 렌더 정착)
 
 // 분석·지도·에러 수집은 결정성을 깨므로 막는다 (G4는 별도 계측으로 다룬다)
 const BLOCKED_HOSTS = [
@@ -41,6 +42,43 @@ const DETERMINISTIC_ARGS = [
 
 // lottie-web은 svg 안에 __lottie_element_* id를 만든다
 const DYNAMIC_SELECTOR = 'svg:has([id^="__lottie_element"]), canvas, video';
+
+// 페이지보다 먼저 실행되는 계측: 분석 이벤트(gtag 호출)와 토스트 문구를 시간순으로 기록한다.
+// 두 앱 모두 window.gtag가 있을 때만 이벤트를 보내므로 기록용 함수를 미리 심는다(실제 GA 스크립트는 차단됨)
+const INSTRUMENT = ({ toastSelector }) => {
+  const parity = { gtag: [], toasts: [] };
+  window.__parity = parity;
+  const record = (args) => {
+    try {
+      parity.gtag.push(JSON.parse(JSON.stringify(args)));
+    } catch {
+      parity.gtag.push(args.map(String));
+    }
+  };
+  window.gtag = (...args) => record(args);
+  // order의 index.html은 전역 function gtag(){dataLayer.push(arguments)}로 위 함수를 덮어쓴다 → dataLayer.push도 기록
+  const dataLayer = [];
+  dataLayer.push = (...items) => {
+    items.forEach((item) => {
+      if (item && typeof item === 'object' && typeof item.length === 'number' && !Array.isArray(item)) record(Array.from(item));
+    });
+    return Array.prototype.push.apply(dataLayer, items);
+  };
+  window.dataLayer = dataLayer;
+  const seen = new WeakMap();
+  const scan = () => {
+    document.querySelectorAll(toastSelector).forEach((el) => {
+      const text = (el.textContent ?? '').replace(/\s+/g, ' ').trim();
+      if (text && seen.get(el) !== text) {
+        seen.set(el, text);
+        parity.toasts.push(text);
+      }
+    });
+  };
+  const start = () => new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+  if (document.documentElement) start();
+  else document.addEventListener('DOMContentLoaded', start);
+};
 
 const FREEZE_CSS = `
 *, *::before, *::after {
@@ -227,8 +265,11 @@ async function settle(page, firstRunMs) {
  * @param {(context: import('@playwright/test').BrowserContext) => Promise<void>} [opts.beforeGoto] 변이 테스트용: 로드 전 요청 차단 등
  * @param {Array<{ click: { role: string, name: string } }>} [opts.actions] 상태에 도달하기 위한 상호작용 (단위 스펙의 states[].actions)
  * @param {Array<{ selector: string, reason: string }>} [opts.masks] 사람이 사유와 함께 선언한 마스크 (단위 스펙 masks)
+ * @param {'device'|'expand'} [opts.viewportMode] device: 기기 뷰포트 유지(단위 비교 — 100vh 레이아웃이 실제 사용자와 같다),
+ *   expand: 페이지 높이로 늘린 뒤 캡처(같은 앱끼리의 회귀 비교 — 전체 페이지 캡처 중 레이아웃 재계산 경합 회피)
+ * @param {{ toastSelector: string, footerSelector: string }} [opts.chrome] 토스트·푸터 선택자 (units/_common.json chrome)
  */
-export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [] }) {
+export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME }) {
   const maskSelectors = masks.map((m) => m.selector);
   mkdirSync(outDir, { recursive: true });
   await proxyControl('session', { mode, cassette, session: outDir });
@@ -237,6 +278,8 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const context = await browser.newContext({ ...devices[device], locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
   const assetLog = [];
   await routeAssets(context, { assetsDir, mode, assetLog });
+  await context.addInitScript(INSTRUMENT, { toastSelector: chrome.toastSelector });
+  // 변이용 스크립트는 계측보다 뒤에 등록해 계측을 덮어쓸 수 있게 한다
   if (beforeGoto) await beforeGoto(context);
   const page = await context.newPage();
   // 가짜 시계: Date·타이머·requestAnimationFrame을 모두 고정 시각에서 멈춘 뒤, 캡처 전에 정해진 시간만 진행시킨다.
@@ -286,7 +329,7 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   // 전체 페이지 스크린샷은 찍는 동안 뷰포트를 늘려 100vh 기반 레이아웃이 다시 계산된다(경합 확인됨).
   // 미리 뷰포트를 페이지 높이로 늘리고 정착시킨 뒤, 그 레이아웃에서 스크린샷·요소 목록을 함께 얻는다
   const viewport = page.viewportSize();
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; viewportMode === 'expand' && i < 5; i += 1) {
     const height = await page.evaluate(() => document.documentElement.scrollHeight);
     const current = page.viewportSize().height;
     if (height === current || height > MAX_VIEWPORT_HEIGHT) break;
@@ -304,14 +347,23 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
     }),
   );
   const declared = maskSelectors.map((sel) => page.locator(sel));
-  await page.screenshot({ path: join(outDir, 'screenshot.png'), fullPage: true, mask: [dynamic, ...declared], maskColor: '#FF00FF' });
-  const inventory = await page.evaluate(collectInventory, maskSelectors);
+  // 토스트는 앱마다 표시 시간이 달라(1.5초 vs react-toastify) 같은 시점에 한쪽만 남는다 → 픽셀·요소 목록에서 빼고 문구 기록으로 비교
+  const toasts = page.locator(chrome.toastSelector);
+  await page.screenshot({ path: join(outDir, 'screenshot.png'), fullPage: true, mask: [dynamic, ...declared, toasts], maskColor: '#FF00FF' });
+  const inventory = await page.evaluate(collectInventory, [...maskSelectors, chrome.toastSelector]);
   const pageSize = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight }));
+  // 본문 영역 비교(foundation D1)용: 푸터 시작 위치. 헤더는 두 앱 모두 60px로 맞춰 compare가 위쪽을 잘라낸다
+  const footerTop = await page.evaluate((sel) => {
+    const el = document.querySelector(sel);
+    return el ? Math.round(el.getBoundingClientRect().top + scrollY) : null;
+  }, chrome.footerSelector);
+  const devicePixelRatio = await page.evaluate(() => window.devicePixelRatio);
+  const instrumented = await page.evaluate(() => window.__parity ?? { gtag: [], toasts: [] });
 
   if (mode !== 'replay') await proxyControl('flush', {});
   const { log } = await proxyControl('log');
 
-  const result = { baseURL, path, device, mode, url: page.url(), settled, mutationApplied, page: pageSize, inventory, dynamicRegions, requests: log, assets: assetLog, consoleErrors };
+  const result = { baseURL, path, device, mode, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, requests: log, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();

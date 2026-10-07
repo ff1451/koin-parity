@@ -62,9 +62,23 @@ export const MUTATIONS = [
   },
   {
     name: 'hide-icon',
-    description: '첫 svg 아이콘 제거',
+    description: '본문 영역(헤더 60px 아래)의 첫 svg 아이콘 제거',
     expect: ['G6'],
-    mutate: removeFirst('svg'),
+    mutate: async (page) =>
+      page.evaluate(() => {
+        // 화면에 실제로 보이는 아이콘만: 본문 영역이면서 중심점이 다른 요소에 가려지지 않은 것
+        const el = [...document.querySelectorAll('svg')].find((svg) => {
+          const r = svg.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1 || r.top + scrollY < 60) return false;
+          const cx = r.x + r.width / 2;
+          const cy = r.y + r.height / 2;
+          if (cx < 0 || cy < 0 || cx >= innerWidth || cy >= innerHeight) return false;
+          const top = document.elementFromPoint(cx, cy);
+          return !!top && (top === svg || svg.contains(top));
+        });
+        el?.remove();
+        return !!el;
+      }),
   },
   {
     name: 'text-one-char',
@@ -83,6 +97,21 @@ export const MUTATIONS = [
     description: '마스킹되는 Lottie를 다른 애니메이션으로 교체 (레이어 하나 제거로 모사)',
     expect: ['G6'],
     mutate: removeFirst('svg:has([id^="__lottie_element"]) > g > g'),
+  },
+  {
+    name: 'drop-analytics',
+    description: '앱이 분석 이벤트를 보내지 않음 (gtag·dataLayer 무력화)',
+    expect: ['G4'],
+    // 오라클 상태에 분석 이벤트가 있어야 의미가 있다
+    appliesTo: (oracle) => (oracle.gtag ?? []).some((args) => args[0] === 'event'),
+    beforeGoto: async (context) => {
+      await context.addInitScript(() => {
+        const noop = () => 0;
+        Object.defineProperty(window, 'gtag', { value: () => {}, writable: false, configurable: false });
+        if (window.dataLayer) window.dataLayer.push = noop;
+      });
+      return true;
+    },
   },
   {
     name: 'drop-request',

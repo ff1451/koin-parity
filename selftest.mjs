@@ -58,8 +58,13 @@ try {
 
     // 변이 테스트: 기대한 게이트가 전부 FAIL이어야 탐지 성공
     if (mutationStates.includes(state.name)) {
+      const oracleCapture = JSON.parse(readFileSync(join(runA, 'capture.json'), 'utf8'));
       for (const m of MUTATIONS) {
         const out = join(runDir, state.name, `mutation-${m.name}`);
+        if (m.appliesTo && !m.appliesTo(oracleCapture, unit)) {
+          console.warn(`  mutation ${m.name.padEnd(18)} N/A      (이 상태에 적용 대상 없음)`);
+          continue;
+        }
         let cap;
         try {
           cap = await capture({ ...common, mode: 'replay', outDir: out, mutate: m.mutate, beforeGoto: m.beforeGoto && ((ctx) => m.beforeGoto(ctx, unit)) });

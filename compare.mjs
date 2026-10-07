@@ -2,7 +2,12 @@
 //
 //   G0 오라클 무결성·정상 렌더: 양쪽 모두 프록시·리소스 miss 없음, 필수 텍스트 존재, 요소 존재
 //   G2 네트워크 계약: 정규화한 API 요청 집합이 같음
+//   G3 상호작용 결과: 토스트 문구가 같은 순서로 나옴
+//   G4 분석 이벤트: gtag 'event' 호출(team·category·label·value)이 같은 순서로 나옴
 //   G6 시각: fuzz 5% 후 다른 픽셀 0개 + 요소 목록 누락·추가 없음 (위치·스타일 차이는 진단 정보)
+//
+// 본문 영역(foundation D1): 단위 스펙 chrome이 'page'(기본)면 두 앱 모두 위쪽 헤더 60px과 푸터 아래를 잘라 본문만 비교한다.
+// 헤더·푸터는 WEB_RECODE 공통 크롬을 쓰기로 했기 때문이다. 'none'이면 화면 전체를 비교한다(오버레이 헤더 화면, 회귀 비교)
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -77,9 +82,45 @@ function matchInventory(oracleItems, candidateItems) {
   return { missing: missing.map(key), extra: extra.map(key), layoutDiffs, styleDiffs };
 }
 
-function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate) {
-  const a = PNG.sync.read(readFileSync(join(oracleDir, 'screenshot.png')));
-  const b = PNG.sync.read(readFileSync(join(candidateDir, 'screenshot.png')));
+const CHROME_HEADER_HEIGHT = 60;
+
+// 본문 영역 [top, bottom) (CSS px)
+function bodyRegion(capture, chrome) {
+  if (chrome === 'none') return { top: 0, bottom: capture.page.height };
+  return { top: CHROME_HEADER_HEIGHT, bottom: capture.footerTop ?? capture.page.height };
+}
+
+function cropPng(img, region, dpr) {
+  const top = Math.round(region.top * dpr);
+  const bottom = Math.min(img.height, Math.round(region.bottom * dpr));
+  const out = new PNG({ width: img.width, height: Math.max(0, bottom - top) });
+  if (out.height > 0) PNG.bitblt(img, out, 0, top, img.width, out.height, 0, 0);
+  return out;
+}
+
+const inRegion = (item, region) => item.box.y >= region.top && item.box.y + item.box.h <= region.bottom + 1;
+
+function gateToasts(oracle, candidate) {
+  const a = oracle.toasts ?? [];
+  const b = candidate.toasts ?? [];
+  return { pass: JSON.stringify(a) === JSON.stringify(b), oracle: a, candidate: b };
+}
+
+function gateAnalytics(oracle, candidate) {
+  const events = (c) =>
+    (c.gtag ?? [])
+      .filter((args) => args[0] === 'event')
+      .map(([, team, p = {}]) => ({ team, category: p.event_category, label: p.event_label, value: p.value }));
+  const a = events(oracle);
+  const b = events(candidate);
+  return { pass: JSON.stringify(a) === JSON.stringify(b), oracle: a, candidate: b };
+}
+
+function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate, chrome) {
+  const oracleRegion = bodyRegion(oracle, chrome);
+  const candidateRegion = bodyRegion(candidate, chrome);
+  const a = cropPng(PNG.sync.read(readFileSync(join(oracleDir, 'screenshot.png'))), oracleRegion, oracle.devicePixelRatio ?? 1);
+  const b = cropPng(PNG.sync.read(readFileSync(join(candidateDir, 'screenshot.png'))), candidateRegion, candidate.devicePixelRatio ?? 1);
   const width = Math.max(a.width, b.width);
   const height = Math.max(a.height, b.height);
   const pad = (img) => {
@@ -96,8 +137,13 @@ function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate) {
   writeFileSync(join(outDir, 'diff.png'), PNG.sync.write(diff));
 
   // 선언된 마스크 안의 요소는 짝 맞추기에서 제외한다 (마스크 면적은 리포트에 남는다)
-  const unmasked = (items) => items.filter((i) => !i.masked);
-  const inventory = matchInventory(unmasked(oracle.inventory), unmasked(candidate.inventory));
+  const unmasked = (items, region) => items.filter((i) => !i.masked && inRegion(i, region));
+  // 본문 영역 기준 좌표로 맞춰 비교한다
+  const shift = (items, region) => items.map((i) => ({ ...i, box: { ...i.box, y: i.box.y - region.top } }));
+  const inventory = matchInventory(
+    shift(unmasked(oracle.inventory, oracleRegion), oracleRegion),
+    shift(unmasked(candidate.inventory, candidateRegion), candidateRegion),
+  );
   const sizeMismatch = a.width !== b.width || a.height !== b.height;
   const area = (regions) => regions.reduce((sum, r) => sum + r.w * r.h, 0);
   const pageArea = oracle.page.width * oracle.page.height;
@@ -136,7 +182,9 @@ export function compare({ oracleDir, candidateDir, outDir, spec: unitSpec }) {
   const gates = {
     G0: { pass: integrity.length === 0, problems: integrity },
     G2: gateNetwork(oracle, candidate, spec),
-    G6: gateVisual(oracleDir, candidateDir, outDir, oracle, candidate),
+    G3: gateToasts(oracle, candidate),
+    G4: gateAnalytics(oracle, candidate),
+    G6: gateVisual(oracleDir, candidateDir, outDir, oracle, candidate, spec.chrome ?? 'page'),
   };
   // 상태 하나의 판정. 상태 수 대조(expected/executed)는 verify.mjs가 단위 전체에서 한다
   const report = { pass: Object.values(gates).every((g) => g.pass), gates };

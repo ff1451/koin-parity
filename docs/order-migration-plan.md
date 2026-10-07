@@ -130,12 +130,12 @@ P6 전환: 링크 교체 · 301 · order 종료
 ### 5.3 프록시 · 포트 · 쿠키
 
 ```
-order (vite, :3000) ─────┐
+order (vite, :4100) ─────┐
                           ├→ 프록시 (http://localhost:4000/stage) ─(기록 모드만)→ stage API
-WEB_RECODE (next start, :3001) ┘
+WEB_RECODE (next start, :4101) ┘
 ```
 
-- **CORS는 프록시가 처리한다.** 브라우저는 stage가 아니라 프록시를 호출하므로 stage의 CORS 허용 출처(localhost:3000)와 무관하다. 프록시가 두 출처(`:3000`, `:3001`)에 `Access-Control-Allow-Origin`(명시 출처) + `Allow-Credentials`를 응답한다. stage로는 서버 간 요청이고 `Origin`/`Referer`를 stage 웹 출처로 고정한다(`src/pages/api/proxy`와 같은 방식)
+- **CORS는 프록시가 처리한다.** 브라우저는 stage가 아니라 프록시를 호출하므로 stage의 CORS 허용 출처(localhost:3000)와 무관하다. 프록시가 앱 출처(order `:4100`, WEB_RECODE `:4101`·`:4102`)에 `Access-Control-Allow-Origin`(명시 출처) + `Allow-Credentials`를 응답한다. stage로는 서버 간 요청이고 `Origin`/`Referer`를 stage 웹 출처로 고정한다(`src/pages/api/proxy`와 같은 방식)
 - **WEB_RECODE는 프로덕션 빌드(`next build && next start -p 3001`)로 띄운다.** dev 모드는 브라우저 요청을 `/api/proxy`로 우회하고 StrictMode 이중 렌더·오버레이가 섞여 결정성이 떨어진다
 - **`IS_STAGE` 판정 주의.** `IS_STAGE`는 `NEXT_PUBLIC_API_PATH`에 `stage`가 들어있는지로 정해지고, 쿠키 이름(`__Secure-koin-stage-web-csrf`)·도메인이 여기에 따라 갈린다. 프록시 주소를 `http://localhost:4000`으로 주면 프로덕션 쿠키 이름을 찾아 CSRF 쿠키를 못 읽고 비로그인으로 동작한다. 그래서 API 경로를 `http://localhost:4000/stage`로 주고 프록시가 `/stage` 접두사를 떼어 전달한다(`api.stage.localhost` 호스트는 Node fetch가 해석하지 못해 폐기)
 - **Set-Cookie 재작성.** 기록·재생 모두 `Domain=` 제거 후 `Path=/` (`src/pages/api/proxy`의 `rewriteSetCookie`와 동일). `__Secure-` 접두사 쿠키는 Chromium이 localhost를 보안 컨텍스트로 보므로 유지된다

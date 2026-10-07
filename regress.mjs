@@ -45,6 +45,8 @@ try {
         assetsDir: join(PARITY_DIR, '.cache', 'assets'),
         device: DEVICES[device],
         masks: spec.masks,
+        // 같은 앱끼리 비교라 뷰포트를 페이지 높이로 늘려 전체 페이지 캡처 경합을 피한다
+        viewportMode: 'expand',
         mode: shouldFill ? 'fill' : 'replay',
       };
       try {
@@ -54,7 +56,7 @@ try {
         cases.push({ name, pass: false, error: firstLine(error) });
         continue;
       }
-      const report = compare({ oracleDir: join(caseDir, 'base'), candidateDir: join(caseDir, 'candidate'), outDir: caseDir, spec: { ...spec, ...page } });
+      const report = compare({ oracleDir: join(caseDir, 'base'), candidateDir: join(caseDir, 'candidate'), outDir: caseDir, spec: { ...spec, ...page, chrome: 'none' } });
       const pass = report.gates.G0.pass && report.gates.G6.pass;
       cases.push({ name, pass, gates: report.gates });
     }
