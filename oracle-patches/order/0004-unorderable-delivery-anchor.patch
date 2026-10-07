@@ -1,0 +1,13 @@
+diff --git a/src/pages/Shop/components/ShopSummary.tsx b/src/pages/Shop/components/ShopSummary.tsx
+index c4263c5..b00a218 100644
+--- a/src/pages/Shop/components/ShopSummary.tsx
++++ b/src/pages/Shop/components/ShopSummary.tsx
+@@ -129,7 +129,7 @@ export default function ShopSummary({ shopInfoSummary, id, isOrderable, UnOrdera
+             <>
+               {UnOrderableShopInfo?.delivery ? (
+                 <Link
+-                  to={`/shop-detail/false/${id}#배달금액`}
++                  to={`/shop-detail/false/${id}`}
+                   className="shadow-1 flex h-14 w-full min-w-fit items-center justify-between gap-1 rounded-xl bg-white py-2 pr-2 pl-3"
+                   onClick={handleShopInfoClick}
+                 >

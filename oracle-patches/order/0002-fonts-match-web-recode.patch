@@ -1,0 +1,84 @@
+diff --git a/src/styles/font.css b/src/styles/font.css
+index e6d3774..8c9c759 100644
+--- a/src/styles/font.css
++++ b/src/styles/font.css
+@@ -1,6 +1,32 @@
++/* parity 오라클 패치 0002: KOIN_WEB_RECODE와 같은 Pretendard 서브셋 9개 굵기.
++   파일(public/fonts/web-recode)은 하네스가 빌드 전에 KOIN_WEB_RECODE src/assets/font에서 복사한다 */
+ @font-face {
+   font-family: 'Pretendard';
+-  src: url('/fonts/Pretendard-Regular.woff2') format('woff2');
++  src: url('/fonts/web-recode/Pretendard-Thin.subset.woff2') format('woff2');
++  font-weight: 100;
++  font-style: normal;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-ExtraLight.subset.woff2') format('woff2');
++  font-weight: 200;
++  font-style: normal;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-Light.subset.woff2') format('woff2');
++  font-weight: 300;
++  font-style: normal;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-Regular.subset.woff2') format('woff2');
+   font-weight: 400;
+   font-style: normal;
+   font-display: swap;
+@@ -8,12 +34,44 @@
+ 
+ @font-face {
+   font-family: 'Pretendard';
+-  src: url('/fonts/Pretendard-Bold.woff2') format('woff2');
++  src: url('/fonts/web-recode/Pretendard-Medium.subset.woff2') format('woff2');
++  font-weight: 500;
++  font-style: normal;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-SemiBold.subset.woff2') format('woff2');
++  font-weight: 600;
++  font-style: normal;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-Bold.subset.woff2') format('woff2');
+   font-weight: 700;
+   font-style: normal;
+   font-display: swap;
+ }
+ 
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-ExtraBold.subset.woff2') format('woff2');
++  font-weight: 800;
++  font-style: normal;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: 'Pretendard';
++  src: url('/fonts/web-recode/Pretendard-Black.subset.woff2') format('woff2');
++  font-weight: 900;
++  font-style: normal;
++  font-display: swap;
++}
++
+ body {
+   font-family:
+     'Pretendard', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

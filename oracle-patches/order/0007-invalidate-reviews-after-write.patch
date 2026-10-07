@@ -1,0 +1,54 @@
+diff --git a/src/pages/Shop/hooks/useCreateReviewForm.ts b/src/pages/Shop/hooks/useCreateReviewForm.ts
+index 23c5519..91b9a97 100644
+--- a/src/pages/Shop/hooks/useCreateReviewForm.ts
++++ b/src/pages/Shop/hooks/useCreateReviewForm.ts
+@@ -1,3 +1,4 @@
++import { useQueryClient } from '@tanstack/react-query';
+ import { useParams, useNavigate } from 'react-router-dom';
+ import { useReviewFormBase } from './useReviewForm';
+ import type { CreateReviewRequest } from '@/api/shop/entity';
+@@ -15,6 +16,7 @@ export function useCreateReviewForm() {
+   const { shopId } = useParams<{ shopId: string }>();
+   const navigate = useNavigate();
+   const { showToast } = useToast();
++  const queryClient = useQueryClient();
+ 
+   const numericShopId = shopId ? Number(shopId) : undefined;
+   const { mutate: createReview } = useCreateReview(numericShopId ?? 0);
+@@ -40,6 +42,9 @@ export function useCreateReviewForm() {
+ 
+     createReview(body, {
+       onSuccess: () => {
++        // parity 오라클 패치 0007: 작성·수정 후 리뷰 목록·내 리뷰를 갱신 (KOIN_WEB_RECODE 리뷰 변경 후 무효화와 같은 동작)
++        queryClient.invalidateQueries({ queryKey: ['shopTotalReview'] });
++        queryClient.invalidateQueries({ queryKey: ['shopMyReview'] });
+         showToast('리뷰가 작성되었어요');
+         navigate(-1);
+       },
+diff --git a/src/pages/Shop/hooks/useEditReviewForm.ts b/src/pages/Shop/hooks/useEditReviewForm.ts
+index de4e124..1ce6682 100644
+--- a/src/pages/Shop/hooks/useEditReviewForm.ts
++++ b/src/pages/Shop/hooks/useEditReviewForm.ts
+@@ -1,3 +1,4 @@
++import { useQueryClient } from '@tanstack/react-query';
+ import { useEffect } from 'react';
+ import { useParams, useNavigate } from 'react-router-dom';
+ import { useGetShopReviewDetail } from './useGetShopReviewDetail';
+@@ -13,6 +14,7 @@ export function useEditReviewForm() {
+   const { shopId, reviewId } = useParams<{ shopId: string; reviewId: string }>();
+   const navigate = useNavigate();
+   const { showToast } = useToast();
++  const queryClient = useQueryClient();
+ 
+   const numericShopId = Number(shopId);
+   const numericReviewId = Number(reviewId);
+@@ -41,6 +43,9 @@ export function useEditReviewForm() {
+ 
+     updateReview(body, {
+       onSuccess: () => {
++        // parity 오라클 패치 0007: 작성·수정 후 리뷰 목록·내 리뷰를 갱신 (KOIN_WEB_RECODE 리뷰 변경 후 무효화와 같은 동작)
++        queryClient.invalidateQueries({ queryKey: ['shopTotalReview'] });
++        queryClient.invalidateQueries({ queryKey: ['shopMyReview'] });
+         showToast('리뷰가 수정되었어요');
+         navigate(-1);
+       },

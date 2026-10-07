@@ -1,0 +1,16 @@
+diff --git a/src/util/hooks/useImageUpload.ts b/src/util/hooks/useImageUpload.ts
+index 9a06b08..98d94a9 100644
+--- a/src/util/hooks/useImageUpload.ts
++++ b/src/util/hooks/useImageUpload.ts
+@@ -72,8 +72,9 @@ export function useReviewImageUpload({ maxLength = 3 }: UseReviewImageUploadOpti
+       setImageFile((prev) => [...prev, ...uploadedUrls]);
+       setUploadError('');
+     } catch (error) {
+-      const err = error as { response?: { status?: number } };
+-      const status = err.response?.status;
++      // parity 오라클 패치 0005: apiClient는 error.status에 상태 코드를 담는다 (response.status 아님)
++      const err = error as { status?: number; response?: { status?: number } };
++      const status = err.status ?? err.response?.status;
+ 
+       let type: UploadError = 'unknown';
+       if (status === 415) type = '415';

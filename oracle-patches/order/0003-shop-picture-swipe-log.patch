@@ -1,0 +1,35 @@
+diff --git a/src/pages/Shop/components/ImageCarousel.tsx b/src/pages/Shop/components/ImageCarousel.tsx
+index 54a4eef..1bfc43a 100644
+--- a/src/pages/Shop/components/ImageCarousel.tsx
++++ b/src/pages/Shop/components/ImageCarousel.tsx
+@@ -21,6 +21,9 @@ export default function ImageCarousel({ images, targetRef, shopName }: ImageCaro
+ 
+   const prevIndexRef = useRef(0);
+   const lastScrollLeftRef = useRef(0);
++  // parity 오라클 패치 0003: 스크롤 리스너가 [] 의존성으로 등록돼 isInteracting을 항상 false로 읽던 문제를 ref로 해결
++  const isInteractingRef = useRef(false);
++  isInteractingRef.current = isInteracting;
+ 
+   const scrollToIndex = (index: number) => {
+     if (containerRef.current) {
+@@ -51,16 +54,18 @@ export default function ImageCarousel({ images, targetRef, shopName }: ImageCaro
+ 
+     if (shopName) {
+       // 자동 슬라이드 시
+-      if (!isInteracting) {
++      if (!isInteractingRef.current) {
+         lastScrollLeftRef.current = scrollLeft;
++        prevIndexRef.current = index;
+         return;
+       }
+ 
+       // 인덱스 변화 없을 때
+-      if (index !== prevIndexRef.current) {
++      if (index === prevIndexRef.current) {
+         lastScrollLeftRef.current = scrollLeft;
+         return;
+       }
++      prevIndexRef.current = index;
+ 
+       logger.actionEventSwipe({
+         team: 'BUSINESS',

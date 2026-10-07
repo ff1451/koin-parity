@@ -1,0 +1,26 @@
+diff --git a/src/pages/Shop/shopReview/components/ReviewReport.tsx b/src/pages/Shop/shopReview/components/ReviewReport.tsx
+index 6c3388c..41c1767 100644
+--- a/src/pages/Shop/shopReview/components/ReviewReport.tsx
++++ b/src/pages/Shop/shopReview/components/ReviewReport.tsx
+@@ -71,13 +71,15 @@ export default function ReviewReport() {
+       value: selectedOption.label,
+     });
+ 
++    // parity 오라클 패치 0006: 다중 선택한 사유를 모두 보낸다 (KOIN_WEB_RECODE 신고 페이지와 같은 형식)
+     const body = {
+-      reports: [
+-        {
+-          title: selectedOption.label,
+-          content: isEtcSelected ? etcText.trim() : (selectedOption.subtitle ?? ''),
+-        },
+-      ],
++      reports: selected
++        .map((value) => options.find((o) => o.value === value))
++        .filter((o): o is (typeof options)[number] => !!o)
++        .map((o) => ({
++          title: o.label,
++          content: o.value === '기타' ? etcText.trim() : (o.subtitle ?? ''),
++        })),
+     };
+     reportReview(body, {
+       onSuccess: async () => {
