@@ -164,12 +164,14 @@ WEB_RECODE (next start, :3001) ┘
 
 ## 6. P2 — foundation (에이전트 초안 → 사람 승인 ②)
 
+상세 초안: `docs/foundation.md`
+
 - 라우트 확정, `ROUTES` 추가
 - `/order/shops/*` (조회 전용): `getServerSideProps` + `withCacheControl`로 기기 판정, 데스크톱은 서버가 안내 화면 렌더
 - `/order/checkout*`: 앱 웹뷰 전용. 사용자별 데이터는 클라이언트 조회, 브릿지가 없으면 안내 화면
 - `/store/[id]` ISR → SSR + `withCacheControl` 전환 (기기별 캐시, 규칙 10)
 - **폰트 스코프 수정** (`docs/css-improvement-survey.md` A-1): 포털 콘텐츠(모달·바텀시트)가 Pretendard를 상속하지 못함. 그대로 두면 G6(다른 픽셀 0)에서 모달 상태가 전부 폰트로 실패해 UI 축이 정체된다
-- 상점 API 버전 정렬(`v3/shops`, `v2/shops/:id`, v2 검색) + 데스크톱 회귀 확인
+- 상점 API: 모바일 화면은 order 엔드포인트(`v3/shops`, `v2/shops/:id`, `shops/{id}/summary`, v2 검색)를 채택하고 **데스크톱 API는 이번에 바꾸지 않는다**(foundation D5)
 - 공통 브릿지: `iosBridge.ts`를 iOS(`tokenBridge`)·Android(`postMessage` + 직접 호출 폴백) 공용으로 확장
 - 앱 웹뷰 결제 인증: 일회용 code → 세션 진입점
 - 의존성: `@tosspayments/tosspayments-sdk` (`.pnp.cjs`·`.yarn/cache` 포함 커밋). Playwright 등 검증 도구는 하네스 저장소에만 둔다
