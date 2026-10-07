@@ -1,284 +1,187 @@
 # KOIN_ORDER_WEBVIEW → KOIN_WEB_RECODE 모바일 통합 계획
 
-> 2026-10-07 · 주문 기능 MVP 기준 · 방식: 하네스 + 루프 엔지니어링 (페이지 = 작업 단위, 스크립트 게이트 판정, 사람 개입 최소화)
+> 2026-10-07 정리본. 이 문서는 **현재 기준 계획(1~6장)**과 **지금까지의 선택 기록(7~8장)**으로 구성된다.
+> 진행 상태·다음 할 일·새 기기 세팅은 `docs/STATUS.md`, foundation 결정 상세는 `docs/foundation.md`, 하네스 사용법은 `README.md`.
 
-## 1. 범위와 전제
+---
 
-| 구분 | 결정 |
+## 1. 목표와 범위
+
+**목표**: order.koreatech.in(KOIN_ORDER_WEBVIEW, Vite + Tailwind)에 따로 있는 모바일 상점·리뷰 화면을 KOIN_WEB_RECODE(Next.js Pages Router + SCSS Modules)로 옮겨, 같은 기능을 두 저장소에서 다른 API 버전으로 유지하는 비용을 없앤다. 재개 중인 주문 기능의 앱 결제 웹뷰도 WEB_RECODE에 둔다.
+
+| 구분 | 범위 |
 |---|---|
-| 데스크톱 | 현재 WEB_RECODE 유지. 주문 기능 없음 |
-| 모바일 웹 (1차) | 상점·리뷰 이전 + 주문 가능 상점은 **조회 전용**(상점·정보·리뷰) + "앱에서 주문하기" CTA. **웹 결제 없음** |
-| 모바일 웹 (2차, 보류) | MVP 결과·수요(CTA 로그)를 보고 웹 주문 전체(장바구니 → 배달지 → 결제 → 완료·내역) 추가 여부 결정 |
-| 앱 | 결제만 웹뷰(WEB_RECODE `/order/checkout*`, 앱 웹뷰 전용), 나머지는 네이티브. MVP는 Android만 |
-| 협업 | Android만 가능. iOS는 MVP 결과를 보고 추후 진행 — 그때까지 기존 동작을 깨지 않는 것만 보장 |
-| 백엔드 | 필요한 API는 직접 작업 |
-| `order.koreatech.in` | 이전 완료 후 301 → 접속 0이면 종료, 저장소 보관 |
+| 데스크톱 | 현재 WEB_RECODE 그대로. 주문 기능 없음. 데스크톱 API(`api/store`)도 이번에 바꾸지 않음 |
+| 모바일 웹 (1차, MVP) | 상점 목록·검색·상세·정보·이벤트·리뷰 목록/작성/수정/신고를 order 화면 그대로 이전. 주문 가능 상점은 **조회 전용** + "앱에서 주문하기" CTA. **웹 결제 없음** |
+| 모바일 웹 (2차, 보류) | MVP 결과와 CTA 로그를 보고 웹 주문 전체(메뉴 담기 → 장바구니 → 배달지 → 결제 → 완료·내역) 여부 결정 |
+| 앱 | 결제만 웹뷰(`/order/checkout*`, 앱 전용), 나머지는 네이티브. MVP는 **Android만**(iOS는 MVP 결과 보고 추후) |
+| 백엔드 | 필요한 API(웹뷰 세션 코드, 임시 주문 조회, 멱등 confirm 등)는 사용자가 직접 작업. 결제 단위 착수 전까지만 준비 |
+| order.koreatech.in | 전환 시 옛 경로를 WEB_RECODE 경로로 301 → 접속이 사라지면 종료, 저장소 보관 |
 
-### 선결 확인
+## 2. 방식: 하네스 + 루프
 
-- **order 모바일 웹 로그인 깨짐 (확인됨)**: #1526(2026-09-26)에서 `AUTH_TOKEN_KEY` 쿠키 발급이 사라져 모바일 웹에서 리뷰 작성·수정·신고 불가. 모바일 웹 상점 이용자가 사실상 없어 핫픽스 없이 Track A 이전으로 해소한다. 앱 웹뷰는 네이티브가 토큰을 주입하므로 영향 없음.
-- **`scripts/hydration/dom-diff.mjs` 부재**: CLAUDE.md 규칙 10이 참조하지만 저장소·이력 어디에도 없다. 하네스에서 새로 만든다(G7).
+- **화면 하나 = 작업 단위.** 작업이 크면 AI가 놓치는 게 많아서 화면 단위로 나눈다(배포 단위가 아님)
+- **판정은 스크립트만.** order 화면(오라클)과 WEB_RECODE 화면(후보)을 같은 API 데이터로 띄워 게이트로 비교한다. 에이전트의 "통과했다"는 근거가 아니다
+- **루프**: 구현 에이전트가 단위 화면을 구현·커밋 → 검증 에이전트가 판정 스크립트만 실행 → 실패 리포트를 다음 구현에 전달 → 통과·예산 소진·3회 연속 무개선·범위 밖 변경 필요 시 종료. 종료 후 사람이(또는 메인 세션이) 판정을 **독립적으로 재실행**하고 PR을 올린다 (`workflows/parity-unit-loop.js`)
+- **사람 개입 최소화**: 승인은 하네스 신뢰(①)와 foundation(②) 두 번. 루프 중에는 기준 완화 요청·단위 정체·상태 탐색 불확정일 때만 사람에게 알린다
 
-## 2. 전체 흐름
-
-```
-P0 선결 확인 · 백엔드 API
-P1 하네스 구축 ─────────────── [사람 승인 ①: 하네스 신뢰]
-P2 foundation (에이전트 초안) ─ [사람 승인 ②: 구조·대응표·공통 허용 목록]
-P3 파일럿 1단위 → 정답 예시 자동 등록
-P4 Track A 루프 (상점·리뷰)   ┐ 배치 실행 → 실패 군집화 → 지침 보정 → 재실행
-P5 Track B 루프 (조회 전용 주문 상점 + 앱 결제) ┘
-P6 전환: 링크 교체 · 301 · order 종료
-```
-
-사람 개입은 ①② 두 번이 기본이다. 루프 중에는 아래 세 경우만 알림을 받는다.
-
-1. 오라클 완화 요청(마스크·정규화·허용 차이 추가) — 자동 승인 금지
-2. 단위 정체(예산 소진, 3회 연속 지표 개선 없음)
-3. 상태 탐색 불확정(비결정적 상태, 픽스처 부족으로 도달 불가)
-
-## 3. 작업 단위
-
-단위는 두 종류다.
-
-- **동등성 단위**: 오라클 = order 앱(고정 커밋). 대부분의 단위
-- **스펙 단위**: 동작이 의도적으로 바뀌어 order 앱이 정답이 될 수 없는 단위. 오라클 = 승인된 계약(P0 Android 계약 + API 스펙). G2·G5는 계약 대비로 판정하고, 시각 오라클 여부는 단위별로 명시한다. 계약 승인은 사람 승인 ②에 포함한다
-
-오라클 커밋: Track A는 order `1b51c34`(HEAD, 상점 이벤트 #251 포함), Track B는 `7243571`(#245 주석 처리 직전) + 라우트 주석 해제 패치. 두 커밋 사이 `src/api` 변경은 shop 쪽 21줄뿐이지만, Track B 착수 전 백엔드 계약 변경 여부를 확인한다.
-
-### Track A — 상점·리뷰 (모바일 웹)
-
-| # | order 경로 | WEB_RECODE 경로 | 비고 |
-|---|---|---|---|
-| A1 | `shop-events/:id` | `/store/:id/events` (신규) | **파일럿** |
-| A2 | `shops` | `/store` 모바일 | HEAD의 NearbyShops는 주문 불가 상점만 다룸 → B2 머지 후 주문 가능 상점 포함해 Track B 오라클로 재검증 |
-| A3 | `search` | `/store/search` (신규) | 결과의 주문 가능 상점·메뉴 링크(`shop/true`)는 HEAD에서 비활성 라우트 → B2 머지 후 재검증 |
-| A4 | `shop/false/:id` | `/store/:id` 모바일 | ISR → SSR 전환 선행(P2) |
-| A5 | `shop-detail/false/:id` | `/store/:id/info` (신규) | |
-| A6 | `review/false/:id` | `/store/:id/reviews` (신규) | |
-| A7 | `review/new/:id` | `/store/review/:id` | 기존 페이지 모바일 UI |
-| A8 | `review/edit/:id/:rid` | `/store/review/edit/:id/:rid` | |
-| A9 | `review/report/:id` | `/report/review/shopid/:id/reviewid/:rid` | |
-
-### Track B — 주문 가능 상점 조회 (모바일 웹) + 결제 (앱 웹뷰 전용)
-
-| # | order 경로 | WEB_RECODE 경로 | 비고 |
-|---|---|---|---|
-| B2 | `shop/true/:id` | `/order/shops/:id` | **조회 전용**. 공개 데이터, SSR + 기기별 캐시. 장바구니 담기·장바구니 바 자리에 "앱에서 주문하기" CTA (공통 허용 목록에 선언) |
-| B4 | `shop-detail/true/:id` | `/order/shops/:id/info` | 조회 전용 |
-| B5 | `review/true/:id` | `/order/shops/:id/reviews` | 조회 전용 |
-| B9 | `payment` | `/order/checkout` | **스펙 단위, 앱 웹뷰 전용**. 얇은 결제 화면: 금액 요약 + Toss 위젯 + 약관 + 결제 버튼. 네이티브가 만든 임시 주문으로 진입, 금액은 서버 값. 시각 오라클 = 옛 Payment 화면의 해당 구역(`PaymentAmount`·`TossWidget`·`Agreement`·결제 버튼)만 요소 단위 비교, 나머지 구역은 대상 아님 |
-| B10 | `payment/return` | `/order/checkout/success`, `/fail` | **스펙 단위, 앱 웹뷰 전용**. confirm 후 브릿지 `paymentCompleted`/`paymentFailed` |
-
-**"앱에서 주문하기" CTA**: Android는 앱 링크(설치 안 됐으면 Play 스토어), iOS·기타는 "현재 Android 앱에서만 주문할 수 있어요" 안내. 클릭을 `useLogger`로 기기·OS별 기록 → 2차(웹 주문) 판단 근거.
-
-**`/order/checkout*` 접근 제한**: 브릿지가 없으면(모바일 웹·데스크톱) 결제 대신 안내 화면.
-
-**2차로 보류한 단위** (웹 주문 결정 시 추가): B1 `home` → `/order`, B3 메뉴 상세(옵션·담기), B6 장바구니, B7·B8 배달지, B11 결과, B12 취소, B13 주문 내역, 그리고 B9의 모바일 웹 주문서 버전(옛 Payment 화면 전체 이전 = (a)안).
-
-경로명은 P2에서 확정한다.
-
-## 4. P0 — 선결 확인 · 백엔드
-
-- (후순위) 아래 백엔드·Android 항목은 B9·B10 착수 전까지만 끝내면 된다. Android 외부 결제 앱 스킴 처리 여부만 먼저 문의
-- 백엔드 API (직접 작업)
-  - `POST /auth/webview-code` — Bearer → 단기·일회용 code
-  - `POST /auth/webview-session` — code → HttpOnly 세션 + CSRF 쿠키
-  - 임시 주문 조회 — checkout이 금액을 서버 값으로 받기 위함
-  - 임시 주문 만료 정책
-  - `payments/confirm` **멱등 처리**(새로고침·재시도 시 기존 결과 반환), 금액 대조, confirm 시점 가격·품절 재검증
-  - 결제 완료된 임시 주문으로 checkout 재진입 시 결과로 보내기 위한 상태 조회
-  - 결제 앱에서 복귀 실패 대비: "결제 확인 중" 상태와 재확인 경로(Toss 승인은 confirm 없이 10분 후 만료)
-- Android 계약: 결제 웹뷰 진입 URL·파라미터, 브릿지 `paymentCompleted(paymentId)` / `paymentFailed(reason)` / `navigateBack`, **외부 결제 앱 스킴(`intent://`·카드사/간편결제) 처리**(`shouldOverrideUrlLoading`) 구현 여부, "앱에서 주문하기" 앱 링크 수신
-- 결제 페이지 보안: success URL의 `paymentKey`·`orderId`·`amount`를 confirm 직후 `history.replaceState`로 제거, 분석(GA)·Sentry 수집 제외, `Referrer-Policy: no-referrer`, `Cache-Control: private, no-store`
-
-## 5. P1 — 하네스 (별도 private 저장소 `ff1451/koin-parity`)
-
-마이그레이션이 끝나면 버리는 도구라 KOIN_WEB_RECODE에 넣지 않는다. 공개 저장소 이력에 테스트 의존성 바이너리(Zero-Install `.yarn/cache`)·stage 데이터·오라클 패치를 남기지 않기 위함이다. 검증 대상은 `KOIN_WEB_REPO`(기본 `../KOIN_WEB_RECODE`)의 ref를 하네스의 `.cache/web` 워크트리로 체크아웃해 빌드한다.
-
-### 5.1 구성 요소
+### 2.1 하네스 (`ff1451/koin-parity`, private)
 
 | 구성 | 역할 |
 |---|---|
-| 기록·재생 프록시 | 두 앱의 API 경로(`VITE_API_PATH`, `NEXT_PUBLIC_API_PATH`)를 여기로. **기록** 모드: stage로 전달하며 요청·응답 저장(픽스처 생성, 백엔드 변경 시 해당 엔드포인트만 재기록). **재생** 모드(루프 기본): 저장 응답만 반환, stage 미접속 — 쓰기 요청도 stage를 건드리지 않음. **덮어쓰기**: 경계 상태(리뷰 0·이미지 없음·긴 상호명·영업 종료·품절·500)를 엔드포인트별로 주입. 모든 모드에서 요청을 SSR/클라이언트 구분해 기록. 정적 이미지도 로컬 제공. 세부는 §5.3 |
-| 앱 러너 | order 고정 커밋 워크트리(pnpm, :3000) + WEB_RECODE 단위 브랜치(yarn, :3001) 기동 |
-| 결정성 장치 | 브라우저 `page.clock` + **서버 고정 시각 주입**(프록시가 now 제공 또는 Next 서버 훅), 애니메이션·Swiper 자동재생 끔, 웹폰트 로드 대기, 기기 Pixel 5·UA 고정, Toss SDK·`window.Android`·`window.webkit` 스텁 |
-| 상태 탐색기 | order 앱에서 인터랙티브 요소를 순회하며 도달 가능한 상태(모달·바텀시트·토스트·활성화 변화·단계 전이)를 픽스처 × 인증(guest/auth) × 환경(웹/앱 웹뷰) 조합으로 수집. 상태별 요소 목록과 계산된 스타일 추출 → 구현 입력이자 검증 체크리스트 |
-| 게이트 실행기 | §5.2 게이트를 싼 순서로 실행, 실패한 축만 재실행, PR 직전 전체 재실행 |
-| 리포트 | `report.json`(커밋 SHA·스펙 해시·기대/실행 케이스 수·게이트별 결과) + 상태별 3열 이미지(order │ WEB_RECODE │ diff) |
-| 변이 세트 | order 복사본에 알려진 차이 주입 → 탐지율 측정 |
+| 기록·재생 프록시 | 두 앱의 API 경로를 `http://localhost:4000/stage`로. record(stage 전달·저장) / replay(저장 응답만, 루프 기본, miss는 실패) / fill(없는 GET만 보충, 루프 밖). 저장 시 전화번호·계좌·토큰·쿠키를 가린다 |
+| 캡처 | 기기 뷰포트, 가짜 시계(+서버 시계 고정 훅), 래스터 고정 플래그, Lottie·canvas·video 마스킹, Next 링크 프리페치 차단, lazy 이미지 eager, `next/image`는 원본 이미지로 대체. 스크린샷·요소 목록(위치·계산된 스타일)·요청 로그·gtag 이벤트·토스트 문구 수집 |
+| 게이트 | G0 정상 렌더(miss 없음·필수 텍스트) / G2 API 요청 집합 / G3 토스트 문구 / G4 분석 이벤트 / G6 본문 영역 픽셀(fuzz 5% 후 0) + 요소 누락·추가 / G8 회귀(`regress.mjs`, 기준 ref 대 후보 ref) |
+| 변이 세트 | 일부러 넣은 차이(위치·색·굵기·아이콘·글자·애니메이션·요청·이벤트 누락)를 전부 잡는지 확인. 하네스가 놓친 실제 사례가 생기면 변이로 추가 |
+| 오라클 패치 | order 버그는 패치로 고친 화면을 기준으로 삼는다(사람 승인). 0001~0007 |
+| 상태 탐색기 | order 화면에서 눌러 볼 수 있는 요소를 자동으로 눌러 도달 가능한 상태를 수집 → 단위 스펙 초안 (`explore.mjs`, 다듬는 중) |
+| 로그인 픽스처 | 기록은 stage 실로그인, 재생은 더미 JWT 쿠키 |
 
-검증 체크리스트는 구현 플랜이 아니라 **상태 탐색기가 order 앱에서 직접 만든다**. 구현과 검증이 같은 플랜을 보면 플랜에서 빠진 상태를 둘 다 놓친다.
+### 2.2 KOIN_WEB_RECODE 브랜치
 
-### 5.2 게이트
+```
+develop ─● ······································ ● ← 최종 PR 1회 (전 단위 완료 후)
+          \                                    /
+           refactor/order-integration ●──●──●──●   (스택 trunk)
+                                       \
+                                        feat/#1572/order-foundation (#1573) ← feat/#1572/order-a1-shop-events (#1574) ← …
+```
 
-모든 게이트는 스크립트가 판정한다. LLM은 원인 설명·상태 탐색 보조만 하고 PASS를 낼 수 없다.
+- `gh stack`으로 trunk 위에 화면 단위 레이어를 쌓고, 승인된 아래 레이어부터 trunk에 머지해 스택을 얕게 유지
+- 공유 파일(라우트·공용 UI·API·의존성)은 foundation 레이어에 몰아 두고, 단위 레이어는 자기 화면 파일만 수정
+- 이슈 #1572 하나로 전체 진행을 묶는다. 제목 `[비즈니스] …`, 커밋은 `type: 명사형 요약` 한 줄
 
-| 게이트 | 판정 |
+## 3. 단계
+
+| 단계 | 내용 | 상태 |
+|---|---|---|
+| P0 | 선결 확인(order 로그인 깨짐 확인됨 → 핫픽스 없이 이전으로 해소), 백엔드·Android 계약은 후순위 | 완료(일부 후순위) |
+| P1 | 하네스 구축·자기 검증(order 대 order 0px, 변이 전부 탐지) | 완료, 승인 ① |
+| P2 | foundation: 라우트, `/store/[id]` ISR→SSR, 포털 폰트 스코프, 색 토큰·Badge·Button, 모바일 골격 페이지·60px 헤더, `api/storeMobile` | 완료, 승인 ②, PR #1573 |
+| P3 | 파일럿 A1 | 완료(루프 1회 통과), PR #1574 |
+| P4 | 상태 탐색기 → Track A 단위 A2~A9 | 진행 중 |
+| P5 | Track B: 주문 가능 상점 조회 B2·B4·B5 → 결제 B9·B10(백엔드·Android 계약 후) | 대기 |
+| P6 | 전환: 모바일 진입 링크(`ORDER_BASE_URL` 5곳) 교체, order 301, 이전 화면 헤더 높이를 공통(56.8px)으로 통일, refactor → develop 머지 | 대기 |
+
+## 4. 작업 단위
+
+| # | order 경로 | WEB_RECODE 경로 | 비고 |
+|---|---|---|---|
+| A1 | `shop-events/:id` | `/store/[id]/events` | ✅ |
+| A2 | `shops?category&sort&filter` | `/store` 모바일 | 탐색 중. 주문 가능 상점 포함 여부는 B2 후 재검증 |
+| A3 | `search` | `/store/search` | |
+| A4 | `shop/false/:id` | `/store/[id]` 모바일 | 오라클이 오버레이 헤더 → 본문 비교 범위(`chrome: 'none'`) 검토 |
+| A5 | `shop-detail/false/:id` | `/store/[id]/info` | |
+| A6 | `review/false/:id?sort` | `/store/[id]/reviews` | 로그인 상태 포함 |
+| A7·A8·A9 | `review/new`, `review/edit`, `review/report` | 기존 `/store/review/…`, `/report/review/…` 모바일 UI | |
+| B2·B4·B5 | `shop/true/:id`, `shop-detail/true/:id`, `review/true/:id` | `/order/shops/[id](/info,/reviews)` | 조회 전용. 오라클 커밋 `7243571` + 라우트 주석 해제 패치 필요. 장바구니 자리는 CTA(스펙 차이로 선언) |
+| B9·B10 | `payment`, `payment/return` | `/order/checkout`, `/success`, `/fail` | **스펙 단위**(동작이 바뀌어 order가 정답이 아님): 앱 웹뷰 전용 얇은 결제 화면, 금액은 서버 값, 완료는 Android 브릿지 |
+
+## 5. 결제(B9·B10) 요구 사항
+
+- 진입: 네이티브가 `payments/{delivery|takeout}/temporary`로 임시 주문 생성 → `/order/checkout?orderId=…` 웹뷰 오픈
+- 인증: 네이티브가 일회용 code 발급(`POST /auth/webview-code`) → 웹뷰가 `POST /auth/webview-session`으로 HttpOnly 세션 생성 → 이후 기존 세션 구조
+- 화면: 금액 요약·Toss 위젯·약관·결제 버튼(옛 Payment 화면의 해당 구역만 시각 비교). 브릿지가 없으면 안내 화면
+- 백엔드: 임시 주문 조회, 만료 정책, **멱등 confirm**(새로고침·재시도 시 기존 결과), confirm 시점 가격·품절 재검증, "결제 확인 중" 상태
+- Android: 브릿지 `paymentCompleted(paymentId)`·`paymentFailed(reason)`·`navigateBack`, 외부 결제 앱 스킴(`intent://`) 처리 여부 확인
+- 보안: success URL의 `paymentKey`·`orderId`·`amount`를 confirm 직후 제거, 분석·Sentry 수집 제외, `Referrer-Policy: no-referrer`, `Cache-Control: private, no-store`
+
+## 6. 2차(웹 주문) 착수 시 추가로 필요한 것
+
+- 결제 화면: 모바일 웹은 옛 Payment 화면(주소·연락처·요청사항 포함) 그대로 이전, 앱은 같은 페이지에서 입력 구역 숨김
+- **세션 없이 동작하는 confirm**(결제 앱이 다른 브라우저로 복귀하는 경우)
+- 인앱 브라우저(카카오톡·인스타그램·에브리타임) 실기기 검증, iOS Safari 필수
+- **Toss 가맹 범위**: 웹 결제 채널·도메인 추가 심사, 사업자 정보·약관·환불 정책 표시 요건(개발보다 오래 걸릴 수 있음)
+- 주문 상태의 주소·전화번호를 localStorage에 영속하지 않음
+
+---
+
+## 7. 선택 기록 (시간순)
+
+각 항목은 "질문 → 검토한 선택지 → 결정 → 이유" 순서. 결정이 바뀐 경우 나중 항목이 우선한다.
+
+### 7.1 범위
+
+| # | 질문 | 선택지 | 결정 | 이유 |
+|---|---|---|---|---|
+| 1 | 통합할 필요가 있나 | 유지 / 통합 | **통합** | order의 살아 있는 화면(상점·리뷰·이벤트)이 WEB_RECODE에 거의 다 있는데 서로 다른 API 버전으로 따로 유지됨. order 저장소는 2025-12 이후 사실상 정지 |
+| 2 | 주문 기능 상태 | 완전 종료 / 재개 | **접었다가 재개 중** | 사용자 답변. 재개 시점이 통합 비용이 가장 낮은 시점 |
+| 3 | 앱 협업 범위 | iOS·Android / Android만 | **Android만** | 사용자 답변. iOS 호환은 기존 동작을 깨지 않는 것만 보장 |
+| 4 | 앱에서 웹뷰로 남는 것 | 상점·리뷰 포함 / 결제만 | **결제만 웹뷰, 나머지 네이티브** | 사용자 답변 |
+| 5 | 데스크톱 | 함께 통합 / 유지 | **데스크톱은 WEB_RECODE 유지, 모바일만 통합** | 사용자 답변 |
+| 6 | 백엔드 | 백엔드 팀 / 직접 | **인원이 없으면 사용자가 직접** | 사용자 답변 |
+| 7 | 모바일 웹 상점 화면의 원본 | WEB_RECODE `/store` 모바일 / order | **order 화면을 이전** | 모바일 웹 진입 링크가 order로 연결돼 있어 실제 서비스 중인 화면이 order 쪽 |
+| 8 | 모바일 웹에서 결제 | 앱만 / 모바일 웹도 | 한때 **모바일 웹도 결제, 주문 전체 지원**으로 결정 | 사용자 답변 |
+| 9 | 웹 결제의 문제점 검토 후 | 웹 결제 유지 / 앱만 | **1차(MVP)는 웹 결제 없음, 웹 주문은 2차 보류** (8을 대체) | 주문은 MVP 단계, iOS는 MVP 후. 웹 결제는 다른 브라우저 복귀·인앱 브라우저·Toss 도메인 심사 등 위험이 큼 |
+| 10 | 결제 화면 형태 | (a) 옛 결제 화면 그대로 / (b) 얇은 화면 재설계 | **1차는 앱 전용 얇은 화면(옛 화면의 결제 구역만 비교), 2차 웹은 (a)** | 이전과 재설계를 섞지 않음. 시각 기준이 있어야 사람 개입이 줄어듦 |
+| 11 | order 모바일 웹 로그인 깨짐(#1526 이후) | 핫픽스 / 이전으로 해소 | **이전으로 해소** | 실제로 깨진 것을 확인했으나 모바일 웹 상점 이용자가 사실상 없음 |
+| 12 | 백엔드·Android 작업 순서 | 먼저 / 후순위 | **후순위**(결제 단위 착수 전까지) | Track A는 둘이 필요 없고 결제는 Android가 붙어야 검증 가능. 외부 결제 앱 스킴 처리 여부만 먼저 문의 |
+
+### 7.2 진행 방식
+
+| # | 질문 | 선택지 | 결정 | 이유 |
+|---|---|---|---|---|
+| 13 | 작업 단위 | 기능 묶음 / 화면 | **화면 하나 = 단위** | 작업이 크면 AI가 놓치는 게 많음 |
+| 14 | 과거 "UI가 다른데 통과" 문제 방지 | — | **판정은 스크립트 종료 코드만, 기준 이미지 저장 안 함(매번 오라클을 띄움), 전체 비율 대신 국소 판정, 요소 목록 비교, 상태 단위 캡처, 변이 테스트로 탐지율 측정, PR에 비교 이미지** | 에이전트 자기 판정·기준 갱신·비율 판정·찍지 않은 상태가 과거 실패 원인 |
+| 15 | jobkorea 사례 반영 | — | **완료 조건을 코드로, 상태 단위 검증(도달 불가 = 실패), fuzz 5% 후 다른 픽셀 0, 실패 축만 재검증 + PR 직전 전체 재실행, 축별 예산, 실패를 규칙으로 축적** | 루프가 끝나지 않거나 잘못 통과한 사례의 해법 |
+| 16 | jobkorea와 다르게 할 것 | — | **검증자를 LLM이 아니라 스크립트로**, 검증 체크리스트를 구현 플랜이 아니라 오라클 화면에서 직접 뽑음 | 같은 플랜을 보면 빠진 상태를 구현·검증이 함께 놓침 |
+| 17 | 다른 사례(Airbnb·Slack·mgm·Money Forward) 반영 | — | 정답 예시(첫 통과 단위를 예시로), 렌더된 DOM·계산된 스타일을 구현 입력으로, 실패 묶어서 지침 보정(sample→tune→sweep), 시작 전 규칙·대응표 문서화 | mgm의 LLM 검증자(Haiku)는 채택하지 않음 |
+| 18 | 사람 개입 | 단위마다 플랜 리뷰 / 최소화 | **하네스 승인·foundation 승인 2회 + 알림 3종** | jobkorea처럼 줄이되, 되돌리기 비싼 지점만 사람이 봄 |
+| 19 | API 데이터 | 목 서버 / stage 직접 / stage 앞 기록·재생 프록시 | **기록·재생 프록시** | stage 직접은 쓰기 요청 오염·경계 상태 재현 불가·실행마다 변동. 목 서버는 픽스처 작성 비용. 프록시는 실데이터 기록 + 결정성 |
+| 20 | 포트·CORS(stage는 localhost:3000만 허용) | — | **프록시가 CORS를 직접 응답**, 앱 API 경로는 `http://localhost:4000/stage`(WEB_RECODE `IS_STAGE` 판정 유지) | `api.stage.localhost` 호스트는 Node fetch가 해석하지 못해 폐기 |
+| 21 | 상태 목록 작성 | (a) 자동 탐색기 먼저 / (b) 조사 결과로 직접 작성 | **(a)** | A2 이후는 상태가 많아 사람이 쓴 스펙은 상태를 놓칠 위험 |
+
+### 7.3 저장소·브랜치
+
+| # | 질문 | 선택지 | 결정 | 이유 |
+|---|---|---|---|---|
+| 22 | 브랜치 전략 | develop에 단위별 머지 / 통합 브랜치 | **refactor 통합 브랜치에 단위별로 넣고 완성 후 develop에 한 번 머지** | 사용자 결정 |
+| 23 | PR 형태 | 단일 / stacked | **stacked PR, 단 통합 브랜치(refactor)를 trunk로** | 단위별 diff만 리뷰. 승인된 레이어부터 trunk에 머지해 스택을 얕게 |
+| 24 | 하네스 위치 1차 | develop 별도 PR / refactor | 한때 **refactor에 둠** | 사용자 결정 |
+| 25 | 하네스를 git에 올리나 (24를 대체) | KOIN 저장소 / 별도 private 저장소 / 로컬 전용 | **별도 private 저장소 `ff1451/koin-parity`** | 끝나면 버리는 도구. 공개 저장소에 Zero-Install 바이너리·stage 데이터·오라클 패치가 영구히 남음. 에이전트 저장소에 하네스가 없어 변조 방지도 단순해짐 |
+| 26 | 오라클 변조 방지 | CODEOWNERS / 권한 차단 | **루프 에이전트 권한에서 하네스 경로 Edit·Write 차단 + 검증 시 작업 트리·하네스 깨끗한지 확인 + 판정 독립 재실행** | CODEOWNERS는 refactor에 보호 규칙이 없어 강제되지 않고 사람 승인이 늘어남 |
+| 27 | 공개 저장소 데이터 | — | **이미지 자산·빌드 시점 카세트는 커밋하지 않음(로컬 캐시), 단위 카세트는 저장 시 개인정보·토큰 가림** | KOIN 저장소가 public. stage 이미지(저작권)·실제 연락처 |
+| 28 | 커밋 메시지 | 문장형 / 명사형 | **`type: 명사형 요약` 한 줄, 본문 없음** | 사용자 지적(기존 이력과 형식 통일) |
+| 29 | 이슈·PR 규칙 | — | **이슈 #1572 하나로 묶고 레이어 PR은 draft, 제목 `[비즈니스] …`, 라벨 `✨ Feature`·`💼 Business`** | koin-pr 스킬 규칙. 브랜치명은 `feat/#1572/order-<단위>` |
+
+### 7.4 foundation (승인 ②, 상세는 `docs/foundation.md`)
+
+| # | 질문 | 선택지 | 결정 | 이유 |
+|---|---|---|---|---|
+| D1 | 헤더·푸터 | (a) 이전 화면만 헤더 60px / (b) 위치 허용 오차 / (c) order 헤더 재현 | **(a) 60px로 시작해 전 단위 통과 후 WEB_RECODE 헤더(56.8px)로 통일**, 본문 영역만 비교 | 실측: order 본문 시작 60px, `MobilePageHeader` 56.8px. 3.2px 차이가 본문 전체와 100vh 기반 배치를 밀어냄 |
+| D2 | 폰트 | 굵기만 추가 / 파일 교체 | **오라클 패치로 order 폰트를 WEB_RECODE와 같은 서브셋 9개 굵기로 교체** | 실측: order는 전체 폰트 400·700 두 파일, WEB_RECODE는 서브셋 9개. 파일이 다르면 픽셀 0 불가, order는 500·600이 400·700으로 그려짐 |
+| D3 | 공용 UI | — | 본문 컴포넌트는 order 모양 재현, 없는 Badge·Button은 공용 신규, 토스트는 `showToast`(문구만 비교) | WEB_RECODE에 Button·Badge 공용이 없음. 토스트는 규칙상 교체 불가 |
+| D4 | 데스크톱 접근 | — | 기존 경로는 서버 기기 분기, 모바일 전용 신규 경로는 데스크톱이면 서버 리다이렉트(주문 경로는 안내 화면) | 규칙 10: 기기는 서버가 확정 |
+| D5 | API | 데스크톱까지 정렬 / 모바일만 | **모바일만 order 엔드포인트 채택(`api/storeMobile`), 데스크톱 불변** | 범위·회귀 위험 축소 |
+| D6 | order 버그 | — | 게이트가 비교하는 신호에 영향 있는 것만 오라클 패치(0003~0007), 기존 WEB_RECODE 페이지가 대상인 것은 그 동작에 맞춤 | 버그까지 옮기지 않되 새 동작을 정하지 않음 |
+| D7 | 분석 이벤트 | — | 모바일 화면은 order `event_label` 유지(G4로 검증) | 이전 후 지표 단절 방지 |
+| 30 | order 버그 처리 방식 | 패치 / 버그까지 이전 | **오라클 패치(사람 승인, 에이전트 수정 불가)** | 이벤트 썸네일 필드명 오류(0001)에서 처음 결정 |
+
+## 8. 하네스 구현 중의 기술적 선택
+
+| 문제 | 결정 |
 |---|---|
-| G0 오라클 무결성 | 스펙·픽스처·마스크·임계값 해시 일치. 양쪽 모두 픽스처 데이터가 실제로 렌더됐는지(필수 텍스트·요청 발생) — 둘 다 빈 화면이면 FAIL |
-| G1 정적 검사 | `yarn typecheck`, `yarn lint`, KOIN 컨벤션 grep(ROUTES·showToast·isKoinError·console.log 금지·하드코딩 색) |
-| G2 네트워크 계약 | 상태·시나리오별 요청 method·path·query·body 동일 (공통 정규화 적용) |
-| G3 상태 도달·결과 | 상태 목록의 모든 상태에 WEB_RECODE에서도 도달. URL 전이·보이는 텍스트·활성화 여부 동일. 도달 불가 = FAIL |
-| G4 분석 이벤트 | `event_label` 집합·순서 동일 |
-| G5 브릿지 호출 | 메서드·인자·순서 동일 (결제·앱 웹뷰 상태) |
-| G6 시각 | 상태별 스크린샷 **fuzz 5% 후 다른 픽셀 0개**. 요소 목록 짝 맞춤(텍스트+role)에서 누락·추가 = FAIL. 계산된 스타일 차이는 진단 정보로 리포트 |
-| G7 SSR 결정성 | 하이드레이션 DOM 파괴율(신규 도구) 0, 콘솔 에러 0 |
-| G8 데스크톱 자기 회귀 | `/store` 공유 페이지의 데스크톱이 **스택의 바로 아래 레이어**(최하위는 refactor tip)와 G2·G6 기준 동일. 단위는 모바일만 바꾸므로 데스크톱은 직전 상태와 같아야 한다. develop 동기화로 들어온 변경도 자동으로 기준에 반영된다 |
-| G9 URL·SEO | order 옛 경로 → 새 경로 301 매핑 정확. SSR 페이지 메타·사이트맵이 바로 아래 레이어 대비 회귀 없음 |
-
-### 5.3 프록시 · 포트 · 쿠키
-
-```
-order (vite, :4100) ─────┐
-                          ├→ 프록시 (http://localhost:4000/stage) ─(기록 모드만)→ stage API
-WEB_RECODE (next start, :4101) ┘
-```
-
-- **CORS는 프록시가 처리한다.** 브라우저는 stage가 아니라 프록시를 호출하므로 stage의 CORS 허용 출처(localhost:3000)와 무관하다. 프록시가 앱 출처(order `:4100`, WEB_RECODE `:4101`·`:4102`)에 `Access-Control-Allow-Origin`(명시 출처) + `Allow-Credentials`를 응답한다. stage로는 서버 간 요청이고 `Origin`/`Referer`를 stage 웹 출처로 고정한다(`src/pages/api/proxy`와 같은 방식)
-- **WEB_RECODE는 프로덕션 빌드(`next build && next start -p 3001`)로 띄운다.** dev 모드는 브라우저 요청을 `/api/proxy`로 우회하고 StrictMode 이중 렌더·오버레이가 섞여 결정성이 떨어진다
-- **`IS_STAGE` 판정 주의.** `IS_STAGE`는 `NEXT_PUBLIC_API_PATH`에 `stage`가 들어있는지로 정해지고, 쿠키 이름(`__Secure-koin-stage-web-csrf`)·도메인이 여기에 따라 갈린다. 프록시 주소를 `http://localhost:4000`으로 주면 프로덕션 쿠키 이름을 찾아 CSRF 쿠키를 못 읽고 비로그인으로 동작한다. 그래서 API 경로를 `http://localhost:4000/stage`로 주고 프록시가 `/stage` 접두사를 떼어 전달한다(`api.stage.localhost` 호스트는 Node fetch가 해석하지 못해 폐기)
-- **Set-Cookie 재작성.** 기록·재생 모두 `Domain=` 제거 후 `Path=/` (`src/pages/api/proxy`의 `rewriteSetCookie`와 동일). `__Secure-` 접두사 쿠키는 Chromium이 localhost를 보안 컨텍스트로 보므로 유지된다
-- **쿠키는 포트를 구분하지 않는다.** localhost의 쿠키는 :3000/:3001이 공유하므로 order 실행과 WEB_RECODE 실행은 **별도 브라우저 컨텍스트**로 돌린다
-- **인증 픽스처.** 기록 모드에서 stage 테스트 계정으로 로그인해 order용 Bearer(`AUTH_TOKEN_KEY`)와 WEB_RECODE용 세션 응답(`/v2/web/auth/session`)을 함께 기록한다. 재생 시 두 앱 모두 같은 사용자로 보인다
-- **stage 직접 사용처.** PR 직전 읽기 전용 스모크(기록과 실 API 불일치 감지), Toss 테스트 결제 수동 확인
-
-### 5.3.1 결정성 장치 (M1에서 확인한 것)
-
-- Chromium 래스터 고정 플래그(`--disable-gpu`, `--disable-partial-raster`, `--force-color-profile=srgb` 등)
-- 가짜 시계: `page.clock.install` + `pauseAt(고정 시각)` → 로드 후 `runFor(2000ms)`. CSS 애니메이션 차단만으로는 rAF 기반 애니메이션(Lottie)이 멈추지 않는다
-- **동적 영역 자동 마스킹**: Lottie(`svg:has([id^="__lottie_element"])`)·canvas·video는 가짜 시계로도 프레임이 완전히 고정되지 않아 픽셀 비교에서 가린다. 대신 요소 목록에 `animation` role로 남겨 존재·위치는 계속 검증한다(변이 `remove-animation`으로 확인). 마스킹 면적은 리포트 `maskedRatio`
-- **계산된 스타일은 진단 전용**: order 폰트는 Pretendard 400·700만 있어 600 지정도 700으로 그려진다. WEB_RECODE에 실제 600 굵기가 있으면 "계산된 스타일 동일"과 "픽셀 동일"이 충돌하므로, 판정은 픽셀로만 한다
-- **WEB_RECODE는 하네스의 워크트리(`.cache/web`)에서 `next build` → `next start`**. 빌드 시점 API(ISR 사전 렌더)는 `.cache/web-build.cassette.json`으로 fill 기록해 빌드 결과를 고정(여러 화면 실데이터가 섞여 커밋하지 않음). 준비 확인은 `/api/health`
-- **ISR 페이지는 요청 기록이 캐시 상태에 따라 달라진다(M2에서 확인)**: 서버 기동 후 첫 캡처만 서버 요청 4건, 이후는 0건 → G2가 흔들리고 상태별 카세트도 반영되지 않는다. foundation의 `/store/[id]` SSR 전환이 필수
-- **`next/image` 원격 이미지는 원본으로 대체**: `/_next/image?url=` 요청을 가로채 원본 자산을 기록·재생. 오라클(order)도 원본을 그리므로 공정하고, 서버 쪽 외부 요청도 없앤다
-- **lazy 이미지는 eager로 전환** 후 로드 대기(두 앱 동일 적용). 페이지 안 타이머는 가짜 시계라 대기 제한은 Node 쪽에서 건다
-- **공통 고정 응답**(`fixtures/_common.stubs.json`): `POST /abtest/assign`은 무작위 배정이라 `default` 변형으로 고정. order에 없는 요청이므로 `units/_common.json`의 G2 무시 목록에도 등록
-- **오라클 패치**(`oracle-patches/order/`): order 버그는 패치로 고친 화면을 오라클로 쓴다(0001: 이벤트 썸네일 필드명)
-
-### 5.4 하네스 수용 기준 → 사람 승인 ①
-
-- order 대 order: 전 게이트 100% PASS (결정성 확인)
-- order 대 변이본: 변이 전부 탐지. 최소 변이 목록 — 요소 4px 이동, 색 미세 변경, font-weight 변경, 아이콘 제거, 문구 한 글자, 모달 안 버튼 순서, 빈 상태 문구 누락, 요청 하나 제거, 로그 하나 제거, 2단계 버튼 비활성
-- 사람이 나중에 하네스 PASS인데 차이를 발견하면 → 그 사례를 변이로 추가하고 탐지될 때까지 하네스를 먼저 고친다
-
-## 6. P2 — foundation (에이전트 초안 → 사람 승인 ②)
-
-상세 초안: `docs/foundation.md`
-
-- 라우트 확정, `ROUTES` 추가
-- `/order/shops/*` (조회 전용): `getServerSideProps` + `withCacheControl`로 기기 판정, 데스크톱은 서버가 안내 화면 렌더
-- `/order/checkout*`: 앱 웹뷰 전용. 사용자별 데이터는 클라이언트 조회, 브릿지가 없으면 안내 화면
-- `/store/[id]` ISR → SSR + `withCacheControl` 전환 (기기별 캐시, 규칙 10)
-- **폰트 스코프 수정** (`docs/css-improvement-survey.md` A-1): 포털 콘텐츠(모달·바텀시트)가 Pretendard를 상속하지 못함. 그대로 두면 G6(다른 픽셀 0)에서 모달 상태가 전부 폰트로 실패해 UI 축이 정체된다
-- 상점 API: 모바일 화면은 order 엔드포인트(`v3/shops`, `v2/shops/:id`, `shops/{id}/summary`, v2 검색)를 채택하고 **데스크톱 API는 이번에 바꾸지 않는다**(foundation D5)
-- 공통 브릿지: `iosBridge.ts`를 iOS(`tokenBridge`)·Android(`postMessage` + 직접 호출 폴백) 공용으로 확장
-- 앱 웹뷰 결제 인증: 일회용 code → 세션 진입점
-- 의존성: `@tosspayments/tosspayments-sdk` (`.pnp.cjs`·`.yarn/cache` 포함 커밋). Playwright 등 검증 도구는 하네스 저장소에만 둔다
-- **마이그레이션 지침 문서** (구현 에이전트 입력)
-  - 파일 위치: `components/Store/...`, `components/Order/...`, `api/order/...`
-  - order `entity.ts` 타입 재사용 규칙
-  - **공용 UI 대응표**: order `BottomModal`·`CenterModal`·`Button`·`Badge`·Toast → WEB_RECODE 기존 컴포넌트(없으면 신규 공용으로 1회 생성)
-  - **토큰 매핑표**: Tailwind 색·간격·타이포 → KOIN SCSS 토큰
-  - react-router → Next 기계 변환 규칙(`useParams`·`useNavigate`·`useSearchParams` → `useRouter`·`ROUTES`)
-  - (2차) 주문 상태: `useOrderStore`의 주소·전화번호 localStorage 영속 금지(서버 배달지 API 또는 메모리)
-  - 쿼리 키 `getViewerScope()`, mutation `isKoinError` → `showToast`, 상호작용마다 `useLogger`
-- **공통 허용 목록**: API 버전 경로 정규화, 인증 헤더·쿠키 제거, 레이아웃 헤더 마스크, 주문 가능 상점의 장바구니 담기·장바구니 바 → "앱에서 주문하기" CTA 대체. 단위별 허용 추가가 거의 없도록 여기서 끝낸다
-- **스펙 단위 계약**: B9·B10의 요청·브릿지 계약을 스펙 파일로 확정 (승인 ②에 포함)
-
-## 7. P3~P5 — 루프
-
-### 7.1 단위 루프
-
-```
-analyze  상태 탐색 결과 + order 소스·import 그래프 + 대응 WEB_RECODE 파일 + 정답 예시 수집
-pre      규칙 기반 사전 변환 (라우터 API, 토큰 매핑)
-api      api/queries 구현 → G1·G2
-ui       화면 구현 → G3~G9
-fix      실패 축만: 실패 리포트(구체적 위치·원인) + diff 이미지 + 파일 최신본 재투입
-final    전 게이트 재실행 (UI 수정이 다른 축을 깨는 회귀 방지)
-pr       gh stack add/submit으로 스택에 레이어 추가(draft). PR 본문은 report.json에서 생성(gh pr edit), 3열 이미지 첨부
-```
-
-- 구현 에이전트는 `src/`만 수정. 하네스·스펙·픽스처는 읽기 전용
-- 예산: 축별 상한(UI 6회, 나머지 4회), 3회 연속 무개선 시 정지·알림
-- 구현은 Claude Code Workflow 스크립트(`.claude/workflows/order-migration-loop.js`)로 작성
-
-### 7.2 배치 보정 (Sample → Tune → Sweep)
-
-여러 단위를 한 번 돌린 뒤 실패를 게이트·원인별로 군집화 → 대표 사례로 **지침 문서·매핑표·공용 컴포넌트**를 보정 → 남은 단위 재실행. 에이전트가 자동 수행하되 **게이트·임계값·허용 목록은 수정 불가**.
-
-### 7.3 순서
-
-- P3: A1(상점 이벤트) 파일럿. 전 게이트 통과 결과를 정답 예시로 자동 등록, 예산·임계값 보정
-- P4: A2~A9. A2·A3는 B2 머지 후 재검증
-- P5: P0 백엔드 완료 후 B9·B10(결제) 우선 → Android 연동 → B2·B4·B5. 실제 Toss 테스트 키 결제는 스테이지 Android 앱에서 루프 밖 수동 확인
-
-## 7.4 브랜치 전략 — 통합 브랜치 + stacked PR (`gh stack`)
-
-```
-develop ──●──────────────●(동기화 merge)────────────────────────● ← 최종 PR 1회
-           \              \                                    /
-            refactor/order-integration ●──────●───────●────────●     (스택의 trunk)
-                                        \      ↑ 승인된 하위 레이어부터 머지
-                                         order/foundation ← order/a1-shop-events ← order/a2-store-list ← …
-```
-
-- `gh stack init --base refactor/order-integration order/foundation`으로 통합 브랜치를 trunk로 삼는다. develop은 최종 머지 전까지 건드리지 않는다
-- 화면 단위로 나누는 이유는 배포 단위가 아니라 **AI 정확도**(작업이 크면 놓치는 게 많아짐). 배포는 refactor → develop 최종 PR 한 번
-- **승인된 하위 레이어는 바로 refactor에 머지**한다(`gh stack merge <n> --yes`). 스택에는 진행 중인 단위 몇 개만 남아 얕게 유지되고, 아래 레이어 수정에 따른 restack 범위도 작아진다
-- **하네스는 KOIN_WEB_RECODE 밖(private 저장소 `koin-parity`)에 둔다.** refactor·스택에는 이전 코드만 들어간다
-- **오라클 변조 방지**
-  - 루프 에이전트가 작업하는 저장소에 하네스가 없으므로 스펙·카세트·패치·게이트를 바꿀 수 없다
-  - 루프 에이전트 실행 설정에서 하네스 디렉터리 쓰기를 권한으로 차단(Claude Code `permissions.deny`의 `Edit`/`Write` 경로 규칙). 하네스 수정은 루프 밖에서 사람이 지시할 때만
-  - 판정은 `verify.mjs`의 종료 코드와 `report.json`(상태 수 대조 포함)만 근거로 한다
-- **공유 파일은 foundation에 몰아둔다**: `routes.ts` 전체 경로, 공용 UI, 의존성·`.pnp.cjs`·`.yarn/cache`. 단위 레이어는 자기 화면 디렉터리만 수정. 진행 중 공유 파일 수정이 필요하면 그 단위를 멈추고 공유 파일 보강 레이어를 먼저 처리
-- **스택은 선형**이므로 단위는 순차 실행
-- **누적 회귀 검사**: 레이어를 refactor에 머지하거나 restack할 때마다 이미 반영된 단위 전체의 게이트를 다시 실행. 싼 게이트(G0~G4)는 매번, 시각 게이트(G6~G8)는 머지·restack 시 또는 야간
-- **develop 동기화**: 주 1회 + 공유 파일 변경 시 develop을 refactor에 **merge** → `gh stack sync`로 남은 스택을 refactor 위로 rebase → 누적 회귀 검사. `git config rerere.enabled true`. `.yarn/cache` 충돌은 손으로 풀지 않고 `yarn install`로 재생성
-- **G8 기준 = 바로 아래 레이어**(최하위 레이어는 refactor tip): 단위 레이어는 모바일만 바꾸므로 데스크톱이 부모와 같아야 한다
-- 착수 시 저장소에서 stacked PR 사용 가능 여부 확인(`gh stack` 종료 코드 9 = 미지원). 비대화 플래그(`view --json`, `submit --auto`, `merge <n> --yes`)만 사용
-- **최종 머지 전**: develop 동기화 → 전 단위 전체 게이트 → stage 확인 → refactor → develop PR. 이 시점에 `order.` 301 일괄 전환
-
-## 8. P6 — 전환
-
-- 이전 화면의 헤더 높이를 60px에서 WEB_RECODE 공통(`MobilePageHeader` 56.8px)으로 통일 (foundation D1 후속)
-
-- WEB_RECODE의 `ORDER_BASE_URL` 링크 5곳(`MobileHomeRedesign`, `IndexStore`, `MobileHeader/Panel`, `category`, `CallvanCard`) → `ROUTES`
-- `order.` nginx: refactor → develop 머지·배포 시점에 옛 경로 전체를 새 경로로 301 (일괄 전환)
-- 접속 로그 0 확인 후 `order.` 종료, 배포 워크플로·`/usr/local/koin/webview-order` 정리, KOIN_ORDER_WEBVIEW 보관 처리
+| Lottie가 가짜 시계로도 프레임이 고정되지 않음 | Lottie·canvas·video는 픽셀에서 가리고, 존재·위치·식별 정보(viewBox·레이어 수)는 요소 목록으로 검증 |
+| 계산된 스타일과 픽셀이 충돌(폰트 굵기 스냅) | **판정은 픽셀, 계산된 스타일은 진단 정보** |
+| ISR은 요청 기록이 캐시 상태에 따라 달라짐 | `/store/[id]` SSR 전환(foundation F2)의 근거 |
+| A/B 테스트 배정이 무작위 | `POST /abtest/assign`은 `default`로 고정 응답 + G2 무시 |
+| 전체 페이지 스크린샷 중 100vh 레이아웃 재계산 경합 | 회귀 비교(같은 앱)만 뷰포트를 페이지 높이로 늘림. 단위 비교는 기기 뷰포트 유지(푸터 때문에 두 앱의 늘린 높이가 달라지므로) |
+| Next 링크 프리페치가 보이는 링크 수에 따라 서버 렌더 유발 | 캡처 중 프리페치 차단 |
+| 서버 시계 | `next start`에 `Date` 고정 훅 주입. 하위 클래스 방식이 `Date.UTC`를 깨뜨려(홈 500) Proxy 방식으로 교체 |
+| 에러 화면끼리 비교해 통과 | 회귀 화면 전부 필수 텍스트 지정, 실제 진입 경로 사용(혜택 화면 `?category=1`) |
+| 다른 개발 서버가 3000번 포트 점유 → 엉뚱한 화면 캡처 | 하네스 포트 4000·4100·4101·4102, 이미 쓰이면 기동 거부 |
+| order의 GA 초기화 스크립트가 기록용 gtag를 덮어씀 | `dataLayer.push`도 기록 |
+| 변이가 화면을 바꾸지 못하는 경우(보이지 않는 요소, 뒤 규칙에 덮인 속성) | 변이는 실제로 보이는 본문 요소만 대상으로, 적용 대상이 없으면 N/A |
+| 로그인 상태 | 기록은 stage 실로그인, 재생은 `exp`만 먼 미래인 더미 JWT(WEB_RECODE 서버는 exp만 확인 후 세션 API 호출) |
+| 상태 탐색기가 펼침 상태를 못 찾음 | `innerText` 대신 **실제로 보이는 텍스트**(overflow로 잘린 영역 제외)로 상태 구분 |
 
 ## 9. 리스크
 
 | 리스크 | 대응 |
 |---|---|
-| 하네스가 차이를 놓침(과거 사례) | 스크립트 판정 · 기준 이미지 저장 안 함 · 변이 탐지 100% · 발견 사례 즉시 변이화 |
-| Tailwind preflight vs KOIN 전역 CSS로 UI 축 정체 | 계산된 스타일을 구현 입력으로 제공, 축별 예산, 정체 시 알림 |
-| SSR fetch를 `page.route`로 못 가로챔 | 기록·재생 프록시(P1 필수) |
-| 루프가 stage 데이터 오염·실행마다 결과 변동 | 루프는 재생 모드만 사용. stage는 기록·PR 직전 읽기 전용 스모크에만 |
-| 서버 시각 비결정성 | 서버 고정 시각 주입 |
-| order HEAD에 주문 라우트 없음 | Track B는 `7243571` + 패치를 오라클로 |
-| 구버전 iOS 앱의 하드코딩 경로 | 301 상시 유지 |
-
-## 10. 2차(웹 주문) 착수 시 추가로 필요한 것
-
-MVP 결과와 CTA 로그로 웹 주문을 결정하면 아래를 함께 진행한다. 하네스·단위 구조는 그대로 재사용하고 보류 단위만 루프에 추가한다.
-
-- 결제 화면은 (a)안: 모바일 웹은 옛 Payment 화면(주소·연락처·요청사항 포함)을 그대로 이전해 시각 동등성 유지, 앱은 같은 페이지에서 입력 구역을 숨김
-- **세션 없이 동작하는 confirm**: 결제 앱이 원래 탭이 아닌 다른 브라우저(예: 카카오톡 인앱 → 기본 브라우저)로 복귀하면 세션 쿠키가 없다. `orderId` + Toss 시크릿 검증으로 확정, 결과 화면은 비로그인도 완료 표시
-- 인앱 브라우저(카카오톡·인스타그램·에브리타임) 외부 앱 호출 불안정 → 실기기 검증(iOS Safari·삼성 인터넷·카카오톡 인앱), 필요 시 외부 브라우저 열기 안내
-- **Toss 가맹 범위 확인**: `koreatech.in` 웹 결제 채널·도메인 추가 심사, 사업자 정보·약관·환불 정책 표시 요건 — 개발보다 오래 걸릴 수 있어 2차 결정 즉시 착수
-- iOS 앱 사용자는 웹 주문이 유일한 경로가 되므로 iOS Safari 결제는 필수 검증
-
-## 11. 진행 기록
-
-| 날짜 | 단위 | 결과 | 비고 |
-|---|---|---|---|
-| 2026-10-07 | foundation | PR #1573 (draft) | 회귀 차이는 F3 의도 차이(화면 밖 측면 패널 글꼴)뿐 |
-| 2026-10-07 | A1 상점 이벤트·공지 | PR #1574 (draft) | **파일럿: 루프 1회 만에 통과**(약 8.5분, 서브에이전트 15만 토큰). 독립 재검증 3/3 PASS |
-
-### 하네스 과제
-
-- `cafeteria.desktop` 회귀 케이스가 간헐적으로 1336px 차이(안내 문구 위치 경합). 같은 조건 재실행 시 통과 → 회귀 캡처의 결정성 보강 필요(스크린샷 두 번 연속 일치까지 반복 등)
-- 루프 스크립트: `workflows/parity-unit-loop.js` (args: unit, branch, title, maxIterations, oracleHints, targets)
-- 루프 실행 중에는 KOIN_WEB_RECODE `.claude/settings.local.json`에 하네스 경로 Edit·Write 차단을 건다(사람이 하네스를 고칠 때만 해제)
+| 하네스가 차이를 놓침 | 스크립트 판정, 변이 탐지 100%, 놓친 사례는 변이로 추가 |
+| UI 축 정체(Tailwind preflight vs KOIN 전역 CSS) | 계산된 스타일을 구현 입력으로, 축별 예산, 정체 시 알림 |
+| 장기 브랜치 충돌 | 공유 파일은 foundation에, 주기적 develop 동기화, `rerere` |
+| 구버전 iOS 앱의 하드코딩 경로 | P6에서 301 상시 유지 |
+| 회귀 케이스 간헐 실패(`cafeteria.desktop`) | 회귀 캡처 결정성 보강 과제 |
+| 상태 탐색 비용(반복 카드 목록) | 구조 서명으로 반복 요소 대표 1개만, 이동 판명 요소 재방문 금지 |

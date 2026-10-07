@@ -1,7 +1,7 @@
 # 진행 상태·인수인계
 
 > 마지막 갱신: 2026-10-07 (상태 탐색기 작업 중 중단). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
-> 전체 계획 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`
+> 전체 계획·선택 기록 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`
 
 ## 1. 한 줄 요약
 
@@ -68,7 +68,13 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 1. KOIN에서 스택 top으로 이동 후 `gh stack add "feat/#1572/order-<unit>"`
 2. `units/<unit>.json` 작성(상태·필수 텍스트·actions·primaryRequest·chrome). 필요하면 `node selftest.mjs <unit> --record`로 카세트 기록, 후보가 추가로 부르는 GET은 `node fill.mjs <unit> --ref <branch>`
 3. KOIN `.claude/settings.local.json`에 하네스 쓰기 차단이 걸려 있는지 확인(§7)
-4. Workflow 실행: `workflows/parity-unit-loop.js`를 scriptPath로, args `{unit, branch, title, maxIterations, oracleHints, targets}` (A1 예시는 `docs/order-migration-plan.md` §11)
+4. Workflow 실행: `workflows/parity-unit-loop.js`를 scriptPath로, args `{unit, branch, title, maxIterations, oracleHints, targets}`. A1 예시:
+   ```json
+   {"unit": "A1-shop-events", "branch": "feat/#1572/order-a1-shop-events", "title": "상점 이벤트·공지", "maxIterations": 6,
+    "oracleHints": ["pages/Shop/components/ShopEvents/index.tsx", "pages/Shop/components/ShopEvents/ShopEvent.tsx", "pages/Shop/components/ShopEvents/CollapsedEvent.tsx", "pages/Shop/components/ShopEvents/ExpandedEvent.tsx", "pages/Shop/hooks/useGetShopEvents.ts", "util/ts/formatDate.ts", "assets/Shop/sleeep-icon.svg", "assets/lottie/jumping.json", "components/Layout/index.tsx (AppLayout: 본문 pt-15)"],
+    "targets": ["src/pages/store/[id]/events.tsx", "src/components/Store/mobile/StoreEventsPage/** (신규 하위 컴포넌트·SCSS 포함)", "src/assets/svg/store/** (신규 아이콘 추가만)", "src/assets/lottie/** (신규 추가만)"]}
+   ```
+   A1 결과: 루프 1회 통과(약 8.5분, 서브에이전트 약 15만 토큰), 독립 재검증 3/3 PASS
 5. 끝나면 **직접** `node verify.mjs <unit> --ref <branch>` + `node regress.mjs --base <부모 레이어> --candidate <branch>` + KOIN `yarn lint`·`yarn typecheck`
 6. WIP 커밋을 하나로 정리(`git commit --amend` 또는 squash) → `gh stack submit --auto` → `gh pr edit`로 제목·본문·라벨(koin-pr 규칙)
 
