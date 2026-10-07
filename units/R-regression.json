@@ -9,7 +9,9 @@
         "desktop",
         "mobile"
       ],
-      "requiredText": [],
+      "requiredText": [
+        "식단"
+      ],
       "minRequests": 0
     },
     {
@@ -36,13 +38,14 @@
     },
     {
       "name": "benefitstore",
-      "path": "/benefitstore",
+      "path": "/benefitstore?category=1",
       "devices": [
-        "desktop",
         "mobile"
       ],
-      "requiredText": [],
-      "minRequests": 0
+      "requiredText": [
+        "배달비 깎아드려유"
+      ],
+      "note": "데스크톱은 본문이 비어 있는 화면(모바일 진입 전용)이라 제외"
     },
     {
       "name": "cafeteria",
@@ -51,7 +54,9 @@
         "desktop",
         "mobile"
       ],
-      "requiredText": []
+      "requiredText": [
+        "식단"
+      ]
     }
   ],
   "masks": [

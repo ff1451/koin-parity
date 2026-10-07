@@ -1,3 +1,156 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "key": "GET /articles?boardId=4&limit=10&page=1 #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/articles",
+        "query": "boardId=4&limit=10&page=1",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJhcnRpY2xlcyI6W3siaWQiOjE4MTQ0LCJib2FyZF9pZCI6OSwidGl0bGUiOiLqt7zroZzsnqXtlZkg66qo7KeRIO2FjOyKpO2KuOqzteyngCDqt7zroZwg6re866Gc7J6l7ZWZIOq3vOyepSIsImF1dGhvciI6IkJDU0QgTGFiIiwiaGl0Ijo0NDYsInJlZ2lzdGVyZWRfYXQiOiIyMDI2LTAzLTIzIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDcgMTQ6MTI6MjQiLCJpc19yZXBvcnRlZCI6ZmFsc2V9LHsiaWQiOjE4MTQzLCJib2FyZF9pZCI6OSwidGl0bGUiOiJb7YWM7Iqk7Yq47YyAXSAyMDI27ZWZ64WE64+EIDHtlZnquLAg6re866Gc7J6l7ZWZ7IOdIOq3vOuhnOyepe2VmSDrqqjsp5Eg7JWI64K0ICgw66qFKSIsImF1dGhvciI6IkJDU0QgTGFiIiwiaGl0IjozNDMsInJlZ2lzdGVyZWRfYXQiOiIyMDI2LTAzLTE4IiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDcgMTQ6MTI6MjQiLCJpc19yZXBvcnRlZCI6ZmFsc2V9LHsiaWQiOjE4MTQxLCJib2FyZF9pZCI6OSwidGl0bGUiOiJb7YWM7Iqk7Yq47YyAXSAyMDI27ZWZ64WE64+EIDHtlZnquLAg6re866Gc7J6l7ZWZ7IOdIOuqqOynkSDslYjrgrQgKDDrqoUpIiwiYXV0aG9yIjoiQkNTRCBMYWIiLCJoaXQiOjM0NiwicmVnaXN0ZXJlZF9hdCI6IjIwMjYtMDMtMTAiLCJ1cGRhdGVkX2F0IjoiMjAyNi0xMC0wNyAxNDoxMjoyNCIsImlzX3JlcG9ydGVkIjpmYWxzZX0seyJpZCI6MTgxMDksImJvYXJkX2lkIjo5LCJ0aXRsZSI6IuyVjOumvCDthYzsiqTtirgiLCJhdXRob3IiOiJCQ1NEIExhYiIsImhpdCI6Mzc1LCJyZWdpc3RlcmVkX2F0IjoiMjAyNi0wMi0wMSIsInVwZGF0ZWRfYXQiOiIyMDI2LTEwLTA3IDE0OjEyOjI0IiwiaXNfcmVwb3J0ZWQiOmZhbHNlfSx7ImlkIjoxNzkzOSwiYm9hcmRfaWQiOjksInRpdGxlIjoi7YWM7Iqk7Yq47J6F64uI64ukISIsImF1dGhvciI6IkJDU0QgTGFiIiwiaGl0IjozODMsInJlZ2lzdGVyZWRfYXQiOiIyMDI2LTAxLTAzIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDcgMTQ6MTI6MjQiLCJpc19yZXBvcnRlZCI6ZmFsc2V9LHsiaWQiOjE3ODk4LCJib2FyZF9pZCI6OSwidGl0bGUiOiJ0ZXN0IiwiYXV0aG9yIjoiQkNTRCBMYWIiLCJoaXQiOjQzNCwicmVnaXN0ZXJlZF9hdCI6IjIwMjUtMDktMjMiLCJ1cGRhdGVkX2F0IjoiMjAyNi0xMC0wNyAxNDoxMjoyNCIsImlzX3JlcG9ydGVkIjpmYWxzZX0seyJpZCI6MTc4ODgsImJvYXJkX2lkIjo5LCJ0aXRsZSI6Iu2DgOyehSDthYzsiqTtirgiLCJhdXRob3IiOiJCQ1NEIExhYiIsImhpdCI6MzU0LCJyZWdpc3RlcmVkX2F0IjoiMjAyNS0wNy0wOCIsInVwZGF0ZWRfYXQiOiIyMDI2LTEwLTA3IDE0OjEyOjM0IiwiaXNfcmVwb3J0ZWQiOmZhbHNlfSx7ImlkIjoxNzg3NywiYm9hcmRfaWQiOjksInRpdGxlIjoi7L2U7J24IO2FjOydtOu4lCDrtoTrpqwg7YWM7Iqk7Yq4IiwiYXV0aG9yIjoiQkNTRCBMYWIiLCJoaXQiOjM5MCwicmVnaXN0ZXJlZF9hdCI6IjIwMjUtMDQtMTEiLCJ1cGRhdGVkX2F0IjoiMjAyNi0xMC0wNyAxNDoxMjozNCIsImlzX3JlcG9ydGVkIjpmYWxzZX0seyJpZCI6MTc4MzgsImJvYXJkX2lkIjo1LCJ0aXRsZSI6IiBESUNFIExhYi4gKOyduOqzteyngOuKpeyXsOq1rCkg7JiI67mEIOuMgO2VmeybkOyDnS/sl7DqtazsnbjthLQg66qo7KeRICIsImF1dGhvciI6IuyYpO2dpeyEoCIsImhpdCI6ODIyLCJyZWdpc3RlcmVkX2F0IjoiMjAyNS0wMy0wMSIsInVwZGF0ZWRfYXQiOiIyMDI2LTEwLTA3IDE0OjEyOjMzIiwiaXNfcmVwb3J0ZWQiOmZhbHNlfSx7ImlkIjoxNzgzNywiYm9hcmRfaWQiOjcsInRpdGxlIjoiW+yImOqwleyLoOyyrV0gMjAyNe2VmeuFhOuPhCAx7ZWZ6riwIOyImOqwleyLoOyyrSDsoJXsoJUg7JWI64K0IiwiYXV0aG9yIjoi7ZWZ7IKs7YyAIiwiaGl0Ijo2NjYsInJlZ2lzdGVyZWRfYXQiOiIyMDI1LTAyLTI4IiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDcgMTQ6MTI6MzMiLCJpc19yZXBvcnRlZCI6ZmFsc2V9XSwidG90YWxfY291bnQiOjE0NDE1LCJjdXJyZW50X2NvdW50IjoxMCwidG90YWxfcGFnZSI6MTQ0MiwiY3VycmVudF9wYWdlIjoxfQ=="
+      }
+    },
+    {
+      "key": "GET /articles/lost-item/stats? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/articles/lost-item/stats",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJmb3VuZF9jb3VudCI6NTYsIm5vdF9mb3VuZF9jb3VudCI6MjUwfQ=="
+      }
+    },
+    {
+      "key": "GET /banner-categories? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/banner-categories",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJiYW5uZXJfY2F0ZWdvcmllcyI6W3siaWQiOjEsIm5hbWUiOiLrqZTsnbgg66qo64usIn1dfQ=="
+      }
+    },
+    {
+      "key": "GET /banners/1?platform=WEB #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/banners/1",
+        "query": "platform=WEB",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb3VudCI6MTIsImJhbm5lcnMiOlt7ImlkIjoyMiwidGl0bGUiOiLsi5zqsITtkZzthYzsiqTtirgiLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL0JBTk5FUi8yMDI2LzEvMTEvOTRjODdhZjktNTVkMi00MGQ4LTk1OTQtNTY3YTMxNGVhNzVlL291dHB1dC5wbmciLCJyZWRpcmVjdF9saW5rIjoiaHR0cHM6Ly9zdGFnZS5rb3JlYXRlY2guaW4vdGltZXRhYmxlIiwidmVyc2lvbiI6bnVsbH0seyJpZCI6MTksInRpdGxlIjoi7KCV67O0IOyghOuLrOyEsSIsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvQkFOTkVSLzIwMjUvNS84LzM1MTZmZDI3LTdmNTktNDU2Ni05ZTYzLWJkYjU3NjQzODEwNS9mcm9nLmpwZWciLCJyZWRpcmVjdF9saW5rIjpudWxsLCJ2ZXJzaW9uIjpudWxsfSx7ImlkIjoxOCwidGl0bGUiOiLrsLDrhIgg7LaU6rCAIO2FjOyKpO2KuCIsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvQkFOTkVSLzIwMjUvNC8zMC83YTA4MzRjNC0wZTYzLTQzMjctYTg1Mi1lMTY5YTU1M2U0NTcv4YSD4YWh4YSL4YWu4Yar4YSF4YWp4YSD4YWzLmpwZWciLCJyZWRpcmVjdF9saW5rIjoiaHR0cHM6Ly9rb3JlYXRlY2guaW4vY2FmZXRlcmlhIiwidmVyc2lvbiI6bnVsbH0seyJpZCI6MTYsInRpdGxlIjoi7IKs7KeEIOyXheuhnOuTnCDthYzsiqTtirgiLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL0JBTk5FUi8yMDI1LzQvMy9jNTBjYWY0Ny1hMzU2LTRhYjMtYWM0OS1jODA2MjYyZTA4ZDkvaGFtc3Rlci0xNDYwOF8yNTYuZ2lmIiwicmVkaXJlY3RfbGluayI6bnVsbCwidmVyc2lvbiI6bnVsbH0seyJpZCI6MTQsInRpdGxlIjoi7YWM7Iqk7Yq47YWM7Iqk7Yq4IiwiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9CQU5ORVIvMjAyNS80LzIvOWI1NWE4MDMtYWFhYi00NTgyLWJjNTAtNWMyMjQ4MGEwNDNhLzUxMzg2LWNiOThiMzVjLWE1YWMtNDg0Yy1iMzY1LWY3M2U4MjYzYmQwNS5wbmciLCJyZWRpcmVjdF9saW5rIjpudWxsLCJ2ZXJzaW9uIjpudWxsfSx7ImlkIjoxMywidGl0bGUiOiLsgqzsp4QiLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL0JBTk5FUi8yMDI1LzQvMi81MjMxODhmYS1jY2IwLTQ3NDUtODdlZS04ZjhkZDk1Yjg3YmUvZ29yYXBhZGVvay5qcGciLCJyZWRpcmVjdF9saW5rIjpudWxsLCJ2ZXJzaW9uIjpudWxsfSx7ImlkIjoxMSwidGl0bGUiOiLsnbTrsqTtirjspJHsnbgg7Lm07YWM6rOg66asIiwiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9CQU5ORVIvMjAyNS80LzIvOTc3MDM4YmUtMmUyNi00MjcxLWI3NjAtMTBkMTY4ODEzMGY1L+GEkuGFoeGGq+GEgOGFteGEg+GFoiDhhIvhhbXhhIbhhbXhhIzhhbUucG5nIiwicmVkaXJlY3RfbGluayI6Imh0dHBzOi8va29yZWF0ZWNoLmluL3N0b3JlLzEwNT9zdGF0ZT0lRUIlQTklOTQlRUIlODklQjQmdHlwZT1zaG9wIiwidmVyc2lvbiI6bnVsbH0seyJpZCI6OCwidGl0bGUiOiLrp4HtgaxP67Cw7Y+sT+2ZnOyEse2ZlFjrsoTsoIRYIiwiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9CQU5ORVIvMjAyNS80LzIvOWQ5MDY5MjctYWUyNC00YjE2LThhYTctYThlMjA4ZGU0NjAxL+GEi+GFqeGGuuGEhuGFoeGGqy5wbmciLCJyZWRpcmVjdF9saW5rIjoiaHR0cHM6Ly9rb3JlYXRlY2guaW4vY2FmZXRlcmlhIiwidmVyc2lvbiI6bnVsbH0seyJpZCI6MSwidGl0bGUiOiLrp4HtgaxP67Cw7Y+sT+2ZnOyEse2ZlE/rsoTsoIRPIiwiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9CQU5ORVIvMjAyNS80LzIvNzQ4NTU3NGItZGVmNC00NTVkLWE2NTUtMTA3NTM0OGE5OTM4L3RzaGlydC5wbmciLCJyZWRpcmVjdF9saW5rIjoiaHR0cHM6Ly9rb3JlYXRlY2guaW4vY2FmZXRlcmlhIiwidmVyc2lvbiI6bnVsbH0seyJpZCI6MiwidGl0bGUiOiLrp4HtgaxY67Cw7Y+sT+2ZnOyEse2ZlE8iLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL0JBTk5FUi8yMDI1LzQvMi8xOGZmMDE3Yy0wNWUyLTRkNjEtOGJjMC1jODgxN2JmYTAxYzQv4YSJ4YWz4YSL4YWw4YSQ4YWz4YSR4YWi4Yar4YSO4YWzLmpwZyIsInJlZGlyZWN0X2xpbmsiOm51bGwsInZlcnNpb24iOm51bGx9LHsiaWQiOjQsInRpdGxlIjoi66eB7YGsT+uwsO2PrE/tmZzshLHtmZRP67KE7KCEWCIsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvQkFOTkVSLzIwMjUvNC8yL2QxN2JmZGYxLTExYTMtNDg0OS1iMzZjLTRhZGQ3ZmIzNWRkMi/hhI7hhaXhhrzhhIfhhaHhhIzhhbUuanBnIiwicmVkaXJlY3RfbGluayI6Imh0dHBzOi8va29yZWF0ZWNoLmluL2NhZmV0ZXJpYSIsInZlcnNpb24iOm51bGx9LHsiaWQiOjI3LCJ0aXRsZSI6IuuqqOydmOyImOqwleyLoOyyrSIsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvQkFOTkVSLzIwMjYvMi8xLzkyNTNmYWY4LTdmMWEtNGZmMS04OTc1LTBhNGM3NDQyNDFlMy/rsLDrhIhf66qo7J2Y7IiY6rCV7Iug7LKtX+yImOyglS5zdmciLCJyZWRpcmVjdF9saW5rIjoiaHR0cHM6Ly9zdGFnZS5rb3JlYXRlY2guaW4vY291cnNlIiwidmVyc2lvbiI6bnVsbH1dfQ=="
+      }
+    },
+    {
+      "key": "GET /dinings?date=261007 #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/dinings",
+        "query": "date=261007",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "W3siaWQiOjM5NzE3NywiZGF0ZSI6IjIwMjYtMTAtMDciLCJ0eXBlIjoiQlJFQUtGQVNUIiwicGxhY2UiOiIy7Lqg7Y287IqkIiwicHJpY2VfY2FyZCI6bnVsbCwicHJpY2VfY2FzaCI6bnVsbCwia2NhbCI6MCwibWVudSI6WyLrr7jsmrTsmIEiXSwiaW1hZ2VfdXJsIjpudWxsLCJjcmVhdGVkX2F0IjoiMjAyNi0xMC0wMiAwMjozMDoxMyIsInVwZGF0ZWRfYXQiOiIyMDI2LTEwLTAyIDAyOjMwOjEzIiwic29sZG91dF9hdCI6bnVsbCwiY2hhbmdlZF9hdCI6bnVsbCwibGlrZXMiOjAsImlzX2xpa2VkIjpmYWxzZX0seyJpZCI6Mzk3MTg0LCJkYXRlIjoiMjAyNi0xMC0wNyIsInR5cGUiOiJESU5ORVIiLCJwbGFjZSI6IjLsuqDtjbzsiqQiLCJwcmljZV9jYXJkIjpudWxsLCJwcmljZV9jYXNoIjpudWxsLCJrY2FsIjowLCJtZW51IjpbIuuvuOyatOyYgSJdLCJpbWFnZV91cmwiOm51bGwsImNyZWF0ZWRfYXQiOiIyMDI2LTEwLTAyIDAyOjMwOjEzIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDIgMDI6MzA6MTMiLCJzb2xkb3V0X2F0IjpudWxsLCJjaGFuZ2VkX2F0IjpudWxsLCJsaWtlcyI6MCwiaXNfbGlrZWQiOmZhbHNlfSx7ImlkIjozOTcxODIsImRhdGUiOiIyMDI2LTEwLTA3IiwidHlwZSI6IkxVTkNIIiwicGxhY2UiOiIy7Lqg7Y287IqkIiwicHJpY2VfY2FyZCI6NjAwMCwicHJpY2VfY2FzaCI6NjAwMCwia2NhbCI6ODc2LCJtZW51IjpbIuyYpOuvgOudvOydtOyKpO+8hu2VmOydtOudvOydtOyKpCIsIu2MveydtOyepeq1rSIsIu2Vq+uPhOq3uCbsvIDssLkiLCLskaXqsJPrkZDrtoDrrLTsuagiLCLtj6zquLDquYDsuZgiLCLsg53slbzssYTsg5Drn6zrk5wmRCIsIuugiOuqrOyXkOydtOuTnCJdLCJpbWFnZV91cmwiOm51bGwsImNyZWF0ZWRfYXQiOiIyMDI2LTEwLTAyIDAyOjMwOjEzIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDIgMDI6MzA6MTMiLCJzb2xkb3V0X2F0IjpudWxsLCJjaGFuZ2VkX2F0IjpudWxsLCJsaWtlcyI6MCwiaXNfbGlrZWQiOmZhbHNlfV0="
+      }
+    },
+    {
+      "key": "GET /shops/categories? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/categories",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0b3RhbF9jb3VudCI6MTIsInNob3BfY2F0ZWdvcmllcyI6W3siaWQiOjEsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzI4LzkyZjYyNTM0LTdmMDYtNGYxNS1iNzM5LTE2NjJkN2Y5NWZlMC9vdXRwdXQgKDQpLnBuZyIsIm5hbWUiOiLsoITssrTrs7TquLAifSx7ImlkIjoyLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi9mNTAxMjdjNy0xZjFmLTQ5NmMtYmQ3Ni1mNzQzMjFlODY3YzgvTGF5ZXIgMzEgKDMpLnBuZyIsIm5hbWUiOiLsuZjtgqgifSx7ImlkIjozLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi83Y2NiMzJhNy0xMjQ2LTQ1OGItYTYzNC01Mjg3YzhhMzJkY2UvR3JvdXAgKDEpLnBuZyIsIm5hbWUiOiLtlLzsnpAv67KE6rGwIn0seyJpZCI6NywiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9TSE9QUy8yMDI1LzcvMjIvZmY4YTE0OWYtNTI4Zi00ZjYyLTkyZDMtNzM0ZTBmZDY2N2IyL0xheWVyXzk5LnBuZyIsIm5hbWUiOiLqs6DquYPsp5EifSx7ImlkIjo0LCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi82ODNmNGE0MS1iZTQ3LTRiYTQtYjljOC1kZjk5MTIwZjI3ZmYvR3JvdXAgKDIpLnBuZyIsIm5hbWUiOiLrj4Tsi5zrnb0v67aE7IudIn0seyJpZCI6OSwiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9TSE9QUy8yMDI1LzcvMjIvYjM2YzlhM2YtMDU1MS00NjVlLThlNTktOGJlZDJkYThjOGMxL0NhcGFfMSAoMSkucG5nIiwibmFtZSI6IuyjvOygkCJ9LHsiaWQiOjgsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzIyL2IyMDExZTlkLTg5ZGEtNGZmYi05ODYxLTY5MDNmNzU3MTcwYy9DYXBhXzEucG5nIiwibmFtZSI6Iu2VnOyLnSJ9LHsiaWQiOjYsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzIyLzY3YmZiNmVkLTQ4YTMtNGYzOS1iNzIyLWY2ZDgyMTY3YjlmZi9DYXBhXzEgKDIpLnBuZyIsIm5hbWUiOiLspJHqta3sp5EifSx7ImlkIjo1LCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi82YjFkMzgyMy00MmNmLTRlMDMtYWZiYi03NWMyOGJkZmM4YzUvR3JvdXAgMTAwMDAwMjkxMi5wbmciLCJuYW1lIjoi7KGx67CcIn0seyJpZCI6MTAsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzIyLzU3ZWEzM2FjLTg2YzgtNGQ3OC1hYjAzLWM0YWVhZTY1ZTk5NC9Hcm91cCAoMykucG5nIiwibmFtZSI6Iuy5tO2OmCJ9LHsiaWQiOjExLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi8xMmZlZGJmMS1lNzExLTQxMjQtYWJjNi02MzNiMTIzMmU3YjMvRnJhbWUucG5nIiwibmFtZSI6Iuy9nOuwtCJ9LHsiaWQiOjEyLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi9jZWRiNWI0MS00NjA1LTQ2M2EtYTk5Yy02NThhYTQ5M2IzYWQvaWNuLnBuZyIsIm5hbWUiOiLquLDtg4AifV19"
+      }
+    },
+    {
+      "key": "GET /v3/semesters? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/semesters",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "W3sieWVhciI6MjAyNiwidGVybSI6IjLtlZnquLAifSx7InllYXIiOjIwMjYsInRlcm0iOiLsl6zrpoTtlZnquLAifSx7InllYXIiOjIwMjYsInRlcm0iOiIx7ZWZ6riwIn0seyJ5ZWFyIjoyMDI1LCJ0ZXJtIjoi6rKo7Jq47ZWZ6riwIn0seyJ5ZWFyIjoyMDI1LCJ0ZXJtIjoiMu2Vmeq4sCJ9LHsieWVhciI6MjAyNSwidGVybSI6IjHtlZnquLAifSx7InllYXIiOjIwMjQsInRlcm0iOiLqsqjsmrjtlZnquLAifSx7InllYXIiOjIwMjQsInRlcm0iOiIy7ZWZ6riwIn0seyJ5ZWFyIjoyMDI0LCJ0ZXJtIjoi7Jes66aE7ZWZ6riwIn0seyJ5ZWFyIjoyMDI0LCJ0ZXJtIjoiMe2Vmeq4sCJ9LHsieWVhciI6MjAyMywidGVybSI6IuqyqOyauO2Vmeq4sCJ9LHsieWVhciI6MjAyMywidGVybSI6IjLtlZnquLAifSx7InllYXIiOjIwMjMsInRlcm0iOiLsl6zrpoTtlZnquLAifSx7InllYXIiOjIwMjMsInRlcm0iOiIx7ZWZ6riwIn0seyJ5ZWFyIjoyMDIyLCJ0ZXJtIjoi6rKo7Jq47ZWZ6riwIn0seyJ5ZWFyIjoyMDIyLCJ0ZXJtIjoiMu2Vmeq4sCJ9LHsieWVhciI6MjAyMiwidGVybSI6IuyXrOumhO2Vmeq4sCJ9LHsieWVhciI6MjAyMiwidGVybSI6IjHtlZnquLAifSx7InllYXIiOjIwMjEsInRlcm0iOiLqsqjsmrjtlZnquLAifSx7InllYXIiOjIwMjEsInRlcm0iOiIy7ZWZ6riwIn0seyJ5ZWFyIjoyMDIxLCJ0ZXJtIjoi7Jes66aE7ZWZ6riwIn0seyJ5ZWFyIjoyMDIxLCJ0ZXJtIjoiMe2Vmeq4sCJ9LHsieWVhciI6MjAyMCwidGVybSI6IuqyqOyauO2Vmeq4sCJ9LHsieWVhciI6MjAyMCwidGVybSI6IjLtlZnquLAifSx7InllYXIiOjIwMjAsInRlcm0iOiLsl6zrpoTtlZnquLAifSx7InllYXIiOjIwMjAsInRlcm0iOiIx7ZWZ6riwIn0seyJ5ZWFyIjoyMDE5LCJ0ZXJtIjoi6rKo7Jq47ZWZ6riwIn0seyJ5ZWFyIjoyMDE5LCJ0ZXJtIjoiMu2Vmeq4sCJ9LHsieWVhciI6MjAxOSwidGVybSI6IuyXrOumhO2Vmeq4sCJ9LHsieWVhciI6MjAxOSwidGVybSI6IjHtlZnquLAifV0="
+      }
+    },
+    {
+      "key": "GET /weather? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/weather",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0ZW1wZXJhdHVyZSI6MjMsIndlYXRoZXIiOiLrp5HsnYwiLCJ3ZWF0aGVyX2lkIjoxLCJ3ZWF0aGVyX2ljb25fdXJsIjoiaHR0cHM6Ly9zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9XRUFUSEVSL3N1bi0wMy53ZWJwIn0="
+      }
+    }
+  ]
 }
