@@ -242,6 +242,8 @@ develop ──●──────────────●(동기화 merge)�
 
 ## 8. P6 — 전환
 
+- 이전 화면의 헤더 높이를 60px에서 WEB_RECODE 공통(`MobilePageHeader` 56.8px)으로 통일 (foundation D1 후속)
+
 - WEB_RECODE의 `ORDER_BASE_URL` 링크 5곳(`MobileHomeRedesign`, `IndexStore`, `MobileHeader/Panel`, `category`, `CallvanCard`) → `ROUTES`
 - `order.` nginx: refactor → develop 머지·배포 시점에 옛 경로 전체를 새 경로로 301 (일괄 전환)
 - 접속 로그 0 확인 후 `order.` 종료, 배포 워크플로·`/usr/local/koin/webview-order` 정리, KOIN_ORDER_WEBVIEW 보관 처리
