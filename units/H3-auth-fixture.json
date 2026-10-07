@@ -1,0 +1,11 @@
+{
+  "id": "H3-auth-fixture",
+  "description": "하네스 검증용: 로그인 픽스처가 두 앱에서 기록·재생되는지 확인 (이전 대상 단위 아님). order는 리뷰 목록(내 리뷰 조회), WEB_RECODE는 로그인 필수 화면인 시간표",
+  "oracle": { "app": "order", "path": "/review/false/{shopId}" },
+  "candidate": { "app": "web", "path": "/timetable" },
+  "device": "Pixel 5",
+  "states": [
+    { "name": "logged-in", "auth": "auth", "params": { "shopId": 251 }, "requiredText": [] }
+  ],
+  "normalize": { "paths": {} }
+}

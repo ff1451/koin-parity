@@ -12,6 +12,8 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { dirname } from 'node:path';
 
+import { dummyCookieValue } from './lib/auth.mjs';
+
 const PORT = Number(process.argv[process.argv.indexOf('--port') + 1]) || 4000;
 const UPSTREAM = process.env.PARITY_UPSTREAM ?? 'https://api.stage.koreatech.in';
 const UPSTREAM_ORIGIN = process.env.PARITY_UPSTREAM_ORIGIN ?? 'https://stage.koreatech.in';
@@ -77,7 +79,8 @@ function scrubResponse(response) {
   } catch {
     // JSON이 아니면 그대로
   }
-  const setCookie = response.setCookie.map((c) => c.replace(/^([^=]+)=[^;]*/, '$1=parity-dummy'));
+  // 쿠키 값은 재생용 더미(형식이 맞는 JWT 등)로 바꾼다: 재생 중 앱이 받은 쿠키로 로그인 상태가 깨지지 않도록
+  const setCookie = response.setCookie.map((c) => c.replace(/^([^=]+)=[^;]*/, (_, name) => `${name}=${dummyCookieValue(name)}`));
   return { ...response, body, setCookie };
 }
 

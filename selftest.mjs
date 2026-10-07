@@ -36,7 +36,7 @@ try {
   for (const state of unit.states) {
     const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.name}.cassette.json`);
     const path = fillPath(app === 'web' ? unit.candidate.path : unit.oracle.path, state.params);
-    const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks };
+    const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks, auth: state.auth };
 
     if (shouldRecord || shouldFill) {
       await capture({ ...common, mode: shouldRecord ? 'record' : 'fill', outDir: join(runDir, state.name, 'record') });

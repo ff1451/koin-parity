@@ -42,6 +42,7 @@ try {
       assetsDir,
       device: unit.device,
       actions: state.actions,
+      auth: state.auth,
       masks: unit.masks,
       mode: 'replay',
     };

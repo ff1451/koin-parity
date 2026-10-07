@@ -34,6 +34,7 @@ try {
       assetsDir: join(PARITY_DIR, '.cache', 'assets'),
       device: unit.device,
       actions: state.actions,
+      auth: state.auth,
       masks: unit.masks,
       mode: 'fill',
     });

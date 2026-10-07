@@ -3,7 +3,16 @@
   "normalize": {
     "paths": {},
     "ignoreRequests": [
-      { "method": "POST", "path": "/abtest/assign", "reason": "WEB_RECODE 공통 A/B 배정. order에 없는 요청" }
+      {
+        "method": "POST",
+        "path": "/abtest/assign",
+        "reason": "WEB_RECODE 공통 A/B 배정. order에 없는 요청"
+      },
+      {
+        "method": "GET",
+        "path": "/v2/web/auth/session",
+        "reason": "WEB_RECODE 세션 확인(SSR·마운트 후). order에 없는 요청"
+      }
     ]
   }
 }

@@ -5,6 +5,8 @@ import { join } from 'node:path';
 
 import { chromium, devices } from '@playwright/test';
 
+import { applyAuth } from './lib/auth.mjs';
+
 export const PROXY_ORIGIN = process.env.PARITY_PROXY_ORIGIN ?? 'http://localhost:4000';
 export const API_PATH = `${PROXY_ORIGIN}/stage`;
 export const FIXED_TIME = new Date('2026-10-07T12:00:00+09:00');
@@ -268,8 +270,9 @@ async function settle(page, firstRunMs) {
  * @param {'device'|'expand'} [opts.viewportMode] device: 기기 뷰포트 유지(단위 비교 — 100vh 레이아웃이 실제 사용자와 같다),
  *   expand: 페이지 높이로 늘린 뒤 캡처(같은 앱끼리의 회귀 비교 — 전체 페이지 캡처 중 레이아웃 재계산 경합 회피)
  * @param {{ toastSelector: string, footerSelector: string }} [opts.chrome] 토스트·푸터 선택자 (units/_common.json chrome)
+ * @param {'guest'|'auth'} [opts.auth] 로그인 상태 (lib/auth.mjs)
  */
-export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME }) {
+export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest' }) {
   const maskSelectors = masks.map((m) => m.selector);
   mkdirSync(outDir, { recursive: true });
   await proxyControl('session', { mode, cassette, session: outDir });
@@ -278,6 +281,7 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const context = await browser.newContext({ ...devices[device], locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
   const assetLog = [];
   await routeAssets(context, { assetsDir, mode, assetLog });
+  if (auth === 'auth') await applyAuth(context, mode);
   await context.addInitScript(INSTRUMENT, { toastSelector: chrome.toastSelector });
   // 변이용 스크립트는 계측보다 뒤에 등록해 계측을 덮어쓸 수 있게 한다
   if (beforeGoto) await beforeGoto(context);
@@ -363,7 +367,7 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   if (mode !== 'replay') await proxyControl('flush', {});
   const { log } = await proxyControl('log');
 
-  const result = { baseURL, path, device, mode, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, requests: log, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
+  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, requests: log, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();

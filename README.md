@@ -27,6 +27,7 @@ corepack yarn playwright install chromium
 | `verify.mjs` | 단위 검증: order 대 WEB_RECODE, 상태별 게이트 + 상태 수 대조. 루프의 PASS/FAIL 근거 |
 | `fill.mjs` | 루프 밖 전용: 후보가 추가로 부르는 GET을 카세트에 보충 |
 | `regress.mjs` | 회귀 게이트(G8): WEB_RECODE 기준 ref 대 후보 ref, 데스크톱·모바일. 판정 G0+G6, G2는 참고 |
+| `lib/auth.mjs` | 로그인 상태 픽스처: 기록은 stage 실로그인(`.cache/credentials.env`), 재생은 더미 JWT 쿠키 |
 | `lib/freeze-time.mjs` | `next start`에 주입해 서버 시계를 고정 시각 기준으로 맞추는 훅 |
 | `lib/apps.mjs` | 프록시·앱 기동. order 고정 커밋 + 오라클 패치 빌드, WEB_RECODE 워크트리 프로덕션 빌드 |
 | `oracle-patches/` | 오라클 버그 수정 패치 (사람 승인, 루프 에이전트 수정 금지) |
@@ -67,9 +68,22 @@ node regress.mjs --base origin/develop --candidate <branch> [--fill] [--pages st
 
 `PARITY_VERBOSE=1`이면 프록시·앱 서버 로그를 출력한다.
 
+## 게이트
+
+| 게이트 | 판정 |
+|---|---|
+| G0 | 프록시·정적 리소스 miss 없음, 필수 텍스트 존재, 요소 존재, API 요청 존재 |
+| G2 | 정규화한 API 요청 집합 일치 (`units/_common.json` 무시 목록 적용) |
+| G3 | 토스트 문구가 같은 순서로 나옴 |
+| G4 | 분석 이벤트(gtag·dataLayer `event` 호출의 team·category·label·value) 순서 일치 |
+| G6 | 본문 영역(헤더 60px 아래~푸터 위) fuzz 5% 후 다른 픽셀 0 + 요소 목록 누락·추가 없음 |
+| G8 | `regress.mjs`: 기준 ref 대 후보 ref 화면 동일 (G0+G6) |
+
 ## 판정 원칙
 
 - PASS/FAIL은 `compare.mjs`만 낸다. 에이전트의 판단은 근거가 아니다
+- 하네스 포트(프록시 4000, order 4100, WEB_RECODE 4101·4102)가 이미 쓰이고 있으면 기동하지 않는다(다른 서버에 붙어 캡처하는 사고 방지)
+- 단위 비교는 기기 뷰포트를 유지한다(100vh 레이아웃이 실제 사용자와 같게). 회귀 비교만 뷰포트를 페이지 높이로 늘린다
 - 재생 중 카세트에 없는 요청은 stage로 넘기지 않고 miss(G0 FAIL)로 처리한다
 - 시각 판정은 fuzz 5% 후 다른 픽셀 0개 + 요소 목록 누락·추가 없음. 계산된 스타일·위치 차이는 진단 정보
 - Lottie·canvas·video는 픽셀 비교에서 가리고, 존재·위치·식별 정보(viewBox·레이어 수)만 요소 목록으로 검증한다
