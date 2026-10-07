@@ -1,0 +1,59 @@
+{
+  "id": "A1-shop-events",
+  "description": "상점 이벤트·공지 목록 (모바일)",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/shop-events/{shopId}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store/{shopId}/events"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/shops/\\d+/events",
+  "states": [
+    {
+      "name": "with-events",
+      "auth": "guest",
+      "params": {
+        "shopId": 251
+      },
+      "requiredText": [
+        "DA 트랙장은 공짜"
+      ]
+    },
+    {
+      "name": "with-events-expanded",
+      "auth": "guest",
+      "params": {
+        "shopId": 251
+      },
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "상세보기"
+          }
+        }
+      ],
+      "requiredText": [
+        "DA 트랙장은 공짜",
+        "접기"
+      ]
+    },
+    {
+      "name": "empty",
+      "auth": "guest",
+      "params": {
+        "shopId": 67
+      },
+      "requiredText": [
+        "아직 이벤트/공지가 없어요"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

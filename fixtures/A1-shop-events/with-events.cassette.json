@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "GET /shops/251/events? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/251/events",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJldmVudHMiOlt7InNob3BfaWQiOjI1MSwic2hvcF9uYW1lIjoi64uk7IKw7KGx67CcIiwiZXZlbnRfaWQiOjY0LCJ0aXRsZSI6IkRBIO2KuOuemeyepeydgCDqs7Xsp5wiLCJjb250ZW50Ijoi64uoLCDst6jsl4XtlaAg65WMIOq5jOyngCAiLCJ0aHVtYm5haWxfaW1hZ2VzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC9hMDBlNjU3OS04NmQ4LTQ3NDYtYTQ5MS1lNzMxODk1YzI3MTQv7Iqk7YGs66aw7IO3IDIwMjQtMDYtMDMgMjEzMDMyLnBuZyJdLCJzdGFydF9kYXRlIjoiMjAyNS0xMC0xNiIsImVuZF9kYXRlIjoiMjAyNi0xMS0wNCJ9XX0="
+      }
+    }
+  ]
+}

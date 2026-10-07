@@ -1,0 +1,32 @@
+{
+  "id": "H2-web-store-list",
+  "description": "하네스 검증용: WEB_RECODE 기존 모바일 상점 목록(getServerSideProps)의 결정성 확인 (이전 대상 단위 아님)",
+  "oracle": {
+    "app": "web",
+    "path": "/store"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store"
+  },
+  "device": "Pixel 5",
+  "states": [
+    {
+      "name": "list",
+      "auth": "guest",
+      "params": {},
+      "requiredText": [
+        "복지관 매점"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  },
+  "masks": [
+    {
+      "selector": "[class*='_pagination__']:has(button[aria-label='이전'])",
+      "reason": "WEB_RECODE 버그: useCarouselController 초기값 useState(1)로 slidesInView 이전 등록 경합 시 '2/2'가 남음. 실행마다 1/2·2/2가 갈린다"
+    }
+  ]
+}

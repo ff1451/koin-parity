@@ -1,0 +1,9 @@
+{
+  "description": "모든 단위에 공통으로 적용하는 허용 목록 (사람 승인, 루프 에이전트 수정 금지)",
+  "normalize": {
+    "paths": {},
+    "ignoreRequests": [
+      { "method": "POST", "path": "/abtest/assign", "reason": "WEB_RECODE 공통 A/B 배정. order에 없는 요청" }
+    ]
+  }
+}

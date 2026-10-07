@@ -1,0 +1,17 @@
+{
+  "name": "koin-parity",
+  "private": true,
+  "type": "module",
+  "description": "KOIN_ORDER_WEBVIEW → KOIN_WEB_RECODE 모바일 화면 이전 검증 하네스",
+  "scripts": {
+    "selftest": "node selftest.mjs",
+    "verify": "node verify.mjs",
+    "fill": "node fill.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "pixelmatch": "7.1.0",
+    "pngjs": "7.0.0"
+  },
+  "packageManager": "yarn@4.17.0"
+}

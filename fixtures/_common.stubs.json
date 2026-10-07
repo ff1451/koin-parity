@@ -1,0 +1,11 @@
+{
+  "stubs": [
+    {
+      "method": "POST",
+      "path": "/abtest/assign",
+      "reason": "A/B 배정은 호출마다 무작위라 결정성을 깬다. order에 없는 기능이므로 기본 변형으로 고정",
+      "status": 200,
+      "body": { "variable_name": "default", "access_history_id": 1 }
+    }
+  ]
+}

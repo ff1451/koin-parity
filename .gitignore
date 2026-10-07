@@ -1,0 +1,7 @@
+node_modules/
+.yarn/
+!.yarn/releases
+.pnp.*
+# 로컬 전용: order 클론, WEB_RECODE 워크트리, 이미지 자산(저작권), 빌드 시점 카세트(여러 화면 실데이터)
+.cache/
+runs/

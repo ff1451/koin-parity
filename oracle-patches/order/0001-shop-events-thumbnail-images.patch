@@ -1,0 +1,39 @@
+diff --git a/src/api/shop/entity.ts b/src/api/shop/entity.ts
+index 69553f8..85e699e 100644
+--- a/src/api/shop/entity.ts
++++ b/src/api/shop/entity.ts
+@@ -128,7 +128,7 @@ export interface Events {
+   event_id: number;
+   title: string;
+   content: string;
+-  thumbnail_image: string[];
++  thumbnail_images: string[];
+   start_date: string;
+   end_date: string;
+ }
+diff --git a/src/pages/Shop/components/ShopEvents/CollapsedEvent.tsx b/src/pages/Shop/components/ShopEvents/CollapsedEvent.tsx
+index 96d2996..7b6da27 100644
+--- a/src/pages/Shop/components/ShopEvents/CollapsedEvent.tsx
++++ b/src/pages/Shop/components/ShopEvents/CollapsedEvent.tsx
+@@ -13,7 +13,7 @@ interface EventProps {
+ }
+ 
+ export default function CollapsedEvent({ event, onToggleOpen, contentId, isOpen }: EventProps) {
+-  const thumbnailImage = event.thumbnail_image?.[0];
++  const thumbnailImage = event.thumbnail_images?.[0];
+   const logger = useLogger();
+ 
+   const handleDetailClick = () => {
+diff --git a/src/pages/Shop/components/ShopEvents/ExpandedEvent.tsx b/src/pages/Shop/components/ShopEvents/ExpandedEvent.tsx
+index 80c42fc..4a71c57 100644
+--- a/src/pages/Shop/components/ShopEvents/ExpandedEvent.tsx
++++ b/src/pages/Shop/components/ShopEvents/ExpandedEvent.tsx
+@@ -15,7 +15,7 @@ interface EventProps {
+ export default function ExpandedEvent({ event, onToggleOpen, contentId, isOpen }: EventProps) {
+   const containerRef = useRef<HTMLDivElement>(null);
+   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+-  const thumbnailImages = event.thumbnail_image ?? [];
++  const thumbnailImages = event.thumbnail_images ?? [];
+   const shouldShowIndicator = thumbnailImages.length > 1;
+ 
+   const handleImageScroll = () => {
