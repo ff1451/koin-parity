@@ -8,8 +8,10 @@ export const meta = {
   ],
 }
 
-const PARITY = '/home/jylee1/projects/koin-parity'
-const WEB = '/home/jylee1/projects/KOIN_WEB_RECODE'
+// 기기마다 다르다: parity·web은 절대 경로, env는 모든 명령 앞에 실행할 셸 문장(Node 버전·컨테이너 브라우저 등)
+const PARITY = args.parity
+const WEB = args.web
+const ENV = args.env ? `${args.env} && ` : ''
 const unit = args.unit
 const branch = args.branch
 const maxIterations = args.maxIterations ?? 6
@@ -59,6 +61,7 @@ const implPrompt = (i, feedback) => `KOIN_WEB_RECODE에서 parity 단위 "${unit
 판정은 하네스 스크립트만 한다. 너는 구현만 하고, 통과 여부를 스스로 주장하지 않는다.
 
 ## 위치
+- 셸 명령은 매번 앞에 \`${ENV || '(없음)'}\`를 붙여 실행한다(Node 버전 등 실행 환경)
 - 작업 저장소: ${WEB} (현재 브랜치 ${branch}, 스택 레이어). 다른 브랜치로 바꾸지 않는다
 - 단위 스펙(읽기 전용): ${PARITY}/units/${unit}.json — 상태·경로·필수 텍스트·상호작용
 - 오라클 소스(읽기 전용, 오라클 패치 적용본): ${PARITY}/.cache/order/src — 참고 파일: ${args.oracleHints.join(', ')}
@@ -81,7 +84,7 @@ ${args.targets.map((t) => `- ${t}`).join('\n')}
 ${feedback}
 
 ## 마무리 (반드시)
-1. cd ${WEB} && yarn typecheck, 변경한 ts/tsx에 yarn eslint, 변경한 scss에 yarn stylelint --config .stylelint.json — 오류가 없을 때까지 고친다
+1. ${ENV}cd ${WEB} && yarn typecheck, 변경한 ts/tsx에 yarn eslint, 변경한 scss에 yarn stylelint --config .stylelint.json — 오류가 없을 때까지 고친다
 2. 바꾼 파일만 명시적으로 git add 하고 커밋: git commit -m "feat: ${args.title} 모바일 화면 이전 작업 ${i}" (본문·서명 없이)
 3. git status --porcelain 이 비어 있는지 확인
 4. 결과를 스키마로 반환`
@@ -90,7 +93,7 @@ const verifyPrompt = () => `판정 스크립트를 실행하고 결과를 그대
 
 1. cd ${PARITY} && git status --porcelain — 출력이 있으면 tamper=true, tamperDetail에 출력
 2. cd ${WEB} && git status --porcelain — docs/ 외의 출력이 있으면 tamper=true, tamperDetail에 출력
-3. tamper가 아니면: cd ${PARITY} && node verify.mjs ${unit} --ref ${branch}
+3. tamper가 아니면: ${ENV}cd ${PARITY} && node verify.mjs ${unit} --ref ${branch}
    (빌드 포함 수 분 걸린다. 끝날 때까지 기다린다. 마지막 줄에 report.json 경로가 나온다)
 4. 그 report.json을 읽어 스키마대로 옮긴다: pass·expectedCases·executedCases는 그대로, runDir은 report.json이 있는 디렉터리.
    states[].detail에는 실패 근거를 report.json에서 그대로 옮긴다(요약하지 말고 값 그대로, 목록은 지정한 개수까지).
