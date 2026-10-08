@@ -275,6 +275,14 @@ export async function performAction(page, action) {
     await page.locator(action.click.css).nth(action.click.nth ?? 0).click({ timeout: 5000 });
     return;
   }
+  // 입력: 값을 한 번에 넣고 input 이벤트를 낸다(글자별 입력은 디바운스·IME 처리에 따라 요청 수가 달라질 수 있음)
+  if (action.fill) {
+    const target = action.fill.placeholder
+      ? page.getByPlaceholder(action.fill.placeholder, { exact: true })
+      : page.getByRole(action.fill.role, { name: action.fill.name, exact: true });
+    await target.nth(action.fill.nth ?? 0).fill(action.fill.text, { timeout: 5000 });
+    return;
+  }
   if (action.click) {
     await page
       .getByRole(action.click.role, { name: action.click.name, exact: true })
