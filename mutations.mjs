@@ -4,7 +4,8 @@
 // 변이는 특정 화면의 선택자에 묶이지 않도록 "화면에 실제로 보이는 첫 텍스트 요소"를 대상으로 삼는다.
 // mutate는 실제로 화면을 바꿨는지 반환한다. false면 해당 상태에 적용 대상이 없음(N/A)
 
-// 페이지 안에서 실행: 뷰포트 안에서 다른 요소에 가려지지 않은 첫 텍스트 요소에 fn을 적용한다
+// 페이지 안에서 실행: 본문 영역(헤더 60px 아래, G6 비교 범위)의 뷰포트 안에서 다른 요소에 가려지지 않은 첫 텍스트 요소에 fn을 적용한다.
+// 헤더 제목은 G6가 비교하지 않으므로 대상이 되면 변이가 탐지 불가능해진다(A2에서 확인)
 const onVisibleText = (fnSource) => async (page) =>
   page.evaluate((source) => {
     // eslint-disable-next-line no-new-func
@@ -17,7 +18,8 @@ const onVisibleText = (fnSource) => async (page) =>
         const r = el.getBoundingClientRect();
         const cx = r.x + r.width / 2;
         const cy = r.y + r.height / 2;
-        const inViewport = r.width > 0 && r.height > 0 && cx >= 0 && cy >= 0 && cx < innerWidth && cy < innerHeight;
+        const inBody = r.top + scrollY >= 60;
+        const inViewport = inBody && r.width > 0 && r.height > 0 && cx >= 0 && cy >= 0 && cx < innerWidth && cy < innerHeight;
         const top = inViewport ? document.elementFromPoint(cx, cy) : null;
         if (top && (top === el || el.contains(top))) {
           apply(el, node);
@@ -84,7 +86,8 @@ export const MUTATIONS = [
     name: 'text-one-char',
     description: '보이는 첫 텍스트에 글자 하나 삽입',
     expect: ['G6'],
-    mutate: onVisibleText("node.textContent = node.textContent.slice(0, 1) + ' ' + node.textContent.slice(1);"),
+    // 첫 비공백 글자 뒤에 넣는다(앞 공백 뒤에 넣으면 공백이 합쳐져 화면이 바뀌지 않음)
+    mutate: onVisibleText("const i = node.textContent.search(/\\S/) + 1; node.textContent = node.textContent.slice(0, i) + ' ' + node.textContent.slice(i);"),
   },
   {
     name: 'remove-animation',
