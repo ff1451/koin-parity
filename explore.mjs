@@ -25,7 +25,7 @@ const mode = process.argv.includes('--fill') ? 'fill' : 'replay';
 const runDir = join(PARITY_DIR, 'runs', `${new Date().toISOString().replace(/[:.]/g, '-')}-${unitId}-explore`);
 const fillPath = (template, params) => template.replace(/\{(\w+)\}/g, (_, k) => String(params[k]));
 const path = fillPath(unit.oracle.path, state.params);
-const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.name}.cassette.json`);
+const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`);
 
 // 페이지 안: 실제로 보이는 텍스트 집합 + 열린 다이얼로그 수 → 상태 서명.
 // innerText는 접힌 영역(높이 0 + overflow hidden) 안의 글자도 포함해 펼침 전후가 같아 보이므로 쓰지 않는다
@@ -81,6 +81,15 @@ function listCandidates() {
     }
     return `body > ${parts.join(' > ')}`;
   };
+  // 구조 서명: 조상의 태그·클래스 경로(위치 nth 제외) + 요소 자신의 태그. 같은 역할의 반복 요소(카드·카테고리 목록)가 한 그룹이 된다.
+  // 요소 자신의 클래스는 넣지 않는다(선택된 항목만 클래스가 달라 그룹이 쪼개지므로)
+  const groupOf = (el) => {
+    const parts = [el.tagName.toLowerCase()];
+    for (let cur = el.parentElement; cur && cur !== document.body; cur = cur.parentElement) {
+      parts.unshift(`${cur.tagName.toLowerCase()}${[...cur.classList].sort().map((c) => `.${c}`).join('')}`);
+    }
+    return parts.join(' > ');
+  };
   const interactive = 'button, a[href], [role="button"], [role="tab"], [role="checkbox"], input[type="checkbox"], input[type="radio"], label, select, summary';
   const all = [...document.querySelectorAll('body *')].filter(
     (el) => el.matches(interactive) || getComputedStyle(el).cursor === 'pointer',
@@ -90,8 +99,18 @@ function listCandidates() {
   return outer.filter(isVisible).map((el) => {
     const label = (el.getAttribute('aria-label') ?? el.innerText ?? '').replace(/\s+/g, ' ').trim().slice(0, 40) || el.querySelector('img')?.alt || `<${el.tagName.toLowerCase()}>`;
     const href = el.getAttribute('href');
-    return { css: cssPath(el), label, tag: el.tagName.toLowerCase(), href };
+    return { css: cssPath(el), group: groupOf(el), label, tag: el.tagName.toLowerCase(), href };
   });
+}
+
+// 반복 요소 그룹은 앞의 2개만 누른다(첫 항목이 이미 선택된 카테고리일 수 있으므로 2개).
+// 형제 버튼 몇 개(정렬·토글)가 우연히 같은 서명이 되는 경우는 모두 누른다
+const REPEAT_MIN = 4;
+const REPEAT_PICK = 2;
+function representatives(candidates) {
+  const byGroup = new Map();
+  for (const c of candidates) byGroup.set(c.group, [...(byGroup.get(c.group) ?? []), c]);
+  return [...byGroup.values()].flatMap((members) => (members.length >= REPEAT_MIN ? members.slice(0, REPEAT_PICK).map((m) => ({ ...m, repeat: members.length })) : members));
 }
 
 const signature = (snap) => JSON.stringify([snap.url, snap.dialogs, [...snap.texts].sort()]);
@@ -107,9 +126,15 @@ try {
   stops.push(await startOrder());
 
   // 너비 우선. 노드 = 도달 경로(actions). 매번 새로 열어 경로를 재생한다(상태를 되돌릴 방법이 없으므로)
-  const queue = [{ actions: [], labels: [], parentCandidates: null }];
+  const queue = [{ actions: [], labels: [], parentGroups: null, group: null }];
+  // 다른 화면으로 이동한다고 판명된 그룹: 더 깊은 상태에서 다시 누르지 않는다
+  const navigatingGroups = new Set();
   while (queue.length && states.length < maxStates) {
     const node = queue.shift();
+    if (node.actions.length > 1 && navigatingGroups.has(node.group)) {
+      leaves.push({ via: node.labels, kind: 'skipped', detail: '이동 판명 그룹' });
+      continue;
+    }
     await proxyControl('session', { mode, cassette, session: runDir });
     let opened;
     try {
@@ -131,6 +156,7 @@ try {
 
       if (node.actions.length > 0 && navigated) {
         leaves.push({ via: node.labels, kind: 'navigates', detail: snap.url });
+        navigatingGroups.add(node.group);
       } else if (seen.has(sig)) {
         // 이미 본 상태(변화 없음 포함)
       } else {
@@ -159,15 +185,17 @@ try {
         // 쓰기를 일으킨 상태는 더 들어가지 않는다. 깊이 제한도 지킨다
         if (!writes.length && node.actions.length < maxDepth) {
           const candidates = await page.evaluate(listCandidates);
-          // 두 번째 깊이부터는 부모 상태에 없던(새로 나타난) 요소만 누른다: 모달 안 선택지 등
-          const fresh = node.parentCandidates ? candidates.filter((c) => !node.parentCandidates.has(c.css)) : candidates;
-          const own = new Set(candidates.map((c) => c.css));
-          for (const c of fresh) {
+          // 두 번째 깊이부터는 부모 상태에 없던(새로 나타난) 그룹만 누른다: 모달 안 선택지 등.
+          // 카테고리를 바꿔 카드 목록 데이터만 바뀐 경우 카드 그룹은 부모에도 있으므로 다시 누르지 않는다
+          const fresh = node.parentGroups ? candidates.filter((c) => !node.parentGroups.has(c.group)) : candidates;
+          const own = new Set(candidates.map((c) => c.group));
+          for (const c of representatives(fresh)) {
+            const label = c.repeat ? `${c.label} (반복 ${c.repeat}개 중 대표)` : c.label;
             if (c.href && /^(tel:|mailto:|https?:\/\/(?!localhost))/.test(c.href)) {
-              leaves.push({ via: [...node.labels, c.label], kind: 'external', detail: c.href });
+              leaves.push({ via: [...node.labels, label], kind: 'external', detail: c.href });
               continue;
             }
-            queue.push({ actions: [...node.actions, { click: { css: c.css }, label: c.label }], labels: [...node.labels, c.label], parentCandidates: own });
+            queue.push({ actions: [...node.actions, { click: { css: c.css }, label: c.label }], labels: [...node.labels, label], parentGroups: own, group: c.group });
           }
         }
       }
