@@ -1,0 +1,42 @@
+{
+  "entries": [
+    {
+      "key": "GET /shops/categories? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/categories",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0b3RhbF9jb3VudCI6MTIsInNob3BfY2F0ZWdvcmllcyI6W3siaWQiOjEsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzI4LzkyZjYyNTM0LTdmMDYtNGYxNS1iNzM5LTE2NjJkN2Y5NWZlMC9vdXRwdXQgKDQpLnBuZyIsIm5hbWUiOiLsoITssrTrs7TquLAifSx7ImlkIjoyLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi9mNTAxMjdjNy0xZjFmLTQ5NmMtYmQ3Ni1mNzQzMjFlODY3YzgvTGF5ZXIgMzEgKDMpLnBuZyIsIm5hbWUiOiLsuZjtgqgifSx7ImlkIjozLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi83Y2NiMzJhNy0xMjQ2LTQ1OGItYTYzNC01Mjg3YzhhMzJkY2UvR3JvdXAgKDEpLnBuZyIsIm5hbWUiOiLtlLzsnpAv67KE6rGwIn0seyJpZCI6NywiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9TSE9QUy8yMDI1LzcvMjIvZmY4YTE0OWYtNTI4Zi00ZjYyLTkyZDMtNzM0ZTBmZDY2N2IyL0xheWVyXzk5LnBuZyIsIm5hbWUiOiLqs6DquYPsp5EifSx7ImlkIjo0LCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi82ODNmNGE0MS1iZTQ3LTRiYTQtYjljOC1kZjk5MTIwZjI3ZmYvR3JvdXAgKDIpLnBuZyIsIm5hbWUiOiLrj4Tsi5zrnb0v67aE7IudIn0seyJpZCI6OSwiaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9TSE9QUy8yMDI1LzcvMjIvYjM2YzlhM2YtMDU1MS00NjVlLThlNTktOGJlZDJkYThjOGMxL0NhcGFfMSAoMSkucG5nIiwibmFtZSI6IuyjvOygkCJ9LHsiaWQiOjgsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzIyL2IyMDExZTlkLTg5ZGEtNGZmYi05ODYxLTY5MDNmNzU3MTcwYy9DYXBhXzEucG5nIiwibmFtZSI6Iu2VnOyLnSJ9LHsiaWQiOjYsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzIyLzY3YmZiNmVkLTQ4YTMtNGYzOS1iNzIyLWY2ZDgyMTY3YjlmZi9DYXBhXzEgKDIpLnBuZyIsIm5hbWUiOiLspJHqta3sp5EifSx7ImlkIjo1LCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi82YjFkMzgyMy00MmNmLTRlMDMtYWZiYi03NWMyOGJkZmM4YzUvR3JvdXAgMTAwMDAwMjkxMi5wbmciLCJuYW1lIjoi7KGx67CcIn0seyJpZCI6MTAsImltYWdlX3VybCI6Imh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzIyLzU3ZWEzM2FjLTg2YzgtNGQ3OC1hYjAzLWM0YWVhZTY1ZTk5NC9Hcm91cCAoMykucG5nIiwibmFtZSI6Iuy5tO2OmCJ9LHsiaWQiOjExLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi8xMmZlZGJmMS1lNzExLTQxMjQtYWJjNi02MzNiMTIzMmU3YjMvRnJhbWUucG5nIiwibmFtZSI6Iuy9nOuwtCJ9LHsiaWQiOjEyLCJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL1NIT1BTLzIwMjUvNy8yMi9jZWRiNWI0MS00NjA1LTQ2M2EtYTk5Yy02NThhYTQ5M2IzYWQvaWNuLnBuZyIsIm5hbWUiOiLquLDtg4AifV19"
+      }
+    },
+    {
+      "key": "GET /v3/shops? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/shops",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb3VudCI6MCwic2hvcHMiOltdfQ=="
+      }
+    }
+  ]
+}

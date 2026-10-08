@@ -1,9 +1,64 @@
 {
   "id": "A2-store-list",
-  "description": "상점 목록 모바일 (초안: 상태는 explore.mjs 결과로 채운다)",
-  "oracle": { "app": "order", "commit": "1b51c34", "path": "/shops" },
-  "candidate": { "app": "web", "path": "/store" },
+  "description": "상점 목록 모바일. 상태는 explore.mjs(깊이 2) 결과에서 데이터만 다른 상태를 대표로 묶어 정함. 주문 가능 상점 포함 여부는 B2 후 재검증",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/shops"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store"
+  },
   "device": "Pixel 5",
-  "states": [{ "name": "default", "auth": "guest", "params": {}, "requiredText": [] }],
-  "normalize": { "paths": {} }
+  "primaryRequest": "/stage/v3/shops",
+  "states": [
+    {
+      "name": "default",
+      "auth": "guest",
+      "params": {},
+      "requiredText": ["전체보기", "기본순", "영업중", "돈家네 돌판 삼겹살", "영업이 종료된 가게에요!"]
+    },
+    {
+      "name": "category",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [{ "click": { "role": "button", "name": "치킨 치킨" } }],
+      "requiredText": ["치킨", "기본순"]
+    },
+    {
+      "name": "sort-sheet",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [{ "click": { "role": "button", "name": "기본순" } }],
+      "requiredText": ["가게 정렬", "별점 높은 순", "리뷰순"]
+    },
+    {
+      "name": "sort-rating",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [{ "click": { "role": "button", "name": "기본순" } }, { "click": { "role": "button", "name": "별점 높은 순" } }],
+      "requiredText": ["별점 높은 순", "태선족발"]
+    },
+    {
+      "name": "open-filter",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [{ "click": { "role": "button", "name": "영업중" } }],
+      "requiredText": ["영업중", "돈家네 돌판 삼겹살"]
+    },
+    {
+      "name": "empty",
+      "auth": "guest",
+      "params": {},
+      "requiredText": ["이용 가능한 가게가 없어요", "조건을 변경하고 다시 검색해주세요"]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
 }
