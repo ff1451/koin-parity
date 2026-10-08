@@ -1,0 +1,44 @@
+{
+  "id": "A3-store-search",
+  "description": "상점 검색(모바일 전용). 상태는 화면이 작아 소스에서 직접 정함: 초기(입력 전), 결과(상점·메뉴), 결과 없음. 입력은 fill 액션(한 번에 입력, 디바운스 200ms는 settle의 가짜 시계 진행으로 처리)",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/search"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store/search"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/v2/shops/search/related",
+  "states": [
+    {
+      "name": "initial",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "minRequests": 0,
+      "requiredText": ["검색"]
+    },
+    {
+      "name": "results",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [{ "fill": { "placeholder": "검색어를 입력해주세요.", "text": "족발" } }],
+      "requiredText": ["태선족발", "다산족발"]
+    },
+    {
+      "name": "no-results",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [{ "fill": { "placeholder": "검색어를 입력해주세요.", "text": "zzqx" } }],
+      "requiredText": ["검색"]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

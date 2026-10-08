@@ -1,0 +1,42 @@
+{
+  "entries": [
+    {
+      "key": "GET /v2/shops/search/related?keyword=zzqx #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/shops/search/related",
+        "query": "keyword=zzqx",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzZWFyY2hfa2V5d29yZCI6Inp6cXgiLCJwcm9jZXNzZWRfc2VhcmNoX2tleXdvcmQiOiJ6enF4Iiwic2hvcF9uYW1lX3NlYXJjaF9yZXN1bHRfY291bnQiOjAsIm1lbnVfbmFtZV9zZWFyY2hfcmVzdWx0X2NvdW50IjowLCJzaG9wX25hbWVfc2VhcmNoX3Jlc3VsdHMiOltdLCJtZW51X25hbWVfc2VhcmNoX3Jlc3VsdHMiOltdfQ=="
+      }
+    },
+    {
+      "key": "GET /v2/shops/search/related?keyword=족발 #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/shops/search/related",
+        "query": "keyword=족발",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzZWFyY2hfa2V5d29yZCI6IuyhseuwnCIsInByb2Nlc3NlZF9zZWFyY2hfa2V5d29yZCI6IuyhseuwnCIsInNob3BfbmFtZV9zZWFyY2hfcmVzdWx0X2NvdW50IjoyLCJtZW51X25hbWVfc2VhcmNoX3Jlc3VsdF9jb3VudCI6Nywic2hvcF9uYW1lX3NlYXJjaF9yZXN1bHRzIjpbeyJzaG9wX2lkIjo5OCwic2hvcF9uYW1lIjoi7YOc7ISg7KGx67CcIn0seyJzaG9wX2lkIjoyNTEsInNob3BfbmFtZSI6IuuLpOyCsOyhseuwnCJ9XSwibWVudV9uYW1lX3NlYXJjaF9yZXN1bHRzIjpbeyJzaG9wX2lkIjo5OCwic2hvcF9uYW1lIjoi7YOc7ISg7KGx67CcIiwibWVudV9uYW1lIjoi65Sw65y77ZWc7KGx67CcIn0seyJzaG9wX2lkIjo5OCwic2hvcF9uYW1lIjoi7YOc7ISg7KGx67CcIiwibWVudV9uYW1lIjoi66ek7Jq07KGx67CcIn0seyJzaG9wX2lkIjo5OCwic2hvcF9uYW1lIjoi7YOc7ISg7KGx67CcIiwibWVudV9uYW1lIjoi64OJ7LGE7KGx67CcIn0seyJzaG9wX2lkIjo5OCwic2hvcF9uYW1lIjoi7YOc7ISg7KGx67CcIiwibWVudV9uYW1lIjoi67CY67CY7KGx67CcKOuUsOucu+2VnOyhseuwnCvrp6TsmrTsobHrsJwpIn0seyJzaG9wX2lkIjo5OCwic2hvcF9uYW1lIjoi7YOc7ISg7KGx67CcIiwibWVudV9uYW1lIjoiKOuwsOuLrOuplOuJtCnrlLDrnLvtlZzsobHrsJwr7KO866i567ClJuq1rSvsnYzro4zsiJg1MDBtbCJ9LHsic2hvcF9pZCI6OTgsInNob3BfbmFtZSI6Iu2DnOyEoOyhseuwnCIsIm1lbnVfbmFtZSI6IijrsLDri6zrqZTribQp66ek7Jq07KGx67CcK+yjvOuoueuwpSbqta0r7J2M66OM7IiYNTAwbWwifSx7InNob3BfaWQiOjk4LCJzaG9wX25hbWUiOiLtg5zshKDsobHrsJwiLCJtZW51X25hbWUiOiIo7KCQ7Ius7Yq57ISgKeyhseuwnOuNruuwpSJ9XX0="
+      }
+    }
+  ]
+}
