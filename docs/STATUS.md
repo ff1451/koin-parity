@@ -1,11 +1,11 @@
 # 진행 상태·인수인계
 
-> 마지막 갱신: 2026-10-07 (상태 탐색기 작업 중 중단). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
+> 마지막 갱신: 2026-10-08 (A2 완료, macOS 기기로 이전). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
 > 전체 계획·선택 기록 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`
 
 ## 1. 한 줄 요약
 
-KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RECODE로 옮기는 중. 화면 단위로 order 화면과 픽셀·요청·이벤트를 비교하는 하네스(이 저장소)로 판정하고, 단위마다 stacked PR을 쌓는다. **foundation과 A1(파일럿)까지 완료, 다음은 A2 이후 단위 스펙 작성.**
+KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RECODE로 옮기는 중. 화면 단위로 order 화면과 픽셀·요청·이벤트를 비교하는 하네스(이 저장소)로 판정하고, 단위마다 stacked PR을 쌓는다. **foundation·A1·A2 완료, 다음은 A3(검색) 단위 스펙 작성.**
 
 ## 2. 확정된 범위·결정 (다시 묻지 않는다)
 
@@ -33,6 +33,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `refactor/order-integration` | 스택 trunk (develop `836acf78`에서 분기, 원격 push됨) |
 | KOIN `feat/#1572/order-foundation` | PR **#1573** draft → refactor/order-integration |
 | KOIN `feat/#1572/order-a1-shop-events` | PR **#1574** draft → foundation (GitHub stack #1575) |
+| KOIN `feat/#1572/order-a2-store-list` | PR **#1576** draft → A1 |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
 ## 5. 단위 진행표
@@ -41,7 +42,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 |---|---|---|
 | foundation | 라우트·`/store/[id]` SSR·폰트 스코프·토큰·Badge/Button·골격 페이지·`api/storeMobile` | ✅ PR #1573 |
 | A1 상점 이벤트·공지 | `/store/[id]/events` | ✅ PR #1574 (루프 1회 통과) |
-| A2 상점 목록 모바일 | `/store` | ⏳ 스펙 필요 |
+| A2 상점 목록 모바일 | `/store` | ✅ PR #1576 (루프 2회 통과, 상태 6개. 빈 목록은 `shops`만 비운 파생 카세트 — 사용자 승인. 도중에 foundation `ShopListV3` undefined 파라미터 버그를 #1573에 수정) |
 | A3 검색 | `/store/search` | ⏳ |
 | A4 상점 상세 모바일 | `/store/[id]` (오라클은 오버레이 헤더 → `chrome: 'none'` 검토) | ⏳ |
 | A5 상점 정보 | `/store/[id]/info` | ⏳ |
@@ -53,18 +54,15 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 
 ## 6. 바로 다음 할 일
 
-**결정: (a) 상태 자동 탐색기를 먼저 만든다** (사용자 승인). 탐색기 `explore.mjs` 1차 구현 완료, 다듬는 중.
+**다음: A3 검색(`/store/search`)** 스펙 작성 → 루프. 오라클 `search`
 
-- 동작: 오라클 화면에서 보이는 클릭 후보(버튼·링크·체크박스·cursor:pointer 바깥 요소)를 하나씩 누르고, **실제로 보이는 텍스트**(overflow로 잘린 영역 제외)·URL·다이얼로그로 상태를 구분해 너비 우선 탐색. 쓰기 요청을 일으킨 상태·다른 화면 이동·외부 링크(tel: 등)는 더 들어가지 않음. 결과 `runs/*-explore/explore.md`
-- 검증: **A1에서 펼침 상태를 스스로 찾음**(스펙과 일치)
-- A2(`/shops`) 1단계 결과: 초기, 카테고리 12개(전체보기·치킨·피자/버거·…·기타), 정렬 바텀시트(다이얼로그), 영업중 토글 — 상태 15개
-- **남은 문제(다음에 할 것)**: 2단계에서 카테고리마다 새로 나타난 상점 카드를 전부 "새 요소"로 보고 하나씩 다시 열어 수십 분 걸림(중단함). 개선안:
-  1. 같은 역할의 반복 요소(카드 목록)는 대표 1개만 누른다: 후보를 "구조 서명"(태그·클래스 경로에서 nth 제거)으로 묶어 그룹당 1개
-  2. 1단계에서 이미 "다른 화면으로 이동"으로 판명된 그룹은 2단계에서 다시 누르지 않는다
-  3. 카테고리처럼 데이터만 바뀌는 상태는 "같은 화면 구조 + 다른 데이터"로 묶어 대표 상태 1~2개만 스펙 후보로 올린다
-- 그다음: A2 탐색 결과로 `units/A2-store-list.json` 상태 확정(현재 초안, 카세트 `fixtures/A2-store-list/default.cassette.json`은 1단계 탐색 중 stage에서 보충한 것) → 루프 실행
+- 상태 탐색기 `explore.mjs`: 후보를 구조 서명(조상 태그·클래스 경로 + 요소 태그)으로 묶어 반복 그룹(4개 이상)은 앞 2개만 누르고, 이동으로 판명된 그룹은 깊은 상태에서 다시 누르지 않는다. A2 깊이 2 탐색이 1분 34초
+- 데이터만 다른 상태(카테고리 10개 등)는 사람이 대표 상태로 묶어 스펙에 올린다
+- 같은 카세트를 여러 상태가 쓰면 스펙 상태에 `"cassette": "<이름>"`
+- 단위가 의도적으로 바꾸는 회귀 케이스는 `regress.mjs --skip <페이지>.<기기>` (A2: `store-list.mobile`). 다음 단위부터 base가 A2이므로 skip 불필요
+- 변이 자기 검증은 단위마다 돌린다: A2에서 변이가 헤더 텍스트를 대상으로 잡아 탐지가 안 되는 결함을 발견해 고침(본문 영역만 대상)
 
-단위 하나 진행 절차(A1에서 검증됨):
+단위 하나 진행 절차(A1·A2에서 검증됨):
 1. KOIN에서 스택 top으로 이동 후 `gh stack add "feat/#1572/order-<unit>"`
 2. `units/<unit>.json` 작성(상태·필수 텍스트·actions·primaryRequest·chrome). 필요하면 `node selftest.mjs <unit> --record`로 카세트 기록, 후보가 추가로 부르는 GET은 `node fill.mjs <unit> --ref <branch>`
 3. KOIN `.claude/settings.local.json`에 하네스 쓰기 차단이 걸려 있는지 확인(§7)
