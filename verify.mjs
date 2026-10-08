@@ -38,7 +38,7 @@ try {
     const stateDir = join(runDir, state.name);
     mkdirSync(stateDir, { recursive: true });
     const common = {
-      cassette: join(PARITY_DIR, 'fixtures', unitId, `${state.name}.cassette.json`),
+      cassette: join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`),
       assetsDir,
       device: unit.device,
       actions: state.actions,

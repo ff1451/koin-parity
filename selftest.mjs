@@ -34,7 +34,7 @@ try {
   stops.push(await startProxy());
   stops.push(app === 'web' ? await startWeb() : await startOrder());
   for (const state of unit.states) {
-    const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.name}.cassette.json`);
+    const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`);
     const path = fillPath(app === 'web' ? unit.candidate.path : unit.oracle.path, state.params);
     const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks, auth: state.auth };
 

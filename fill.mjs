@@ -30,7 +30,7 @@ try {
       baseURL: APPS.web.baseURL,
       path: fillPath(unit.candidate.path, state.params),
       outDir: join(runDir, state.name),
-      cassette: join(PARITY_DIR, 'fixtures', unitId, `${state.name}.cassette.json`),
+      cassette: join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`),
       assetsDir: join(PARITY_DIR, '.cache', 'assets'),
       device: unit.device,
       actions: state.actions,

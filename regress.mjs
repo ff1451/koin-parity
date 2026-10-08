@@ -2,8 +2,9 @@
 // 판정은 G0(정상 렌더) + G6(시각). G2는 참고 정보: foundation처럼 데이터 로딩 방식(ISR→SSR 등)을
 // 의도적으로 바꾸는 변경에서는 요청이 달라지는 것이 정상이다.
 //
-// 실행: node regress.mjs --base <ref> --candidate <ref> [--fill] [--pages home,store-list]
+// 실행: node regress.mjs --base <ref> --candidate <ref> [--fill] [--pages home,store-list] [--skip store-list.mobile]
 //   --fill: 카세트에 없는 GET을 stage에서 보충 (루프 밖에서만)
+//   --skip: 그 단위가 의도적으로 바꾸는 케이스(페이지.기기)를 뺀다. 리포트에 남는다
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -17,10 +18,13 @@ const baseRef = arg('--base', 'origin/develop');
 const candidateRef = arg('--candidate', 'HEAD');
 const shouldFill = process.argv.includes('--fill');
 const only = arg('--pages', '')?.split(',').filter(Boolean) ?? [];
+const skip = arg('--skip', '')?.split(',').filter(Boolean) ?? [];
 
 const DEVICES = { desktop: 'Desktop Chrome', mobile: 'Pixel 5' };
 const spec = JSON.parse(readFileSync(join(PARITY_DIR, 'units', 'R-regression.json'), 'utf8'));
-const pages = spec.pages.filter((p) => only.length === 0 || only.includes(p.name));
+const pages = spec.pages
+  .filter((p) => only.length === 0 || only.includes(p.name))
+  .map((p) => ({ ...p, devices: p.devices.filter((d) => !skip.includes(`${p.name}.${d}`)) }));
 const rev = (ref) => execFileSync('git', ['rev-parse', ref], { cwd: WEB_REPO }).toString().trim();
 const base = rev(baseRef);
 const candidate = rev(candidateRef);
@@ -70,10 +74,10 @@ try {
 const expectedCases = pages.reduce((n, p) => n + p.devices.length, 0);
 const pass = cases.length === expectedCases && cases.every((c) => c.pass);
 mkdirSync(runDir, { recursive: true });
-writeFileSync(join(runDir, 'report.json'), `${JSON.stringify({ base, candidate, pass, expectedCases, executedCases: cases.length, cases }, null, 2)}\n`);
+writeFileSync(join(runDir, 'report.json'), `${JSON.stringify({ base, candidate, pass, expectedCases, executedCases: cases.length, skipped: skip, cases }, null, 2)}\n`);
 cases.forEach((c) => {
   const detail = c.gates ? `G0:${c.gates.G0.pass ? 'PASS' : 'FAIL'} G6:${c.gates.G6.pass ? 'PASS' : 'FAIL'} diffPixels=${c.gates.G6.diffPixels}  (G2 참고:${c.gates.G2.pass ? 'same' : 'diff'})` : c.error;
   console.warn(`[${c.name}] ${c.pass ? 'PASS' : 'FAIL'}  ${detail}`);
 });
-console.warn(`${pass ? 'PASS' : 'FAIL'}  cases ${cases.length}/${expectedCases}  report: ${join(runDir, 'report.json')}`);
+console.warn(`${pass ? 'PASS' : 'FAIL'}  cases ${cases.length}/${expectedCases}${skip.length ? ` (skip ${skip.join(',')})` : ''}  report: ${join(runDir, 'report.json')}`);
 process.exit(pass ? 0 : 1);
