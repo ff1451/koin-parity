@@ -120,6 +120,9 @@ export const MUTATIONS = [
     name: 'drop-request',
     description: '화면의 주 API 요청(단위 스펙 primaryRequest)을 보내지 않음',
     expect: ['G2'],
+    // 오라클 상태가 주 요청을 실제로 보내야 의미가 있다(입력 전 검색 화면처럼 요청이 없는 상태는 N/A)
+    appliesTo: (oracle, unit) =>
+      !!unit.primaryRequest && oracle.requests.some((r) => new RegExp(unit.primaryRequest).test(`/stage${r.path}`)),
     beforeGoto: async (context, unit) => {
       if (!unit.primaryRequest) return false;
       await context.route(new RegExp(unit.primaryRequest), (route) => route.abort());
