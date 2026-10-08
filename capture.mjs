@@ -42,6 +42,13 @@ const DETERMINISTIC_ARGS = [
   '--disable-image-animation-resync',
 ];
 
+// PARITY_BROWSER_WS가 있으면 Linux 컨테이너의 브라우저(browser.sh)에 붙는다. 실행 인자는 같은 목록을 헤더로 넘긴다
+export function launchBrowser() {
+  const ws = process.env.PARITY_BROWSER_WS;
+  if (!ws) return chromium.launch({ args: DETERMINISTIC_ARGS });
+  return chromium.connect(ws, { headers: { 'x-playwright-launch-options': JSON.stringify({ args: DETERMINISTIC_ARGS }) } });
+}
+
 // lottie-web은 svg 안에 __lottie_element_* id를 만든다
 const DYNAMIC_SELECTOR = 'svg:has([id^="__lottie_element"]), canvas, video';
 
@@ -91,12 +98,19 @@ const FREEZE_CSS = `
 html { scroll-behavior: auto !important; }
 `;
 
-export async function proxyControl(path, body) {
-  const res = await fetch(`${PROXY_ORIGIN}/__parity/${path}`, {
-    method: body ? 'POST' : 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+// 프록시가 닫은 keep-alive 소켓을 재사용하면 ECONNRESET이 난다(lib/apps.mjs proxySession 참고). 새 연결로 한 번 더 시도한다
+export async function proxyControl(path, body, retried = false) {
+  let res;
+  try {
+    res = await fetch(`${PROXY_ORIGIN}/__parity/${path}`, {
+      method: body ? 'POST' : 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch (error) {
+    if (retried) throw error;
+    return proxyControl(path, body, true);
+  }
   if (!res.ok) throw new Error(`proxy ${path} ${res.status}`);
   return res.json();
 }
@@ -273,7 +287,7 @@ export async function performAction(page, action) {
 
 // 브라우저를 띄우고 경로를 열어 정착시킨 뒤 actions로 상태에 도달한다 (capture·explore 공용)
 export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel 5', beforeGoto, actions = [], chrome = DEFAULT_CHROME, auth = 'guest' }) {
-  const browser = await chromium.launch({ args: DETERMINISTIC_ARGS });
+  const browser = await launchBrowser();
   const context = await browser.newContext({ ...devices[device], locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
   const assetLog = [];
   await routeAssets(context, { assetsDir, mode, assetLog });

@@ -68,7 +68,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 1. KOIN에서 스택 top으로 이동 후 `gh stack add "feat/#1572/order-<unit>"`
 2. `units/<unit>.json` 작성(상태·필수 텍스트·actions·primaryRequest·chrome). 필요하면 `node selftest.mjs <unit> --record`로 카세트 기록, 후보가 추가로 부르는 GET은 `node fill.mjs <unit> --ref <branch>`
 3. KOIN `.claude/settings.local.json`에 하네스 쓰기 차단이 걸려 있는지 확인(§7)
-4. Workflow 실행: `workflows/parity-unit-loop.js`를 scriptPath로, args `{unit, branch, title, maxIterations, oracleHints, targets}`. A1 예시:
+4. Workflow 실행: `workflows/parity-unit-loop.js`를 scriptPath로, args `{unit, branch, title, maxIterations, oracleHints, targets, parity, web, env}`. `parity`·`web`은 이 기기의 하네스·KOIN 작업 트리(레이어 브랜치가 체크아웃된 곳) 절대 경로, `env`는 에이전트가 모든 명령 앞에 실행할 셸 문장(§7의 Node·브라우저 설정). A1 예시(경로·env 생략):
    ```json
    {"unit": "A1-shop-events", "branch": "feat/#1572/order-a1-shop-events", "title": "상점 이벤트·공지", "maxIterations": 6,
     "oracleHints": ["pages/Shop/components/ShopEvents/index.tsx", "pages/Shop/components/ShopEvents/ShopEvent.tsx", "pages/Shop/components/ShopEvents/CollapsedEvent.tsx", "pages/Shop/components/ShopEvents/ExpandedEvent.tsx", "pages/Shop/hooks/useGetShopEvents.ts", "util/ts/formatDate.ts", "assets/Shop/sleeep-icon.svg", "assets/lottie/jumping.json", "components/Layout/index.tsx (AppLayout: 본문 pt-15)"],
@@ -87,8 +87,14 @@ gh repo clone BCSDLab/KOIN_WEB_RECODE   # 이미 있으면 git fetch
 cd KOIN_WEB_RECODE && git fetch origin && gh stack checkout 1574   # 스택(trunk + foundation + A1) 복원
 git config rerere.enabled true
 
-# 2) 하네스 의존성
+# 2) 하네스 의존성. Node는 KOIN과 같은 24.14.1 (기본 Node가 다르면 nvm 경로를 PATH 앞에)
+export PATH=$HOME/.nvm/versions/node/v24.14.1/bin:$PATH
 cd ../koin-parity && corepack yarn install && corepack yarn playwright install chromium
+
+# 2-1) Linux가 아닌 기기(macOS 등): 캡처 브라우저를 Linux 컨테이너에서 띄운다 (Docker 필요)
+#   macOS Chromium은 글자·SVG 가장자리 안티앨리어싱이 앱마다 서브픽셀 단위로 달라 A1이 G6 8~196px로 실패했다.
+#   컨테이너 브라우저로는 기준 변경 없이 아래 5)가 전부 PASS (2026-10-08 확인). 이후 모든 하네스 명령에 env를 붙인다
+./browser.sh start && export PARITY_BROWSER_WS=ws://localhost:3999/
 
 # 3) stage 테스트 계정 (커밋 금지, 권한 600) — 계정은 사용자에게 받는다
 umask 077 && printf 'PARITY_TEST_USER_ID=...\nPARITY_TEST_USER_PASSWORD=...\n' > .cache/credentials.env
@@ -109,9 +115,11 @@ KOIN `.claude/settings.local.json` (git 추적 안 됨, 루프 실행 중 하네
 { "permissions": { "deny": ["Edit(//<절대경로>/koin-parity/**)", "Write(//<절대경로>/koin-parity/**)"] } }
 ```
 
-포트: 프록시 4000, order 4100, WEB_RECODE 4101·4102. 이미 쓰이고 있으면 하네스가 기동을 거부한다(다른 개발 서버에 붙어 캡처하는 사고가 실제로 있었음).
+포트: 프록시 4000, order 4100, WEB_RECODE 4101·4102, 컨테이너 브라우저 3999(호스트 127.0.0.1만). 컨테이너 안에서 4000·4100·4101·4102는 호스트로 포워딩되어 앱 URL은 localhost 그대로다. 이미 쓰이고 있으면 하네스가 기동을 거부한다(다른 개발 서버에 붙어 캡처하는 사고가 실제로 있었음).
 
 ## 8. 알려진 이슈·과제
+
+- stage가 가끔 5xx·연결 끊김을 낸다. `--fill` 중 5xx가 빌드 카세트(`.cache/web-build.cassette.json`)에 저장되면 빌드 프리렌더가 계속 실패하므로 그 항목을 지우고 다시 채운다. `fetch failed`로 한 케이스만 실패하면 그 페이지만 `--fill --pages`로 다시 채운다
 
 - `R-regression`의 `cafeteria.desktop`이 간헐적으로 1336px 차이(같은 조건 재실행 시 통과) → 회귀 캡처 결정성 보강 필요
 - WEB_RECODE 버그(범위 밖, 별도 이슈 후보): EventCarousel 초기 인덱스 경합("2/2" 표시), 리뷰 변경 후 로그인 사용자 상세 캐시 미무효화 (`docs/foundation.md` §7)
