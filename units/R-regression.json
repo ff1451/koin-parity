@@ -57,6 +57,39 @@
       "requiredText": [
         "식단"
       ]
+    },
+    {
+      "name": "review-new",
+      "path": "/store/review/21",
+      "devices": [
+        "desktop"
+      ],
+      "auth": "auth",
+      "requiredText": [
+        "돈家네 돌판 삼겹살"
+      ]
+    },
+    {
+      "name": "review-edit",
+      "path": "/store/review/edit/21/558",
+      "devices": [
+        "desktop"
+      ],
+      "auth": "auth",
+      "requiredText": [
+        "돈家네 돌판 삼겹살"
+      ]
+    },
+    {
+      "name": "review-report",
+      "path": "/report/review/shopid/21/reviewid/466",
+      "devices": [
+        "desktop"
+      ],
+      "auth": "auth",
+      "requiredText": [
+        "신고"
+      ]
     }
   ],
   "masks": [

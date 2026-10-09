@@ -52,6 +52,8 @@ try {
         // 같은 앱끼리 비교라 뷰포트를 페이지 높이로 늘려 전체 페이지 캡처 경합을 피한다
         viewportMode: 'expand',
         mode: shouldFill ? 'fill' : 'replay',
+        // 로그인이 필요한 페이지(리뷰 작성 등)는 R-regression.json pages[].auth
+        auth: page.auth ?? 'guest',
       };
       try {
         await capture({ ...common, baseURL: APPS['web-base'].baseURL, outDir: join(caseDir, 'base') });
