@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "GET /v2/shops/251? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/shops/251",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJhZGRyZXNzIjoi6rCA7KCEOOq4uCIsImRlbGl2ZXJ5IjpmYWxzZSwiZGVsaXZlcnlfcHJpY2UiOjEwMDAsImRlc2NyaXB0aW9uIjoi64aN7ZiRIDM1MTEwMjYxNTQ3MjkiLCJpZCI6MjUxLCJpbWFnZV91cmxzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC8wNTkyM2ZkMC0zMjUxLTQ3ZjQtYmQ0MC1mODVkMDA1N2E1NjYvMS5qcGciLCJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL09XTkVSUy8yMDI1LzIvMjQvMzM1YTNmYjgtYjBkMi00ODQyLTlmYTQtMGE1Mzk4N2M0Yzk1L+yKpO2BrOumsOyDtyAyMDI0LTEwLTA0IDE2Mjc0OC5wbmciXSwibWVudV9jYXRlZ29yaWVzIjpbeyJpZCI6ODg5LCJuYW1lIjoi7LaU7LKcIOuplOuJtCJ9LHsiaWQiOjg5MCwibmFtZSI6IuuplOyduCDrqZTribQifSx7ImlkIjo4OTEsIm5hbWUiOiLshLjtirgg66mU64m0In0seyJpZCI6ODkyLCJuYW1lIjoi7IKs7J2065OcIOuplOuJtCJ9XSwibmFtZSI6IuuLpOyCsOyhseuwnCIsIm9wZW4iOlt7ImRheV9vZl93ZWVrIjoiTU9OREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJUVUVTREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJXRURORVNEQVkiLCJjbG9zZWQiOnRydWUsIm9wZW5fdGltZSI6IjAwOjMwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn0seyJkYXlfb2Zfd2VlayI6IlRIVVJTREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJGUklEQVkiLCJjbG9zZWQiOnRydWUsIm9wZW5fdGltZSI6IjE2OjAwIiwiY2xvc2VfdGltZSI6IjIyOjAwIn0seyJkYXlfb2Zfd2VlayI6IlNBVFVSREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJTVU5EQVkiLCJjbG9zZWQiOnRydWUsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn1dLCJwYXlfYmFuayI6dHJ1ZSwicGF5X2NhcmQiOmZhbHNlLCJwaG9uZSI6IjAwMC0wMDAwLTAwMDAiLCJtYWluX2NhdGVnb3J5X2lkIjo2LCJzaG9wX2NhdGVnb3JpZXMiOlt7ImlkIjo2LCJuYW1lIjoi7KSR6rWt7KeRIn1dLCJ1cGRhdGVkX2F0IjoiMjAyNS0wMi0yNCIsImlzX2V2ZW50Ijp0cnVlLCJiYW5rIjoi7ZWc6rWt7JSo7YuwIiwiYWNjb3VudF9udW1iZXIiOiIwMDAwMDAwMDAwMDAwMDAiLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "A5-store-info",
+  "description": "상점 정보(가게정보) 모바일. 상호작용 없는 정적 화면이라 상태는 데이터 분기(휴무일 유무·소개 길이)로 정함",
+  "oracle": { "app": "order", "commit": "1b51c34", "path": "/shop-detail/false/{shopId}" },
+  "candidate": { "app": "web", "path": "/store/{shopId}/info" },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/v2/shops/\\d+",
+  "states": [
+    {
+      "name": "closed-days",
+      "auth": "guest",
+      "params": { "shopId": 251 },
+      "requiredText": ["다산족발", "상호명", "운영시간", "휴무일", "매주", "가게 소개", "가게 알림"]
+    },
+    {
+      "name": "no-closed-days",
+      "auth": "guest",
+      "params": { "shopId": 101 },
+      "requiredText": ["소주방울", "연중무휴", "가게 소개"]
+    }
+  ],
+  "normalize": { "paths": {} }
+}
