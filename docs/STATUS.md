@@ -1,7 +1,7 @@
 # 진행 상태·인수인계
 
 > 마지막 갱신: 2026-10-09 (A5까지 완료, A6은 stage 테스트 계정 대기). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
-> 전체 계획·선택 기록 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`
+> 전체 계획·선택 기록 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`, 만난 문제·해결 기록(블로그 소재) `docs/engineering-log.md` — 새 문제를 해결하면 여기에 항목을 추가한다
 
 ## 1. 한 줄 요약
 
