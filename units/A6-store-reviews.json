@@ -1,0 +1,72 @@
+{
+  "id": "A6-store-reviews",
+  "description": "상점 리뷰 목록 모바일. 비로그인 상태는 explore.mjs(깊이 2), 로그인 상태는 is_mine 분기(수정·삭제, 내가 작성한 리뷰 필터, 삭제 확인)로 정함. 상점 21은 테스트 계정 리뷰 2개 포함 9개. 쓰기(삭제 확정)는 하지 않는다",
+  "oracle": { "app": "order", "commit": "1b51c34", "path": "/review/false/{shopId}" },
+  "candidate": { "app": "web", "path": "/store/{shopId}/reviews" },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/shops/\\d+/reviews",
+  "states": [
+    {
+      "name": "guest",
+      "auth": "guest",
+      "params": { "shopId": 21 },
+      "cassette": "guest-21",
+      "requiredText": ["리뷰 작성하기", "최신순", "내가 작성한 리뷰", "신고하기"]
+    },
+    {
+      "name": "guest-login-required",
+      "auth": "guest",
+      "params": { "shopId": 21 },
+      "cassette": "guest-21",
+      "actions": [{ "click": { "role": "button", "name": "리뷰 작성하기" } }],
+      "requiredText": ["로그인이 필요해요", "로그인하기"]
+    },
+    {
+      "name": "guest-sort-modal",
+      "auth": "guest",
+      "params": { "shopId": 21 },
+      "cassette": "guest-21",
+      "actions": [{ "click": { "role": "button", "name": "최신순" } }],
+      "requiredText": ["오래된순", "평점 높은순", "평점 낮은순"]
+    },
+    {
+      "name": "guest-sort-oldest",
+      "auth": "guest",
+      "params": { "shopId": 21 },
+      "cassette": "guest-21",
+      "actions": [{ "click": { "role": "button", "name": "최신순" } }, { "click": { "text": "오래된순" } }],
+      "requiredText": ["오래된순"]
+    },
+    {
+      "name": "guest-empty",
+      "auth": "guest",
+      "params": { "shopId": 59 },
+      "cassette": "guest-59",
+      "requiredText": ["리뷰 작성하기"]
+    },
+    {
+      "name": "auth",
+      "auth": "auth",
+      "params": { "shopId": 21 },
+      "cassette": "auth-21",
+      "requiredText": ["수정", "삭제", "신고하기"]
+    },
+    {
+      "name": "auth-mine-only",
+      "auth": "auth",
+      "params": { "shopId": 21 },
+      "cassette": "auth-21",
+      "actions": [{ "click": { "text": "내가 작성한 리뷰" } }],
+      "requiredText": ["수정", "삭제"]
+    },
+    {
+      "name": "auth-delete-confirm",
+      "auth": "auth",
+      "params": { "shopId": 21 },
+      "cassette": "auth-21",
+      "actions": [{ "click": { "role": "button", "name": "삭제" } }],
+      "requiredText": ["삭제 하시겠습니까?", "삭제하기"]
+    }
+  ],
+  "normalize": { "paths": {} }
+}
