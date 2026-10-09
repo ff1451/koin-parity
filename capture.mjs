@@ -340,9 +340,15 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
   let settled = await settle(page, SETTLE_MS);
 
   // 상태 도달: 도달하지 못하면(요소 없음) 예외 → 캡처 실패 = 해당 상태 FAIL
-  for (const action of actions) {
-    await performAction(page, action);
-    settled = (await settle(page, SETTLE_MS)) && settled;
+  // 실패하면 브라우저를 닫고 던진다: 컨테이너 브라우저(browser.sh) 연결이 남으면 프로세스가 끝나지 않는다
+  try {
+    for (const action of actions) {
+      await performAction(page, action);
+      settled = (await settle(page, SETTLE_MS)) && settled;
+    }
+  } catch (error) {
+    await browser.close().catch(() => {});
+    throw error;
   }
 
   return { browser, context, page, assetLog, consoleErrors, settled };
