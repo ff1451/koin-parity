@@ -1,6 +1,6 @@
 {
   "id": "A3-store-search",
-  "description": "상점 검색(모바일 전용). 상태는 화면이 작아 소스에서 직접 정함: 초기(입력 전), 결과(상점·메뉴), 결과 없음. 입력은 fill 액션(한 번에 입력, 디바운스 200ms는 settle의 가짜 시계 진행으로 처리)",
+  "description": "상점 검색(모바일 전용). 상태는 화면이 작아 소스에서 직접 정함: 초기(입력 전), 결과(상점·메뉴), 결과 없음. 입력은 fill 액션(한 번에 입력, 디바운스 200ms는 settle의 가짜 시계 진행으로 처리). results-long: 결과가 화면보다 긴 경우(하단 여백) — 사용자가 직접 비교 중 발견해 추가",
   "oracle": {
     "app": "order",
     "commit": "1b51c34",
@@ -19,23 +19,64 @@
       "params": {},
       "cassette": "default",
       "minRequests": 0,
-      "requiredText": ["검색"]
+      "requiredText": [
+        "검색"
+      ]
     },
     {
       "name": "results",
       "auth": "guest",
       "params": {},
       "cassette": "default",
-      "actions": [{ "fill": { "placeholder": "검색어를 입력해주세요.", "text": "족발" } }],
-      "requiredText": ["태선족발", "다산족발"]
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "검색어를 입력해주세요.",
+            "text": "족발"
+          }
+        }
+      ],
+      "requiredText": [
+        "태선족발",
+        "다산족발"
+      ]
+    },
+    {
+      "name": "results-long",
+      "auth": "guest",
+      "params": {},
+      "cassette": "default",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "검색어를 입력해주세요.",
+            "text": "치킨"
+          }
+        },
+        {
+          "blur": true
+        }
+      ],
+      "requiredText": [
+        "굿모닝살로만치킨"
+      ]
     },
     {
       "name": "no-results",
       "auth": "guest",
       "params": {},
       "cassette": "default",
-      "actions": [{ "fill": { "placeholder": "검색어를 입력해주세요.", "text": "zzqx" } }],
-      "requiredText": ["검색"]
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "검색어를 입력해주세요.",
+            "text": "zzqx"
+          }
+        }
+      ],
+      "requiredText": [
+        "검색"
+      ]
     }
   ],
   "normalize": {
