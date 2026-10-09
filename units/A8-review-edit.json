@@ -1,37 +1,86 @@
 {
   "id": "A8-review-edit",
-  "description": "리뷰 수정 모바일(기존 WEB_RECODE 페이지의 모바일 UI). 로그인 필수, 테스트 계정 리뷰(상점 21, 리뷰 558). 수정 제출(PUT)은 하지 않고 제출 직전까지 + 오라클 헤더의 나가기 확인 모달을 검증",
-  "oracle": { "app": "order", "commit": "1b51c34", "path": "/review/edit/{shopId}/{reviewId}" },
-  "candidate": { "app": "web", "path": "/store/review/edit/{shopId}/{reviewId}" },
+  "description": "리뷰 수정 모바일(기존 WEB_RECODE 페이지의 모바일 UI). 로그인 필수, 테스트 계정 리뷰(상점 21, 리뷰 558). 수정 제출(PUT)은 하지 않고 제출 직전까지 + 오라클 헤더의 나가기 확인 모달을 검증. 뒤로가기 버튼 접근성 이름은 order \"뒤로가기 버튼\", WEB_RECODE 공통 헤더 \"뒤로가기\"(헤더는 비교 대상 아님)라 names로 둘 다 허용",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/review/edit/{shopId}/{reviewId}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store/review/edit/{shopId}/{reviewId}"
+  },
   "device": "Pixel 5",
   "primaryRequest": "/stage/shops/\\d+/reviews/\\d+",
   "states": [
     {
       "name": "loaded",
       "auth": "auth",
-      "params": { "shopId": 21, "reviewId": 558 },
+      "params": {
+        "shopId": 21,
+        "reviewId": 558
+      },
       "cassette": "auth-21-558",
-      "requiredText": ["돈家네 돌판 삼겹살", "사진", "내용", "주문메뉴"]
+      "requiredText": [
+        "돈家네 돌판 삼겹살",
+        "사진",
+        "내용",
+        "주문메뉴"
+      ]
     },
     {
       "name": "edited",
       "auth": "auth",
-      "params": { "shopId": 21, "reviewId": 558 },
+      "params": {
+        "shopId": 21,
+        "reviewId": 558
+      },
       "cassette": "auth-21-558",
       "actions": [
-        { "click": { "role": "button", "name": "", "nth": 1 } },
-        { "fill": { "placeholder": "리뷰를 작성해주세요", "text": "다시 먹어보니 보통이에요" } }
+        {
+          "click": {
+            "role": "button",
+            "name": "",
+            "nth": 1
+          }
+        },
+        {
+          "fill": {
+            "placeholder": "리뷰를 작성해주세요",
+            "text": "다시 먹어보니 보통이에요"
+          }
+        }
       ],
-      "requiredText": ["다시 먹어보니 보통이에요"]
+      "requiredText": [
+        "다시 먹어보니 보통이에요"
+      ]
     },
     {
       "name": "exit-modal",
       "auth": "auth",
-      "params": { "shopId": 21, "reviewId": 558 },
+      "params": {
+        "shopId": 21,
+        "reviewId": 558
+      },
       "cassette": "auth-21-558",
-      "actions": [{ "click": { "role": "button", "name": "뒤로가기 버튼" } }],
-      "requiredText": ["그만하기", "계속쓰기"]
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "names": [
+              "뒤로가기 버튼",
+              "뒤로가기"
+            ]
+          }
+        }
+      ],
+      "requiredText": [
+        "그만하기",
+        "계속쓰기"
+      ]
     }
   ],
-  "normalize": { "paths": {} }
+  "normalize": {
+    "paths": {}
+  }
 }
