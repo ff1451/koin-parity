@@ -49,6 +49,9 @@
             "placeholder": "리뷰를 작성해주세요",
             "text": "다시 먹어보니 보통이에요"
           }
+        },
+        {
+          "blur": true
         }
       ],
       "requiredText": [
