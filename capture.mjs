@@ -288,6 +288,13 @@ export async function performAction(page, action) {
     await page.getByPlaceholder(action.press.placeholder, { exact: true }).nth(action.press.nth ?? 0).press(action.press.key, { timeout: 5000 });
     return;
   }
+  // 비교 대상이 아닌 헤더처럼 두 앱의 접근성 이름이 다른 요소: 이름 후보 중 하나와 정확히 일치하면 누른다
+  if (action.click?.names) {
+    const escape = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const name = new RegExp(`^(${action.click.names.map(escape).join('|')})$`);
+    await page.getByRole(action.click.role, { name }).nth(action.click.nth ?? 0).click({ timeout: 5000 });
+    return;
+  }
   // 역할이 없는 클릭 대상(숨긴 체크박스를 감싼 label 등)은 보이는 글자로 찾는다
   if (action.click?.text) {
     await page.getByText(action.click.text, { exact: true }).nth(action.click.nth ?? 0).click({ timeout: 5000 });
