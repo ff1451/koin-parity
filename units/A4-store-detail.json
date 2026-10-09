@@ -1,8 +1,15 @@
 {
   "id": "A4-store-detail",
-  "description": "상점 상세 모바일. 오라클은 이미지 캐러셀 위에 투명 고정 헤더를 겹치므로 헤더까지 본문으로 보고 전체 비교(chrome none, foundation §2). 상태는 explore.mjs(깊이 2)와 데이터 분기(배달 여부·이벤트·이미지 유무)로 정함",
-  "oracle": { "app": "order", "commit": "1b51c34", "path": "/shop/false/{shopId}" },
-  "candidate": { "app": "web", "path": "/store/{shopId}" },
+  "description": "상점 상세 모바일. 오라클은 이미지 캐러셀 위에 투명 고정 헤더를 겹치므로 헤더까지 본문으로 보고 전체 비교(chrome none, foundation §2). 상태는 explore.mjs(깊이 2)와 데이터 분기(배달 여부·이벤트·이미지 유무)로 정함. no-menus: 메뉴가 없는 상점(데이터 크기 축, 상점 41)",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/shop/false/{shopId}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store/{shopId}"
+  },
   "device": "Pixel 5",
   "chrome": "none",
   "primaryRequest": "/stage/shops/\\d+/summary",
@@ -10,33 +17,84 @@
     {
       "name": "default",
       "auth": "guest",
-      "params": { "shopId": 251 },
+      "params": {
+        "shopId": 251
+      },
       "cassette": "shop-251",
-      "requiredText": ["다산족발", "가게정보", "계좌이체 가능", "불가능한 매장이에요", "DA 트랙장은 공짜", "가게에 전화하기", "추천 메뉴"]
+      "requiredText": [
+        "다산족발",
+        "가게정보",
+        "계좌이체 가능",
+        "불가능한 매장이에요",
+        "DA 트랙장은 공짜",
+        "가게에 전화하기",
+        "추천 메뉴"
+      ]
     },
     {
       "name": "image-viewer",
       "auth": "guest",
-      "params": { "shopId": 251 },
+      "params": {
+        "shopId": 251
+      },
       "cassette": "shop-251",
-      "actions": [{ "click": { "role": "button", "name": "slide 0" } }],
-      "requiredText": ["다산족발"]
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "slide 0"
+          }
+        }
+      ],
+      "requiredText": [
+        "다산족발"
+      ]
     },
     {
       "name": "menu-group",
       "auth": "guest",
-      "params": { "shopId": 251 },
+      "params": {
+        "shopId": 251
+      },
       "cassette": "shop-251",
-      "actions": [{ "click": { "role": "button", "name": "세트 메뉴" } }],
-      "requiredText": ["세트 메뉴"]
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "세트 메뉴"
+          }
+        }
+      ],
+      "requiredText": [
+        "세트 메뉴"
+      ]
     },
     {
       "name": "delivery-no-image",
       "auth": "guest",
-      "params": { "shopId": 101 },
+      "params": {
+        "shopId": 101
+      },
       "cassette": "shop-101",
-      "requiredText": ["소주방울", "최소주문", "배달금액"]
+      "requiredText": [
+        "소주방울",
+        "최소주문",
+        "배달금액"
+      ]
+    },
+    {
+      "name": "no-menus",
+      "auth": "guest",
+      "params": {
+        "shopId": 41
+      },
+      "cassette": "shop-41",
+      "requiredText": [
+        "복지관 매점"
+      ]
     }
   ],
-  "normalize": { "paths": {} }
+  "normalize": {
+    "paths": {}
+  }
 }

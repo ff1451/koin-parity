@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "GET /shops/251/events? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/251/events",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJldmVudHMiOlt7InNob3BfaWQiOjI1MSwic2hvcF9uYW1lIjoi64uk7IKw7KGx67CcIiwiZXZlbnRfaWQiOjY0LCJ0aXRsZSI6IkRBIO2KuOuemeyepeydgCDqs7Xsp5wiLCJjb250ZW50Ijoi64uoLCDst6jsl4XtlaAg65WMIOq5jOyngCAiLCJ0aHVtYm5haWxfaW1hZ2VzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC9hMDBlNjU3OS04NmQ4LTQ3NDYtYTQ5MS1lNzMxODk1YzI3MTQv7Iqk7YGs66aw7IO3IDIwMjQtMDYtMDMgMjEzMDMyLnBuZyJdLCJzdGFydF9kYXRlIjoiMjAyNS0xMC0xNiIsImVuZF9kYXRlIjoiMjAyNi0xMS0wNCJ9LHsic2hvcF9pZCI6MjUxLCJzaG9wX25hbWUiOiLri6TsgrDsobHrsJwiLCJldmVudF9pZCI6OTAwMSwidGl0bGUiOiLrpqzrt7Ag7J2067Kk7Yq4IiwiY29udGVudCI6IuumrOu3sOulvCDrgqjquLDrqbQg7J2M66OMIDHsupQg7Kad7KCVIiwidGh1bWJuYWlsX2ltYWdlcyI6W10sInN0YXJ0X2RhdGUiOiIyMDI2LTA5LTAxIiwiZW5kX2RhdGUiOiIyMDI2LTEyLTMxIn0seyJzaG9wX2lkIjoyNTEsInNob3BfbmFtZSI6IuuLpOyCsOyhseuwnCIsImV2ZW50X2lkIjo5MDAyLCJ0aXRsZSI6IuygnOuqqeydtCDslYTso7wg6ri47Ja07IScIO2VnCDspITsl5Ag64ukIOuTpOyWtOqwgOyngCDslYrripQg7J2067Kk7Yq464qUIOyWtOuWu+qyjCDrs7TsnbTripTsp4Ag7ZmV7J247ZWp64uI64ukIiwiY29udGVudCI6IuuCtOyaqeuPhCDquLjqsowg7JSB64uI64ukLiDrgrTsmqnrj4Qg6ri46rKMIOyUgeuLiOuLpC4g64K07Jqp64+EIOq4uOqyjCDslIHri4jri6QuIOuCtOyaqeuPhCDquLjqsowg7JSB64uI64ukLiDrgrTsmqnrj4Qg6ri46rKMIOyUgeuLiOuLpC4g64K07Jqp64+EIOq4uOqyjCDslIHri4jri6QuIOuCtOyaqeuPhCDquLjqsowg7JSB64uI64ukLiDrgrTsmqnrj4Qg6ri46rKMIOyUgeuLiOuLpC4g64K07Jqp64+EIOq4uOqyjCDslIHri4jri6QuIOuCtOyaqeuPhCDquLjqsowg7JSB64uI64ukLiDrgrTsmqnrj4Qg6ri46rKMIOyUgeuLiOuLpC4g64K07Jqp64+EIOq4uOqyjCDslIHri4jri6QuIiwidGh1bWJuYWlsX2ltYWdlcyI6WyJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL09XTkVSUy8yMDI1LzIvMjQvYTAwZTY1NzktODZkOC00NzQ2LWE0OTEtZTczMTg5NWMyNzE0L+yKpO2BrOumsOyDtyAyMDI0LTA2LTAzIDIxMzAzMi5wbmciXSwic3RhcnRfZGF0ZSI6IjIwMjYtMTAtMDEiLCJlbmRfZGF0ZSI6IjIwMjYtMTAtMzEifSx7InNob3BfaWQiOjI1MSwic2hvcF9uYW1lIjoi64uk7IKw7KGx67CcIiwiZXZlbnRfaWQiOjkwMDMsInRpdGxlIjoi7KO866eQIO2VoOyduCIsImNvbnRlbnQiOiLthqDCt+ydvCDsoIQg66mU64m0IDEwJSDtlaDsnbgiLCJ0aHVtYm5haWxfaW1hZ2VzIjpbXSwic3RhcnRfZGF0ZSI6IjIwMjYtMTAtMTAiLCJlbmRfZGF0ZSI6IjIwMjYtMTAtMTEifV19"
+      }
+    }
+  ]
+}

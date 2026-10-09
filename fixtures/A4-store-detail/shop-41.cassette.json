@@ -1,0 +1,80 @@
+{
+  "entries": [
+    {
+      "key": "GET /shops/41/events? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/41/events",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJldmVudHMiOltdfQ=="
+      }
+    },
+    {
+      "key": "GET /shops/41/menus? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/41/menus",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb3VudCI6MCwibWVudV9jYXRlZ29yaWVzIjpbXSwidXBkYXRlZF9hdCI6IisxMDAwMDAwMDAwLTAxLTAxIn0="
+      }
+    },
+    {
+      "key": "GET /shops/41/summary? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/41/summary",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjo0MSwibmFtZSI6IuuzteyngOq0gCDrp6TsoJAiLCJpbnRyb2R1Y3Rpb24iOm51bGwsInJhdGluZ19hdmVyYWdlIjozLCJyZXZpZXdfY291bnQiOjgsImltYWdlcyI6W3siaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC8xMGYxMTY5NWQwOGU3ZWQyYjc1NGNmZTI1MTlhYTc4ZS5qcGciLCJpc190aHVtYm5haWwiOnRydWV9XX0="
+      }
+    },
+    {
+      "key": "GET /v2/shops/41? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/shops/41",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJhZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOy2qeygiOuhnCAxNjAwIiwiZGVsaXZlcnkiOmZhbHNlLCJkZWxpdmVyeV9wcmljZSI6MCwiZGVzY3JpcHRpb24iOiLsobDqsbTrtoDrsLDri6ws6rWQ64K067Cw64usIiwiaWQiOjQxLCJpbWFnZV91cmxzIjpbImh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvMTBmMTE2OTVkMDhlN2VkMmI3NTRjZmUyNTE5YWE3OGUuanBnIl0sIm1lbnVfY2F0ZWdvcmllcyI6W3siaWQiOjQyLCJuYW1lIjoi7LaU7LKcIOuplOuJtCJ9LHsiaWQiOjE2OSwibmFtZSI6IuuplOyduCDrqZTribQifSx7ImlkIjo0MjMsIm5hbWUiOiLshLjtirgg66mU64m0In0seyJpZCI6Mjk2LCJuYW1lIjoi7IKs7J2065OcIOuplOuJtCJ9XSwibmFtZSI6IuuzteyngOq0gCDrp6TsoJAiLCJvcGVuIjpbeyJkYXlfb2Zfd2VlayI6Ik1PTkRBWSIsImNsb3NlZCI6ZmFsc2UsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn0seyJkYXlfb2Zfd2VlayI6IlRVRVNEQVkiLCJjbG9zZWQiOmZhbHNlLCJvcGVuX3RpbWUiOiIwMDowMCIsImNsb3NlX3RpbWUiOiIwMDowMCJ9LHsiZGF5X29mX3dlZWsiOiJXRURORVNEQVkiLCJjbG9zZWQiOmZhbHNlLCJvcGVuX3RpbWUiOiIwMDowMCIsImNsb3NlX3RpbWUiOiIwMDowMCJ9LHsiZGF5X29mX3dlZWsiOiJUSFVSU0RBWSIsImNsb3NlZCI6ZmFsc2UsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn0seyJkYXlfb2Zfd2VlayI6IkZSSURBWSIsImNsb3NlZCI6ZmFsc2UsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn0seyJkYXlfb2Zfd2VlayI6IlNBVFVSREFZIiwiY2xvc2VkIjpmYWxzZSwib3Blbl90aW1lIjoiMDA6MDAiLCJjbG9zZV90aW1lIjoiMDA6MDAifSx7ImRheV9vZl93ZWVrIjoiU1VOREFZIiwiY2xvc2VkIjpmYWxzZSwib3Blbl90aW1lIjoiMDA6MDAiLCJjbG9zZV90aW1lIjoiMDA6MDAifV0sInBheV9iYW5rIjpmYWxzZSwicGF5X2NhcmQiOnRydWUsInBob25lIjoiMDAwLTAwMC0wMDAwIiwibWFpbl9jYXRlZ29yeV9pZCI6bnVsbCwic2hvcF9jYXRlZ29yaWVzIjpbeyJpZCI6MSwibmFtZSI6IuyghOyytOuztOq4sCJ9XSwidXBkYXRlZF9hdCI6IjIwMjUtMDktMDUiLCJpc19ldmVudCI6ZmFsc2UsImJhbmsiOm51bGwsImFjY291bnRfbnVtYmVyIjpudWxsLCJvcGVuX3RpbWUiOiIwMDowMCIsImNsb3NlX3RpbWUiOiIwMDowMCJ9"
+      }
+    }
+  ]
+}

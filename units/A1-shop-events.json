@@ -1,6 +1,6 @@
 {
   "id": "A1-shop-events",
-  "description": "상점 이벤트·공지 목록 (모바일)",
+  "description": "상점 이벤트·공지 목록 (모바일). many-events: 이벤트가 여러 개인 긴 목록(데이터 크기 축). stage에 이벤트 2개 이상 상점이 없어 상점 251 실제 응답에서 파생(썸네일 없음·긴 제목/내용 포함)",
   "oracle": {
     "app": "order",
     "commit": "1b51c34",
@@ -40,6 +40,18 @@
       "requiredText": [
         "DA 트랙장은 공짜",
         "접기"
+      ]
+    },
+    {
+      "name": "many-events",
+      "auth": "guest",
+      "params": {
+        "shopId": 251
+      },
+      "requiredText": [
+        "DA 트랙장은 공짜",
+        "리뷰 이벤트",
+        "주말 할인"
       ]
     },
     {
