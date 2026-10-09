@@ -1,0 +1,46 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index cfc54fc..fe5375e 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -11,8 +11,8 @@ import NearbyShops from './pages/NearbyShops';
+ // import PaymentConfirm from './pages/PaymentConfirm';
+ import Search from './pages/Search';
+ // import MenuDetail from './pages/Shop/MenuDetail';
+-// import OrderableShopView from './pages/Shop/OrderableShopView';
+-// import OrderableShopDetail from './pages/Shop/ShopDetail/components/OrderableShopDetail';
++import OrderableShopView from './pages/Shop/OrderableShopView';
++import OrderableShopDetail from './pages/Shop/ShopDetail/components/OrderableShopDetail';
+ import ShopEvents from './pages/Shop/components/ShopEvents';
+ import ReviewCreateForm from './pages/Shop/shopReview/components/ReviewCreateForm';
+ import ReviewEditForm from './pages/Shop/shopReview/components/ReviewEditForm';
+@@ -24,7 +24,7 @@ import AppLayout, { HomeLayout } from '@/components/Layout';
+ // import OrderFinish from '@/pages/OrderFinish';
+ // import Payment from '@/pages/Payment';
+ import UnorderableShopDetail from '@/pages/Shop/ShopDetail/components/UnorderableShopDetail';
+-// import OrderableShopReview from '@/pages/Shop/shopReview/components/OrderableShopReview';
++import OrderableShopReview from '@/pages/Shop/shopReview/components/OrderableShopReview';
+ import UnorderableShopReview from '@/pages/Shop/shopReview/components/UnorderableShopReview';
+ 
+ export default function App() {
+@@ -39,7 +39,7 @@ export default function App() {
+             </DevOnlyWrapper>
+           }
+         />
+-        {/* <Route path="shop/true/:shopId" element={<OrderableShopView />} /> */}
++        <Route path="shop/true/:shopId" element={<OrderableShopView />} />
+         <Route path="shop/false/:shopId" element={<Wrapper title="상점 상세" element={<UnorderableShopView />} />} />
+         {/* <Route path="shop/true/:shopId/menus/:menuId" element={<MenuDetail />} /> */}
+         {/* <Route path="payment/return" element={<PaymentConfirm />} /> */}
+@@ -51,10 +51,10 @@ export default function App() {
+           <Route path="search" element={<Search />} />
+         </Route>
+         <Route element={<AppLayout />}>
+-          {/* <Route path="shop-detail/true/:shopId" element={<OrderableShopDetail />} /> */}
++          <Route path="shop-detail/true/:shopId" element={<OrderableShopDetail />} />
+           <Route path="shop-detail/false/:shopId" element={<UnorderableShopDetail />} />
+           <Route path="shop-events/:shopId" element={<ShopEvents />} />
+-          {/* <Route path="review/true/:shopId" element={<OrderableShopReview />} /> */}
++          <Route path="review/true/:shopId" element={<OrderableShopReview />} />
+           <Route path="review">
+             <Route path="false/:shopId" element={<UnorderableShopReview />} />
+             <Route path="report/:shopId" element={<ReviewReport />} />

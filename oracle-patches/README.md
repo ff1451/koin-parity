@@ -16,3 +16,4 @@
 | `0005-upload-error-status.patch` | 업로드 실패 시 상태 코드를 `error.response.status`에서 읽어 오류 유형이 항상 네트워크로 판정됨 (D6 #7) |
 | `0006-report-all-reasons.patch` | 신고 사유를 다중 선택해도 첫 번째만 전송 → KOIN_WEB_RECODE 신고 페이지처럼 모두 전송 (D6 #9) |
 | `0007-invalidate-reviews-after-write.patch` | 리뷰 작성·수정 후 목록이 갱신되지 않음 → KOIN_WEB_RECODE처럼 리뷰 쿼리 무효화 (D6 #11) |
+| `0008-enable-orderable-shop-routes.patch` | Track B: 주문 가능 상점 상세·정보·리뷰 라우트(`shop/true`, `shop-detail/true`, `review/true`)와 import의 주석만 해제. 화면 코드는 그대로 (2026-10-10 사용자 승인) |
