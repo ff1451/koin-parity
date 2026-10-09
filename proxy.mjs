@@ -63,9 +63,18 @@ const SENSITIVE_KEY = /(phone|tel|account|email|token|password|student_number|lo
 const PHONE = /\b0\d{1,2}-?\d{3,4}-?\d{4}\b/g;
 const maskChars = (v) => v.replace(/\d/g, '0').replace(/[A-Za-z]/g, 'x').replace(/[가-힣]/g, '가');
 
+// 사용자 본인 정보 객체(내 정보 응답 등)의 실명·전공·성별. 상점명 등 다른 name은 가리면 화면이 바뀌므로 사용자 객체에서만 가린다
+const USER_OBJECT_KEY = /^(login_id|student_number)$/;
+const USER_PRIVATE_KEY = /^(name|major|gender)$/;
+
 function scrub(value, key = '') {
   if (Array.isArray(value)) return value.map((v) => scrub(v, key));
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, scrub(v, k)]));
+  if (value && typeof value === 'object') {
+    const isUser = Object.keys(value).some((k) => USER_OBJECT_KEY.test(k));
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, isUser && USER_PRIVATE_KEY.test(k) ? scrub(v, 'password') : scrub(v, k)]),
+    );
+  }
   if (typeof value === 'string') return SENSITIVE_KEY.test(key) ? maskChars(value) : value.replace(PHONE, (m) => maskChars(m));
   if (typeof value === 'number' && SENSITIVE_KEY.test(key)) return 0;
   return value;
