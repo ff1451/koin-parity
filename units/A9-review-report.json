@@ -1,0 +1,37 @@
+{
+  "id": "A9-review-report",
+  "description": "리뷰 신고 모바일(기존 WEB_RECODE 페이지의 모바일 UI). 로그인 필수, 상점 21의 다른 사용자 리뷰 466. 신고 제출(POST)은 하지 않고 제출 직전까지 검증. order는 ?reviewId 쿼리, WEB_RECODE는 경로 파라미터(foundation §1)",
+  "oracle": { "app": "order", "commit": "1b51c34", "path": "/review/report/{shopId}?reviewId={reviewId}" },
+  "candidate": { "app": "web", "path": "/report/review/shopid/{shopId}/reviewid/{reviewId}" },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/shops/reviews/reports/categories",
+  "states": [
+    {
+      "name": "empty",
+      "auth": "auth",
+      "params": { "shopId": 21, "reviewId": 466 },
+      "cassette": "auth-21-466",
+      "requiredText": ["신고 이유를 선택해주세요.", "주제에 맞지 않음", "스팸", "욕설", "기타", "신고하기"]
+    },
+    {
+      "name": "selected",
+      "auth": "auth",
+      "params": { "shopId": 21, "reviewId": 466 },
+      "cassette": "auth-21-466",
+      "actions": [{ "click": { "text": "스팸" } }],
+      "requiredText": ["스팸"]
+    },
+    {
+      "name": "etc-filled",
+      "auth": "auth",
+      "params": { "shopId": 21, "reviewId": 466 },
+      "cassette": "auth-21-466",
+      "actions": [
+        { "fill": { "placeholder": "신고 사유를 입력해주세요.", "text": "상점과 관계없는 내용이에요" } },
+        { "blur": true }
+      ],
+      "requiredText": ["상점과 관계없는 내용이에요"]
+    }
+  ],
+  "normalize": { "paths": {} }
+}
