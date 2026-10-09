@@ -95,7 +95,7 @@ const FREEZE_CSS = `
   transition-duration: 0s !important; transition-delay: 0s !important;
   caret-color: transparent !important;
 }
-html { scroll-behavior: auto !important; }
+*, html { scroll-behavior: auto !important; }
 `;
 
 // 프록시가 닫은 keep-alive 소켓을 재사용하면 ECONNRESET이 난다(lib/apps.mjs proxySession 참고). 새 연결로 한 번 더 시도한다
@@ -258,9 +258,12 @@ async function settle(page, firstRunMs) {
   await page.clock.runFor(firstRunMs);
   await page.waitForLoadState('networkidle');
   let previous = '';
+  // 한 번에 500ms씩 진행한다: React Suspense는 숨겼던 내용을 다시 보일 때 300ms 지연 타이머를 쓰므로,
+  // 100ms 단위로는 그 타이머가 돌기 전에 "변화 없음"으로 판단해 숨겨진 상태(display:none)를 찍는다
+  // (develop 데스크톱 리뷰 수정 페이지의 헤더 누락으로 확인)
   for (let i = 0; i < 8; i += 1) {
     await page.waitForTimeout(250);
-    await page.clock.runFor(100);
+    await page.clock.runFor(500);
     const snapshot = JSON.stringify(await page.evaluate(collectInventory, []));
     if (snapshot === previous) return true;
     previous = snapshot;
@@ -327,6 +330,24 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
   await routeAssets(context, { assetsDir, mode, assetLog });
   if (auth === 'auth') await applyAuth(context, mode);
   await context.addInitScript(INSTRUMENT, { toastSelector: chrome.toastSelector });
+  // 부드러운 스크롤은 가짜 시계가 아니라 실제 시간으로 움직여 캐러셀 자동 넘김 중간이 실행마다 다르게 찍힌다(A4).
+  // CSS(scroll-behavior)와 JS({ behavior: 'smooth' }) 모두 즉시 이동으로 바꾼다
+  await context.addInitScript(() => {
+    const instant = (arg) => (arg && typeof arg === 'object' ? { ...arg, behavior: 'auto' } : arg);
+    for (const proto of [Element.prototype, window]) {
+      for (const name of ['scrollTo', 'scrollBy', 'scroll']) {
+        const original = proto[name];
+        if (typeof original !== 'function') continue;
+        proto[name] = function patched(...args) {
+          return original.apply(this, args.length === 1 ? [instant(args[0])] : args);
+        };
+      }
+    }
+    const intoView = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function patched(arg) {
+      return intoView.call(this, instant(arg));
+    };
+  });
   // 변이용 스크립트는 계측보다 뒤에 등록해 계측을 덮어쓸 수 있게 한다
   if (beforeGoto) await beforeGoto(context);
   const page = await context.newPage();
