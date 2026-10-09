@@ -1,0 +1,75 @@
+{
+  "id": "A7-review-new",
+  "description": "리뷰 작성 모바일(기존 WEB_RECODE 페이지의 모바일 UI). 로그인 필수. 제출(POST)은 하지 않고 제출 직전까지의 상태만 검증. 별점 버튼은 접근성 이름이 없어 이름 없는 버튼의 순서로 누른다. 나가기 모달은 오라클 헤더가 /review/edit에서만 띄우므로(작성 화면에서는 뒤로가기 = 이전 화면) A8에서 검증",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/review/new/{shopId}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/store/review/{shopId}"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/v2/shops/\\d+",
+  "states": [
+    {
+      "name": "empty",
+      "auth": "auth",
+      "params": {
+        "shopId": 21
+      },
+      "cassette": "auth-21",
+      "requiredText": [
+        "돈家네 돌판 삼겹살",
+        "리뷰를 남겨주시면",
+        "사진",
+        "내용",
+        "주문메뉴",
+        "작성하기"
+      ]
+    },
+    {
+      "name": "filled",
+      "auth": "auth",
+      "params": {
+        "shopId": 21
+      },
+      "cassette": "auth-21",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "",
+            "nth": 3
+          }
+        },
+        {
+          "fill": {
+            "placeholder": "리뷰를 작성해주세요",
+            "text": "고기가 맛있어요"
+          }
+        },
+        {
+          "fill": {
+            "placeholder": "메뉴명을 입력해주세요",
+            "text": "삼겹살"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "메뉴명을 입력해주세요",
+            "key": "Enter"
+          }
+        }
+      ],
+      "requiredText": [
+        "고기가 맛있어요",
+        "삼겹살"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}
