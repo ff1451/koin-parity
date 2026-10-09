@@ -1,11 +1,11 @@
 # 진행 상태·인수인계
 
-> 마지막 갱신: 2026-10-09 (A5까지 완료, A6은 stage 테스트 계정 대기). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
+> 마지막 갱신: 2026-10-09 (Track A A1~A9 완료). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
 > 전체 계획·선택 기록 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`, 만난 문제·해결 기록(블로그 소재) `docs/engineering-log.md` — 새 문제를 해결하면 여기에 항목을 추가한다
 
 ## 1. 한 줄 요약
 
-KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RECODE로 옮기는 중. 화면 단위로 order 화면과 픽셀·요청·이벤트를 비교하는 하네스(이 저장소)로 판정하고, 단위마다 stacked PR을 쌓는다. **foundation·A1~A5 완료, 다음은 A6(리뷰 목록) — 로그인 상태 기록에 stage 테스트 계정(`.cache/credentials.env`) 필요.**
+KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RECODE로 옮기는 중. 화면 단위로 order 화면과 픽셀·요청·이벤트를 비교하는 하네스(이 저장소)로 판정하고, 단위마다 stacked PR을 쌓는다. **foundation·Track A(A1~A9) 완료, PR #1573~#1583. 다음은 Track B(주문 가능 상점 조회, 오라클 패치 승인 필요) 또는 P6 전환 — 사용자 결정 대기.**
 
 ## 2. 확정된 범위·결정 (다시 묻지 않는다)
 
@@ -37,6 +37,10 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a3-store-search` | PR **#1577** draft → A2 |
 | KOIN `feat/#1572/order-a4-store-detail` | PR **#1578** draft → A3 |
 | KOIN `feat/#1572/order-a5-store-info` | PR **#1579** draft → A4 |
+| KOIN `feat/#1572/order-a6-store-reviews` | PR **#1580** draft → A5 |
+| KOIN `feat/#1572/order-a7-review-new` | PR **#1581** draft → A6 |
+| KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** draft → A7 |
+| KOIN `feat/#1572/order-a9-review-report` | PR **#1583** draft → A8 |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
 ## 5. 단위 진행표
@@ -49,15 +53,15 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | A3 검색 | `/store/search` | ✅ PR #1577 (루프 1회, 상태 3개: 입력 전·결과·결과 없음. 입력은 `fill` 액션) |
 | A4 상점 상세 모바일 | `/store/[id]` | ✅ PR #1578 (루프 2회, `chrome: none`, 상태 4개. 이미지 뷰어는 사용자 결정으로 Swiper — foundation에 `swiper ^11.2.10` 추가) |
 | A5 상점 정보 | `/store/[id]/info` | ✅ PR #1579 (루프 1회, 상태 2개: 휴무일 유무) |
-| A6 리뷰 목록 | `/store/[id]/reviews` (로그인 상태 포함) | ⏳ |
-| A7·A8·A9 리뷰 작성·수정·신고 | 기존 WEB_RECODE 페이지 모바일 UI | ⏳ |
+| A6 리뷰 목록 | `/store/[id]/reviews` | ✅ PR #1580 (루프 1회, 상태 8개: 비로그인 5·로그인 3) |
+| A7·A8·A9 리뷰 작성·수정·신고 | 기존 WEB_RECODE 페이지 모바일 UI | ✅ PR #1581·#1582·#1583 (제출 직전까지만 검증. 데스크톱 기존 훅은 자체 토스트로 중복되어 모바일은 공용 mutation 직접 사용) |
 | B2·B4·B5 주문 가능 상점 조회 | `/order/shops/[id]` | ⏳ (오라클 커밋 7243571 + 라우트 주석 해제 패치 필요) |
 | B9·B10 앱 결제 웹뷰 | `/order/checkout*` | ⏳ 스펙 단위, 백엔드·Android 계약 후 |
 | P6 전환 | 링크 교체, order 301, 헤더 높이 통일 | ⏳ |
 
 ## 6. 바로 다음 할 일
 
-**다음: A6 리뷰 목록(`/store/[id]/reviews`)**. 오라클 `review/false/:id?sort`. 로그인 상태가 있어 stage 테스트 계정으로 기록해야 한다(§7-3)
+**다음: Track B 또는 P6 (사용자 결정)**. 로그인 상태 기록은 stage 테스트 계정 `.cache/credentials.env`(사용자 계정)로 한다. 테스트 계정 리뷰: 상점 21의 558·475, 다른 사용자 리뷰 466
 
 - 상태 탐색기 `explore.mjs`: 후보를 구조 서명(조상 태그·클래스 경로 + 요소 태그)으로 묶어 반복 그룹(4개 이상)은 앞 2개만 누르고, 이동으로 판명된 그룹은 깊은 상태에서 다시 누르지 않는다. A2 깊이 2 탐색이 1분 34초
 - 데이터만 다른 상태(카테고리 10개 등)는 사람이 대표 상태로 묶어 스펙에 올린다
