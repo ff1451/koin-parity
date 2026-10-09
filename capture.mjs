@@ -283,6 +283,11 @@ export async function performAction(page, action) {
     await target.nth(action.fill.nth ?? 0).fill(action.fill.text, { timeout: 5000 });
     return;
   }
+  // 역할이 없는 클릭 대상(숨긴 체크박스를 감싼 label 등)은 보이는 글자로 찾는다
+  if (action.click?.text) {
+    await page.getByText(action.click.text, { exact: true }).nth(action.click.nth ?? 0).click({ timeout: 5000 });
+    return;
+  }
   if (action.click) {
     await page
       .getByRole(action.click.role, { name: action.click.name, exact: true })
