@@ -4,6 +4,8 @@
 //   replay: 카세트 응답만 반환. 없으면 502 + miss 기록 (stage로 절대 넘기지 않는다)
 //   fill:   재생하되 카세트에 없는 GET만 stage에서 받아 채운다. 쓰기 요청은 채우지 않는다(miss).
 //           후보 앱(WEB_RECODE)이 추가로 부르는 공통 API를 보충하는 용도. 루프 밖에서만 쓴다
+//   live:   사람이 띄워 보는 용도. 가리지도 저장하지도 않고 stage로 그대로 전달한다(로그인 쿠키가 실제 값으로 전달됨).
+//           쓰기 요청도 stage에 그대로 반영되므로 판정에는 쓰지 않는다
 //
 // 제어 엔드포인트(/__parity/*)로 카세트·모드·세션을 전환하고 요청 로그를 읽는다.
 // 실행: node proxy.mjs [--port 4000]
@@ -244,7 +246,9 @@ async function handleApi(req, res, url) {
   let filled = false;
 
   // stage 응답은 받는 즉시 가린다: 기록 실행과 재생 실행이 같은 값을 보도록
-  if (state.mode === 'record') {
+  if (state.mode === 'live') {
+    response = await forwardUpstream(req, url, body);
+  } else if (state.mode === 'record') {
     response = scrubResponse(await forwardUpstream(req, url, body));
     record(response);
   } else {
