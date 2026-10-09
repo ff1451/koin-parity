@@ -31,16 +31,17 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 |---|---|
 | `ff1451/koin-parity` (private) | 하네스·문서·단위 스펙·카세트·오라클 패치 0001~0007 |
 | KOIN `refactor/order-integration` | 스택 trunk (develop `836acf78`에서 분기, 원격 push됨) |
-| KOIN `feat/#1572/order-foundation` | PR **#1573** draft → refactor/order-integration |
-| KOIN `feat/#1572/order-a1-shop-events` | PR **#1574** draft → foundation (GitHub stack #1575) |
-| KOIN `feat/#1572/order-a2-store-list` | PR **#1576** draft → A1 |
-| KOIN `feat/#1572/order-a3-store-search` | PR **#1577** draft → A2 |
-| KOIN `feat/#1572/order-a4-store-detail` | PR **#1578** draft → A3 |
-| KOIN `feat/#1572/order-a5-store-info` | PR **#1579** draft → A4 |
-| KOIN `feat/#1572/order-a6-store-reviews` | PR **#1580** draft → A5 |
-| KOIN `feat/#1572/order-a7-review-new` | PR **#1581** draft → A6 |
-| KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** draft → A7 |
-| KOIN `feat/#1572/order-a9-review-report` | PR **#1583** draft → A8 |
+| KOIN `feat/#1572/order-foundation` | PR **#1573** → refactor/order-integration |
+| KOIN `feat/#1572/order-a1-shop-events` | PR **#1574** → foundation (GitHub stack #1575) |
+| KOIN `feat/#1572/order-a2-store-list` | PR **#1576** → A1 |
+| KOIN `feat/#1572/order-a3-store-search` | PR **#1577** → A2 |
+| KOIN `feat/#1572/order-a4-store-detail` | PR **#1578** → A3 |
+| KOIN `feat/#1572/order-a5-store-info` | PR **#1579** → A4 |
+| KOIN `feat/#1572/order-a6-store-reviews` | PR **#1580** → A5 |
+| KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
+| KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
+| KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
+| KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
 ## 5. 단위 진행표
@@ -57,7 +58,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | A7·A8·A9 리뷰 작성·수정·신고 | 기존 WEB_RECODE 페이지 모바일 UI | ✅ PR #1581·#1582·#1583 (제출 직전까지만 검증. 데스크톱 기존 훅은 자체 토스트로 중복되어 모바일은 공용 mutation 직접 사용) |
 | B2·B4·B5 주문 가능 상점 조회 | `/order/shops/[id]` | ⏳ (오라클 커밋 7243571 + 라우트 주석 해제 패치 필요) |
 | B9·B10 앱 결제 웹뷰 | `/order/checkout*` | ⏳ 스펙 단위, 백엔드·Android 계약 후 |
-| P6 전환 | 링크 교체, order 301, 헤더 높이 통일 | ⏳ |
+| P6 전환 | 링크 교체, 헤더 높이 통일(Track A), 아이콘 폴더 정리 | ✅ PR #1584. order 301은 하지 않음(결정 33). Track B 헤더는 Track B 완료 때 통일. 남은 것: 스택 리뷰·머지 → develop |
 
 ## 6. 바로 다음 할 일
 
@@ -126,6 +127,8 @@ KOIN `.claude/settings.local.json` (git 추적 안 됨, 루프 실행 중 하네
 ## 8. 알려진 이슈·과제
 
 - **잘못된 상점 ID → 500 (별도 이슈 후보, 2026-10-09 사용자 결정으로 보류)**: 숫자가 아닌 ID(`/store/abc` 등)면 stage가 400을 주고 서버 렌더는 404만 '없음'으로 처리해 500이 된다. 모바일 이전 화면 6개(상세·정보·이벤트·리뷰 목록·작성·수정)와 데스크톱 `/store/[id]`. 존재하지 않는 숫자 ID는 정상 404. 해결안: 서버 렌더 시작에서 숫자 검증 후 404, 또는 공용 `isNotFoundKoinError`가 400도 '없음'으로 보기
+- A4 `menu-group` G4 간헐 실패(2026-10-09, 1/5회): 후보에서 스크롤 로그가 빠짐. 이 로그는 전체 페이지 스크린샷 중 크기 변경(resize) 이벤트로 나며 throttle(800ms, Date.now)과 실제 시간 타이밍에 좌우되는 것으로 보임. 재실행 4회 통과. 결정성 보강 과제
+- 헤더 통일(PR #1584) 이후 Track A 화면은 order와 픽셀 0이 아니다(본문 3.2px 위). order 대조는 #1584 직전 커밋까지, 이후 변경은 회귀(같은 앱)·SSR 점검으로 본다
 - 회귀 `home.mobile` 간헐 실패(2026-10-09) → **원인 확인·해결**: 사람이 열어 둔 앱 탭의 재조회가 같은 포트의 하네스 프록시로 들어와 캡처 기록에 섞임. 캡처 태그(`x-parity-session`)가 없는 클라이언트 요청은 프록시가 409로 거절(engineering-log 30). 하네스 실행 중 거절 건수는 `[capture] 외부 클라이언트 요청 N건` 경고로 보인다
 - 보기용 서버(`/private/tmp/.../serve.mjs`, 하네스 밖 임시 스크립트): `live` 모드는 stage에 그대로 반영(로그인 가능, 제출 시 실제 데이터 생성). 2026-10-09 사용자 확인 중 상점 251·252에 테스트 리뷰가 생겼고 사용자 결정으로 남겨 둠
 
