@@ -1,0 +1,80 @@
+{
+  "entries": [
+    {
+      "key": "GET /shops/251/events? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/251/events",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJldmVudHMiOlt7InNob3BfaWQiOjI1MSwic2hvcF9uYW1lIjoi64uk7IKw7KGx67CcIiwiZXZlbnRfaWQiOjY0LCJ0aXRsZSI6IkRBIO2KuOuemeyepeydgCDqs7Xsp5wiLCJjb250ZW50Ijoi64uoLCDst6jsl4XtlaAg65WMIOq5jOyngCAiLCJ0aHVtYm5haWxfaW1hZ2VzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC9hMDBlNjU3OS04NmQ4LTQ3NDYtYTQ5MS1lNzMxODk1YzI3MTQv7Iqk7YGs66aw7IO3IDIwMjQtMDYtMDMgMjEzMDMyLnBuZyJdLCJzdGFydF9kYXRlIjoiMjAyNS0xMC0xNiIsImVuZF9kYXRlIjoiMjAyNi0xMS0wNCJ9XX0="
+      }
+    },
+    {
+      "key": "GET /shops/251/menus? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/251/menus",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb3VudCI6MTEsIm1lbnVfY2F0ZWdvcmllcyI6W3siaWQiOjg4OSwibmFtZSI6Iuy2lOyynCDrqZTribQiLCJtZW51cyI6W3siaWQiOjI5MTksIm5hbWUiOiLtlZzsgrDtnawiLCJpc19oaWRkZW4iOmZhbHNlLCJpc19zaW5nbGUiOnRydWUsInNpbmdsZV9wcmljZSI6OTk5OTk5LCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6IkRBIOugiOq3pOufrOuTpCAiLCJpbWFnZV91cmxzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC9jMjU2YzQ0Mi1lZDNmLTQxOGEtYTI1NS0zMWRiMmYwMGUzZjkv7Iqk7YGs66aw7IO3IDIwMjQtMDktMTAgMTUxOTI3LnBuZyIsImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvNi8yNS9iNmY2ZTg3Yi0wNDc2LTQxM2YtYmE4ZS01ZTYyMmUzZjEzMDAvYzk3NjgxMWNhOGRmN2Y5MjViZmQyMTY5NzlmNzYzNDQuanBnIl19LHsiaWQiOjI5MjQsIm5hbWUiOiLrsJXshozsl6zsl5AiLCJpc19oaWRkZW4iOmZhbHNlLCJpc19zaW5nbGUiOnRydWUsInNpbmdsZV9wcmljZSI6NTU1NTU1NTU1LCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6InNkYWZkIiwiaW1hZ2VfdXJscyI6WyJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL09XTkVSUy8yMDI1LzIvMjQvYzI1NmM0NDItZWQzZi00MThhLWEyNTUtMzFkYjJmMDBlM2Y5L+yKpO2BrOumsOyDtyAyMDI0LTA5LTEwIDE1MTkyNy5wbmciXX0seyJpZCI6Mjk0OCwibmFtZSI6IuOEtOOFh+OEuSIsImlzX2hpZGRlbiI6ZmFsc2UsImlzX3NpbmdsZSI6dHJ1ZSwic2luZ2xlX3ByaWNlIjowLCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6IiIsImltYWdlX3VybHMiOltdfSx7ImlkIjoyOTUwLCJuYW1lIjoiZGZnZGZnZyIsImlzX2hpZGRlbiI6ZmFsc2UsImlzX3NpbmdsZSI6dHJ1ZSwic2luZ2xlX3ByaWNlIjozMjQsIm9wdGlvbl9wcmljZXMiOm51bGwsImRlc2NyaXB0aW9uIjoidGciLCJpbWFnZV91cmxzIjpbXX0seyJpZCI6Mjk1MiwibmFtZSI6ImZoZmhoZyIsImlzX2hpZGRlbiI6ZmFsc2UsImlzX3NpbmdsZSI6dHJ1ZSwic2luZ2xlX3ByaWNlIjo1NDQzNTU0LCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6IndlZmdkcyIsImltYWdlX3VybHMiOltdfV19LHsiaWQiOjg5MCwibmFtZSI6IuuplOyduCDrqZTribQiLCJtZW51cyI6W3siaWQiOjI5MjQsIm5hbWUiOiLrsJXshozsl6zsl5AiLCJpc19oaWRkZW4iOmZhbHNlLCJpc19zaW5nbGUiOnRydWUsInNpbmdsZV9wcmljZSI6NTU1NTU1NTU1LCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6InNkYWZkIiwiaW1hZ2VfdXJscyI6WyJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL09XTkVSUy8yMDI1LzIvMjQvYzI1NmM0NDItZWQzZi00MThhLWEyNTUtMzFkYjJmMDBlM2Y5L+yKpO2BrOumsOyDtyAyMDI0LTA5LTEwIDE1MTkyNy5wbmciXX0seyJpZCI6MjkyNiwibmFtZSI6InZ2diIsImlzX2hpZGRlbiI6ZmFsc2UsImlzX3NpbmdsZSI6ZmFsc2UsInNpbmdsZV9wcmljZSI6bnVsbCwib3B0aW9uX3ByaWNlcyI6W3sib3B0aW9uIjoi66+464uIIiwicHJpY2UiOjEwMH0seyJvcHRpb24iOiLrr7jri4jrr7jri4ggIiwicHJpY2UiOjk5fV0sImRlc2NyaXB0aW9uIjoidnYiLCJpbWFnZV91cmxzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC8yZTI3YmZjMy1mN2RlLTQxYzItOTI5NS1iN2YwNjk1ZjEwYmUv7Iqk7YGs66aw7IO3IDIwMjQtMDktMTEgMTcyMDI1LnBuZyJdfSx7ImlkIjoyOTQ5LCJuYW1lIjoi44S544S544S544S5IiwiaXNfaGlkZGVuIjpmYWxzZSwiaXNfc2luZ2xlIjp0cnVlLCJzaW5nbGVfcHJpY2UiOjEyNDQyLCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6IiIsImltYWdlX3VybHMiOltdfV19LHsiaWQiOjg5MSwibmFtZSI6IuyEuO2KuCDrqZTribQiLCJtZW51cyI6W3siaWQiOjI5MjcsIm5hbWUiOiJjY2MiLCJpc19oaWRkZW4iOmZhbHNlLCJpc19zaW5nbGUiOnRydWUsInNpbmdsZV9wcmljZSI6MTI0LCJvcHRpb25fcHJpY2VzIjpudWxsLCJkZXNjcmlwdGlvbiI6InNkZiIsImltYWdlX3VybHMiOlsiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9PV05FUlMvMjAyNS8yLzI0LzU5MmU4OWY2LTliOTEtNGQ0Yi05MWM0LTEyNmZmOGI0MTg0NS/siqTtgazrprDsg7cgMjAyNC0wOS0wMiAwOTQyMjcucG5nIl19XX0seyJpZCI6ODkyLCJuYW1lIjoi7IKs7J2065OcIOuplOuJtCIsIm1lbnVzIjpbeyJpZCI6MjkyNCwibmFtZSI6IuuwleyGjOyXrOyXkCIsImlzX2hpZGRlbiI6ZmFsc2UsImlzX3NpbmdsZSI6dHJ1ZSwic2luZ2xlX3ByaWNlIjo1NTU1NTU1NTUsIm9wdGlvbl9wcmljZXMiOm51bGwsImRlc2NyaXB0aW9uIjoic2RhZmQiLCJpbWFnZV91cmxzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC9jMjU2YzQ0Mi1lZDNmLTQxOGEtYTI1NS0zMWRiMmYwMGUzZjkv7Iqk7YGs66aw7IO3IDIwMjQtMDktMTAgMTUxOTI3LnBuZyJdfSx7ImlkIjoyOTUxLCJuYW1lIjoiZmRnZmQiLCJpc19oaWRkZW4iOmZhbHNlLCJpc19zaW5nbGUiOnRydWUsInNpbmdsZV9wcmljZSI6NDM1MzQ2NjYsIm9wdGlvbl9wcmljZXMiOm51bGwsImRlc2NyaXB0aW9uIjoicnR5dCIsImltYWdlX3VybHMiOltdfV19XSwidXBkYXRlZF9hdCI6IjIwMjUtMDYtMjUifQ=="
+      }
+    },
+    {
+      "key": "GET /shops/251/summary? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/251/summary",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjoyNTEsIm5hbWUiOiLri6TsgrDsobHrsJwiLCJpbnRyb2R1Y3Rpb24iOm51bGwsInJhdGluZ19hdmVyYWdlIjo1LCJyZXZpZXdfY291bnQiOjEsImltYWdlcyI6W3siaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGFnZS1zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9PV05FUlMvMjAyNS8yLzI0LzA1OTIzZmQwLTMyNTEtNDdmNC1iZDQwLWY4NWQwMDU3YTU2Ni8xLmpwZyIsImlzX3RodW1ibmFpbCI6dHJ1ZX0seyJpbWFnZV91cmwiOiJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL09XTkVSUy8yMDI1LzIvMjQvMzM1YTNmYjgtYjBkMi00ODQyLTlmYTQtMGE1Mzk4N2M0Yzk1L+yKpO2BrOumsOyDtyAyMDI0LTEwLTA0IDE2Mjc0OC5wbmciLCJpc190aHVtYm5haWwiOmZhbHNlfV19"
+      }
+    },
+    {
+      "key": "GET /v2/shops/251? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/shops/251",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJhZGRyZXNzIjoi6rCA7KCEOOq4uCIsImRlbGl2ZXJ5IjpmYWxzZSwiZGVsaXZlcnlfcHJpY2UiOjEwMDAsImRlc2NyaXB0aW9uIjoi64aN7ZiRIDM1MTEwMjYxNTQ3MjkiLCJpZCI6MjUxLCJpbWFnZV91cmxzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvT1dORVJTLzIwMjUvMi8yNC8wNTkyM2ZkMC0zMjUxLTQ3ZjQtYmQ0MC1mODVkMDA1N2E1NjYvMS5qcGciLCJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL09XTkVSUy8yMDI1LzIvMjQvMzM1YTNmYjgtYjBkMi00ODQyLTlmYTQtMGE1Mzk4N2M0Yzk1L+yKpO2BrOumsOyDtyAyMDI0LTEwLTA0IDE2Mjc0OC5wbmciXSwibWVudV9jYXRlZ29yaWVzIjpbeyJpZCI6ODg5LCJuYW1lIjoi7LaU7LKcIOuplOuJtCJ9LHsiaWQiOjg5MCwibmFtZSI6IuuplOyduCDrqZTribQifSx7ImlkIjo4OTEsIm5hbWUiOiLshLjtirgg66mU64m0In0seyJpZCI6ODkyLCJuYW1lIjoi7IKs7J2065OcIOuplOuJtCJ9XSwibmFtZSI6IuuLpOyCsOyhseuwnCIsIm9wZW4iOlt7ImRheV9vZl93ZWVrIjoiTU9OREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJUVUVTREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJXRURORVNEQVkiLCJjbG9zZWQiOnRydWUsIm9wZW5fdGltZSI6IjAwOjMwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn0seyJkYXlfb2Zfd2VlayI6IlRIVVJTREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJGUklEQVkiLCJjbG9zZWQiOnRydWUsIm9wZW5fdGltZSI6IjE2OjAwIiwiY2xvc2VfdGltZSI6IjIyOjAwIn0seyJkYXlfb2Zfd2VlayI6IlNBVFVSREFZIiwiY2xvc2VkIjp0cnVlLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9LHsiZGF5X29mX3dlZWsiOiJTVU5EQVkiLCJjbG9zZWQiOnRydWUsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjAwOjAwIn1dLCJwYXlfYmFuayI6dHJ1ZSwicGF5X2NhcmQiOmZhbHNlLCJwaG9uZSI6IjAwMC0wMDAwLTAwMDAiLCJtYWluX2NhdGVnb3J5X2lkIjo2LCJzaG9wX2NhdGVnb3JpZXMiOlt7ImlkIjo2LCJuYW1lIjoi7KSR6rWt7KeRIn1dLCJ1cGRhdGVkX2F0IjoiMjAyNS0wMi0yNCIsImlzX2V2ZW50Ijp0cnVlLCJiYW5rIjoi7ZWc6rWt7JSo7YuwIiwiYWNjb3VudF9udW1iZXIiOiIwMDAwMDAwMDAwMDAwMDAiLCJvcGVuX3RpbWUiOiIxNjowMCIsImNsb3NlX3RpbWUiOiIyMjowMCJ9"
+      }
+    }
+  ]
+}
