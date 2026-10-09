@@ -323,9 +323,11 @@ export async function performAction(page, action) {
 }
 
 // 브라우저를 띄우고 경로를 열어 정착시킨 뒤 actions로 상태에 도달한다 (capture·explore 공용)
-export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel 5', beforeGoto, actions = [], chrome = DEFAULT_CHROME, auth = 'guest' }) {
+export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel 5', beforeGoto, actions = [], chrome = DEFAULT_CHROME, auth = 'guest', tag = null }) {
   const browser = await launchBrowser();
   const context = await browser.newContext({ ...devices[device], locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
+  // 프록시가 이 브라우저의 요청만 캡처 세션으로 받도록 표시한다(proxy.mjs state.tag)
+  if (tag) await context.setExtraHTTPHeaders({ 'x-parity-session': tag });
   const assetLog = [];
   await routeAssets(context, { assetsDir, mode, assetLog });
   if (auth === 'auth') await applyAuth(context, mode);
@@ -422,9 +424,10 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
 export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest' }) {
   const maskSelectors = masks.map((m) => m.selector);
   mkdirSync(outDir, { recursive: true });
-  await proxyControl('session', { mode, cassette, session: outDir });
+  const tag = createHash('sha1').update(`${outDir}:${Date.now()}`).digest('hex').slice(0, 16);
+  await proxyControl('session', { mode, cassette, session: outDir, tag });
 
-  const { browser, page, assetLog, consoleErrors, settled: openSettled } = await openPage({ baseURL, path, assetsDir, mode, device, beforeGoto, actions, chrome, auth });
+  const { browser, page, assetLog, consoleErrors, settled: openSettled } = await openPage({ baseURL, path, assetsDir, mode, device, beforeGoto, actions, chrome, auth, tag });
   let settled = openSettled;
   const mutationApplied = mutate ? await mutate(page) : null;
 
@@ -463,9 +466,10 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const instrumented = await page.evaluate(() => window.__parity ?? { gtag: [], toasts: [] });
 
   if (mode !== 'replay') await proxyControl('flush', {});
-  const { log } = await proxyControl('log');
+  const { log, foreign } = await proxyControl('log');
+  if (foreign.length) console.warn(`[capture] 외부 클라이언트 요청 ${foreign.length}건을 거절함(하네스 포트를 쓰는 다른 탭?): ${foreign.slice(0, 3).map((f) => `${f.method} ${f.path} ${f.origin ?? ''}`).join(', ')}`);
 
-  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, requests: log, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
+  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();

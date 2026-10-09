@@ -183,12 +183,15 @@ async function handleControl(req, res, url) {
     state.cassettePath = input.cassette ?? null;
     state.cassette = state.cassettePath ? loadCassette(state.cassettePath) : { entries: [] };
     state.session = input.session ?? null;
+    // 캡처 브라우저만 붙이는 태그(x-parity-session). 있으면 태그가 다른 클라이언트 요청(사람이 열어 둔 탭 등)을 거절한다
+    state.tag = input.tag ?? null;
+    state.foreign = [];
     state.epoch = 0;
     state.log = [];
     return sendJson(res, 200, { ok: true, mode: state.mode, entries: state.cassette.entries.length });
   }
   if (url.pathname === '/__parity/log' && req.method === 'GET') {
-    return sendJson(res, 200, { session: state.session, log: state.log });
+    return sendJson(res, 200, { session: state.session, log: state.log, foreign: state.foreign ?? [] });
   }
   if (url.pathname === '/__parity/flush' && req.method === 'POST') {
     if (state.mode !== 'replay') saveCassette();
@@ -231,6 +234,13 @@ async function handleApi(req, res, url) {
   const key = requestKey(req.method, url.pathname, query, canon);
   const source = req.headers['sec-fetch-mode'] ? 'client' : 'ssr';
   const epoch = state.epoch;
+
+  // 하네스 포트를 쓰는 다른 브라우저(사람이 열어 둔 앱 탭의 재조회 등)가 캡처 기록에 섞이지 않게 한다.
+  // 서버 렌더 요청(Next 서버발)은 브라우저 헤더가 없으므로 그대로 받는다
+  if (state.tag && source === 'client' && req.headers['x-parity-session'] !== state.tag) {
+    state.foreign.push({ t: Date.now(), method: req.method, path: url.pathname, origin: req.headers.origin ?? null });
+    return sendJson(res, 409, { parity: 'foreign-client' }, corsHeaders(req));
+  }
 
   const stub = STUBS.find((st) => st.method === req.method && st.path === url.pathname);
   if (stub) {
