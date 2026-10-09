@@ -283,6 +283,15 @@ export async function performAction(page, action) {
     await target.nth(action.fill.nth ?? 0).fill(action.fill.text, { timeout: 5000 });
     return;
   }
+  // 입력 후 정리: 포커스를 풀고 맨 위로 스크롤한다. 입력창 포커스가 남으면 전체 페이지 캡처 중 브라우저가
+  // 포커스 요소를 보이게 하려고 앱마다 다르게 스크롤해 고정 헤더가 본문 영역에 찍힌다(A8에서 확인)
+  if (action.blur) {
+    await page.evaluate(() => {
+      document.activeElement?.blur?.();
+      window.scrollTo(0, 0);
+    });
+    return;
+  }
   // 키 입력: 입력창에 포커스한 뒤 키를 누른다(태그 추가 Enter 등)
   if (action.press) {
     await page.getByPlaceholder(action.press.placeholder, { exact: true }).nth(action.press.nth ?? 0).press(action.press.key, { timeout: 5000 });
