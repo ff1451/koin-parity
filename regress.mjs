@@ -4,6 +4,7 @@
 //
 // 실행: node regress.mjs --base <ref> --candidate <ref> [--fill] [--pages home,store-list] [--skip store-list.mobile]
 //   --fill: 카세트에 없는 GET을 stage에서 보충 (루프 밖에서만)
+//   --record: stage로 모두 전달하고 기록 (쓰기 포함. 만료 쿠키 케이스처럼 토큰 갱신 요청까지 기록해야 할 때만)
 //   --skip: 그 단위가 의도적으로 바꾸는 케이스(페이지.기기)를 뺀다. 리포트에 남는다
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -17,6 +18,7 @@ const arg = (name, fallback) => (process.argv.includes(name) ? process.argv[proc
 const baseRef = arg('--base', 'origin/develop');
 const candidateRef = arg('--candidate', 'HEAD');
 const shouldFill = process.argv.includes('--fill');
+const shouldRecord = process.argv.includes('--record');
 const only = arg('--pages', '')?.split(',').filter(Boolean) ?? [];
 const skip = arg('--skip', '')?.split(',').filter(Boolean) ?? [];
 
@@ -51,7 +53,7 @@ try {
         masks: spec.masks,
         // 같은 앱끼리 비교라 뷰포트를 페이지 높이로 늘려 전체 페이지 캡처 경합을 피한다
         viewportMode: 'expand',
-        mode: shouldFill ? 'fill' : 'replay',
+        mode: shouldRecord ? 'record' : shouldFill ? 'fill' : 'replay',
         // 로그인이 필요한 페이지(리뷰 작성 등)는 R-regression.json pages[].auth
         auth: page.auth ?? 'guest',
       };

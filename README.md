@@ -26,6 +26,7 @@ corepack yarn playwright install chromium
 | `selftest.mjs` | order 대 order 자기 검증 + 변이 탐지 |
 | `verify.mjs` | 단위 검증: order 대 WEB_RECODE, 상태별 게이트 + 상태 수 대조. 루프의 PASS/FAIL 근거 |
 | `fill.mjs` | 루프 밖 전용: 후보가 추가로 부르는 GET을 카세트에 보충 |
+| `ssr-check.mjs` | SSR 점검: 페이지 × 기기 × 쿠키(없음/무효 access)로 서버 HTML 응답이 5xx가 아닌지. 재생 프록시가 재현 못 하는 쿠키 의존 응답 때문에 stage에 직접(live) 붙는다. 목록은 `units/ssr-check.json` |
 | `regress.mjs` | 회귀 게이트(G8): WEB_RECODE 기준 ref 대 후보 ref, 데스크톱·모바일. 판정 G0+G6, G2는 참고 |
 | `lib/auth.mjs` | 로그인 상태 픽스처: 기록은 stage 실로그인(`.cache/credentials.env`), 재생은 더미 JWT 쿠키 |
 | `lib/freeze-time.mjs` | `next start`에 주입해 서버 시계를 고정 시각 기준으로 맞추는 훅 |

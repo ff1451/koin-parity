@@ -1,0 +1,20 @@
+{
+  "description": "SSR 점검(ssr-check.mjs): 쿠키 상태 때문에 서버 렌더가 5xx가 되지 않는지. 재생 프록시는 쿠키에 따라 달라지는 응답을 재현하지 못하므로(engineering-log 25번) stage에 직접 붙여 서버 HTML 응답 코드만 본다",
+  "cookies": {
+    "none": "",
+    "invalid": "__Secure-koin-stage-web-access={invalidAccess}; __Secure-koin-stage-web-csrf=parity-csrf"
+  },
+  "paths": [
+    "/",
+    "/store",
+    "/store/search",
+    "/store/64",
+    "/store/64/info",
+    "/store/64/events",
+    "/store/64/reviews",
+    "/store/review/21",
+    "/store/review/edit/21/558",
+    "/report/review/shopid/21/reviewid/466",
+    "/cafeteria"
+  ]
+}

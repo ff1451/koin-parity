@@ -81,7 +81,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
     "targets": ["src/pages/store/[id]/events.tsx", "src/components/Store/mobile/StoreEventsPage/** (신규 하위 컴포넌트·SCSS 포함)", "src/assets/svg/store/** (신규 아이콘 추가만)", "src/assets/lottie/** (신규 추가만)"]}
    ```
    A1 결과: 루프 1회 통과(약 8.5분, 서브에이전트 약 15만 토큰), 독립 재검증 3/3 PASS
-5. 끝나면 **직접** `node verify.mjs <unit> --ref <branch>` + `node regress.mjs --base <부모 레이어> --candidate <branch>` + KOIN `yarn lint`·`yarn typecheck`
+5. 끝나면 **직접** `node verify.mjs <unit> --ref <branch>` + `node regress.mjs --base <부모 레이어> --candidate <branch>` + `node ssr-check.mjs --ref <branch>`(쿠키 없음/무효 access × 기기로 서버 렌더 5xx 점검, stage 직접) + KOIN `yarn lint`·`yarn typecheck`
 6. WIP 커밋을 하나로 정리(`git commit --amend` 또는 squash) → `gh stack submit --auto` → `gh pr edit`로 제목·본문·라벨(koin-pr 규칙)
 
 ## 7. 새 기기에서 다시 세팅하기

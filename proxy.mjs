@@ -91,7 +91,11 @@ function scrubResponse(response) {
     // JSON이 아니면 그대로
   }
   // 쿠키 값은 재생용 더미(형식이 맞는 JWT 등)로 바꾼다: 재생 중 앱이 받은 쿠키로 로그인 상태가 깨지지 않도록
-  const setCookie = response.setCookie.map((c) => c.replace(/^([^=]+)=[^;]*/, (_, name) => `${name}=${dummyCookieValue(name)}`));
+  // 쿠키를 지우는 응답(Max-Age=0, 세션 API가 무효 토큰을 받았을 때 등)은 지우는 동작을 그대로 둔다.
+  // 더미로 바꾸면 재생 중 브라우저에 로그인 쿠키를 다시 심어 실제와 반대가 된다
+  const setCookie = response.setCookie.map((c) =>
+    /;\s*Max-Age=0/i.test(c) ? c.replace(/^([^=]+)=[^;]*/, '$1=') : c.replace(/^([^=]+)=[^;]*/, (_, name) => `${name}=${dummyCookieValue(name)}`),
+  );
   return { ...response, body, setCookie };
 }
 
