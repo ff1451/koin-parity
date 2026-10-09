@@ -1,11 +1,11 @@
 # 진행 상태·인수인계
 
-> 마지막 갱신: 2026-10-08 (A2 완료, macOS 기기로 이전). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
+> 마지막 갱신: 2026-10-09 (A5까지 완료, A6은 stage 테스트 계정 대기). 다른 기기·새 세션에서 이어갈 때 이 문서부터 읽는다.
 > 전체 계획·선택 기록 `docs/order-migration-plan.md`, foundation 결정 `docs/foundation.md`, 하네스 사용법 `README.md`
 
 ## 1. 한 줄 요약
 
-KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RECODE로 옮기는 중. 화면 단위로 order 화면과 픽셀·요청·이벤트를 비교하는 하네스(이 저장소)로 판정하고, 단위마다 stacked PR을 쌓는다. **foundation·A1·A2 완료, 다음은 A3(검색) 단위 스펙 작성.**
+KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RECODE로 옮기는 중. 화면 단위로 order 화면과 픽셀·요청·이벤트를 비교하는 하네스(이 저장소)로 판정하고, 단위마다 stacked PR을 쌓는다. **foundation·A1~A5 완료, 다음은 A6(리뷰 목록) — 로그인 상태 기록에 stage 테스트 계정(`.cache/credentials.env`) 필요.**
 
 ## 2. 확정된 범위·결정 (다시 묻지 않는다)
 
@@ -34,6 +34,9 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-foundation` | PR **#1573** draft → refactor/order-integration |
 | KOIN `feat/#1572/order-a1-shop-events` | PR **#1574** draft → foundation (GitHub stack #1575) |
 | KOIN `feat/#1572/order-a2-store-list` | PR **#1576** draft → A1 |
+| KOIN `feat/#1572/order-a3-store-search` | PR **#1577** draft → A2 |
+| KOIN `feat/#1572/order-a4-store-detail` | PR **#1578** draft → A3 |
+| KOIN `feat/#1572/order-a5-store-info` | PR **#1579** draft → A4 |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
 ## 5. 단위 진행표
@@ -43,9 +46,9 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | foundation | 라우트·`/store/[id]` SSR·폰트 스코프·토큰·Badge/Button·골격 페이지·`api/storeMobile` | ✅ PR #1573 |
 | A1 상점 이벤트·공지 | `/store/[id]/events` | ✅ PR #1574 (루프 1회 통과) |
 | A2 상점 목록 모바일 | `/store` | ✅ PR #1576 (루프 2회 통과, 상태 6개. 빈 목록은 `shops`만 비운 파생 카세트 — 사용자 승인. 도중에 foundation `ShopListV3` undefined 파라미터 버그를 #1573에 수정) |
-| A3 검색 | `/store/search` | ⏳ |
-| A4 상점 상세 모바일 | `/store/[id]` (오라클은 오버레이 헤더 → `chrome: 'none'` 검토) | ⏳ |
-| A5 상점 정보 | `/store/[id]/info` | ⏳ |
+| A3 검색 | `/store/search` | ✅ PR #1577 (루프 1회, 상태 3개: 입력 전·결과·결과 없음. 입력은 `fill` 액션) |
+| A4 상점 상세 모바일 | `/store/[id]` | ✅ PR #1578 (루프 2회, `chrome: none`, 상태 4개. 이미지 뷰어는 사용자 결정으로 Swiper — foundation에 `swiper ^11.2.10` 추가) |
+| A5 상점 정보 | `/store/[id]/info` | ✅ PR #1579 (루프 1회, 상태 2개: 휴무일 유무) |
 | A6 리뷰 목록 | `/store/[id]/reviews` (로그인 상태 포함) | ⏳ |
 | A7·A8·A9 리뷰 작성·수정·신고 | 기존 WEB_RECODE 페이지 모바일 UI | ⏳ |
 | B2·B4·B5 주문 가능 상점 조회 | `/order/shops/[id]` | ⏳ (오라클 커밋 7243571 + 라우트 주석 해제 패치 필요) |
@@ -54,12 +57,13 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 
 ## 6. 바로 다음 할 일
 
-**다음: A3 검색(`/store/search`)** 스펙 작성 → 루프. 오라클 `search`
+**다음: A6 리뷰 목록(`/store/[id]/reviews`)**. 오라클 `review/false/:id?sort`. 로그인 상태가 있어 stage 테스트 계정으로 기록해야 한다(§7-3)
 
 - 상태 탐색기 `explore.mjs`: 후보를 구조 서명(조상 태그·클래스 경로 + 요소 태그)으로 묶어 반복 그룹(4개 이상)은 앞 2개만 누르고, 이동으로 판명된 그룹은 깊은 상태에서 다시 누르지 않는다. A2 깊이 2 탐색이 1분 34초
 - 데이터만 다른 상태(카테고리 10개 등)는 사람이 대표 상태로 묶어 스펙에 올린다
 - 같은 카세트를 여러 상태가 쓰면 스펙 상태에 `"cassette": "<이름>"`
-- 단위가 의도적으로 바꾸는 회귀 케이스는 `regress.mjs --skip <페이지>.<기기>` (A2: `store-list.mobile`). 다음 단위부터 base가 A2이므로 skip 불필요
+- 단위가 의도적으로 바꾸는 회귀 케이스는 `regress.mjs --skip <페이지>.<기기>` (A2: `store-list.mobile`, A4: `store-detail.mobile`). 바꾼 뒤에는 회귀 카세트를 `--fill --pages <페이지>`로 보충해 다음 단위 회귀가 miss로 깨지지 않게 한다
+- 아이콘 경로: develop에는 `src/assets/svg/Store/`(대문자), 이전 화면은 `src/assets/svg/store/`(소문자). Linux에서 두 폴더로 갈리므로 P6 전에 하나로 정리 필요(사용자에게 보고함)
 - 변이 자기 검증은 단위마다 돌린다: A2에서 변이가 헤더 텍스트를 대상으로 잡아 탐지가 안 되는 결함을 발견해 고침(본문 영역만 대상)
 
 단위 하나 진행 절차(A1·A2에서 검증됨):
