@@ -35,6 +35,10 @@ function gateIntegrity(name, capture, spec) {
     if (!texts.includes(t)) problems.push(`${name}: 필수 텍스트 "${t}" 없음`);
   });
   if ((spec.minRequests ?? 1) > 0 && capture.requests.length === 0) problems.push(`${name}: API 요청이 하나도 없음`);
+  // 후보 전용 요소는 후보 캡처에만 있어야 하고, 반드시 있어야 한다(비교에서 빠지는 대신 존재는 확인)
+  Object.entries(capture.candidateOnly ?? {}).forEach(([selector, count]) => {
+    if (count === 0) problems.push(`${name}: 후보 전용 요소 "${selector}" 없음`);
+  });
   return problems;
 }
 

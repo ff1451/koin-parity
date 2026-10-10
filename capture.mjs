@@ -422,7 +422,7 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
  * @param {{ toastSelector: string, footerSelector: string }} [opts.chrome] 토스트·푸터 선택자 (units/_common.json chrome)
  * @param {'guest'|'auth'} [opts.auth] 로그인 상태 (lib/auth.mjs)
  */
-export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest' }) {
+export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest', candidateOnly = [] }) {
   const maskSelectors = masks.map((m) => m.selector);
   mkdirSync(outDir, { recursive: true });
   const tag = createHash('sha1').update(`${outDir}:${Date.now()}`).digest('hex').slice(0, 16);
@@ -434,6 +434,14 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
 
   // 전체 페이지 스크린샷은 찍는 동안 뷰포트를 늘려 100vh 기반 레이아웃이 다시 계산된다(경합 확인됨).
   // 미리 뷰포트를 페이지 높이로 늘리고 정착시킨 뒤, 그 레이아웃에서 스크린샷·요소 목록을 함께 얻는다
+  // 후보 전용 요소(단위 스펙 candidateOnly, 스펙 차이로 선언된 것): 있는지 세고, 픽셀·요소 비교에서 빠지도록 숨긴다.
+  // visibility로 숨겨 배치는 그대로 둔다(고정 위치 CTA 등이 본문 배치를 바꾸면 그 차이는 그대로 잡힌다)
+  const candidateOnlyFound = {};
+  for (const { selector } of candidateOnly) {
+    candidateOnlyFound[selector] = await page.locator(selector).count();
+    await page.addStyleTag({ content: `${selector} { visibility: hidden !important; }` });
+  }
+
   // 분석 이벤트·토스트는 스크린샷 전에 읽는다: 전체 페이지 스크린샷이 뷰포트 크기를 잠깐 바꾸면서 생기는 resize로
   // 스크롤 로깅 같은 이벤트가 실제 시간 타이밍에 따라 찍히거나 안 찍힌다(A4 menu-group 간헐 실패). 캡처 도구가 만든 이벤트는 사용자 행동이 아니다
   const instrumented = await page.evaluate(() => window.__parity ?? { gtag: [], toasts: [] });
@@ -472,7 +480,7 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const { log, foreign } = await proxyControl('log');
   if (foreign.length) console.warn(`[capture] 외부 클라이언트 요청 ${foreign.length}건을 거절함(하네스 포트를 쓰는 다른 탭?): ${foreign.slice(0, 3).map((f) => `${f.method} ${f.path} ${f.origin ?? ''}`).join(', ')}`);
 
-  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
+  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();

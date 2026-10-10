@@ -57,7 +57,7 @@ try {
       continue;
     }
     try {
-      await capture({ ...common, baseURL: APPS.web.baseURL, path: fillPath(unit.candidate.path, state.params), outDir: candidateDir });
+      await capture({ ...common, baseURL: APPS.web.baseURL, path: fillPath(unit.candidate.path, state.params), outDir: candidateDir, candidateOnly: unit.candidateOnly ?? [] });
     } catch (error) {
       states.push({ name: state.name, pass: false, error: `candidate unreachable: ${firstLine(error)}` });
       continue;
