@@ -1,0 +1,227 @@
+{
+  "id": "B10-order-result",
+  "description": "주문 완료(결과)·주문 취소 화면. 오라클 /result/{paymentId}, /orderCancel/{paymentId}(패치 0009). 결제 승인 성공 흐름은 stage 오류로 기록할 수 없어(B9) 테스트 계정의 기존 주문으로 상태별 화면을 본다: 확인중(배달·포장), 준비중, 배달중, 배달 완료(메뉴 5개), 수령 완료, 취소. 주문 취소는 사유 선택·확인 모달까지만(계속하기는 실제 취소라 기록하지 않음 — 확인중 주문이 줄어든다). 지도는 실제 로드(live.naverMaps). 포장 주문 결과 화면이 order에서 빈 화면(배달비 null로 오류)이라 오라클 패치 0010으로 고쳐 비교한다(사용자 결정 2026-10-10)",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "{op}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "{cp}"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/payments/\\d+",
+  "live": {
+    "naverMaps": true
+  },
+  "states": [
+    {
+      "name": "confirming-delivery",
+      "auth": "auth",
+      "params": {
+        "op": "/result/42",
+        "cp": "/order/result/42"
+      },
+      "cassette": "confirming-delivery",
+      "requiredText": [
+        "주문 확인중",
+        "취소하기",
+        "주문내역",
+        "결제정보",
+        "주문정보",
+        "영수증 보기"
+      ]
+    },
+    {
+      "name": "confirming-takeout",
+      "auth": "auth",
+      "params": {
+        "op": "/result/33",
+        "cp": "/order/result/33"
+      },
+      "cassette": "confirming-takeout",
+      "requiredText": [
+        "주문 확인중",
+        "방문 정보",
+        "배달 금액",
+        "0원"
+      ]
+    },
+    {
+      "name": "cooking",
+      "auth": "auth",
+      "params": {
+        "op": "/result/45",
+        "cp": "/order/result/45"
+      },
+      "cassette": "cooking",
+      "requiredText": [
+        "준비중",
+        "도착 예정"
+      ]
+    },
+    {
+      "name": "delivering",
+      "auth": "auth",
+      "params": {
+        "op": "/result/441",
+        "cp": "/order/result/441"
+      },
+      "cassette": "delivering",
+      "requiredText": [
+        "도착 예정"
+      ]
+    },
+    {
+      "name": "delivered-many-menus",
+      "auth": "auth",
+      "params": {
+        "op": "/result/3",
+        "cp": "/order/result/3"
+      },
+      "cassette": "delivered-many-menus",
+      "requiredText": [
+        "배달 완료"
+      ]
+    },
+    {
+      "name": "picked-up",
+      "auth": "auth",
+      "params": {
+        "op": "/result/1",
+        "cp": "/order/result/1"
+      },
+      "cassette": "picked-up",
+      "requiredText": [
+        "수령 완료"
+      ]
+    },
+    {
+      "name": "canceled",
+      "auth": "auth",
+      "params": {
+        "op": "/result/437",
+        "cp": "/order/result/437"
+      },
+      "cassette": "canceled",
+      "requiredText": [
+        "주문 취소",
+        "주문이 취소되었어요"
+      ]
+    },
+    {
+      "name": "receipt-modal",
+      "auth": "auth",
+      "params": {
+        "op": "/result/3",
+        "cp": "/order/result/3"
+      },
+      "cassette": "delivered-many-menus",
+      "actions": [
+        {
+          "click": {
+            "text": "영수증 보기"
+          }
+        }
+      ],
+      "requiredText": [
+        "영수증",
+        "총 결제 금액"
+      ]
+    },
+    {
+      "name": "cancel-page",
+      "auth": "auth",
+      "params": {
+        "op": "/orderCancel/42",
+        "cp": "/order/cancel/42"
+      },
+      "cassette": "cancel-page",
+      "requiredText": [
+        "주문을 취소하시겠어요?",
+        "단순 변심이에요",
+        "기타",
+        "취소하기"
+      ],
+      "minRequests": 0
+    },
+    {
+      "name": "cancel-reason-selected",
+      "auth": "auth",
+      "params": {
+        "op": "/orderCancel/42",
+        "cp": "/order/cancel/42"
+      },
+      "cassette": "cancel-page",
+      "actions": [
+        {
+          "click": {
+            "text": "결제를 잘못했어요"
+          }
+        }
+      ],
+      "requiredText": [
+        "결제를 잘못했어요"
+      ],
+      "minRequests": 0
+    },
+    {
+      "name": "cancel-other-reason",
+      "auth": "auth",
+      "params": {
+        "op": "/orderCancel/42",
+        "cp": "/order/cancel/42"
+      },
+      "cassette": "cancel-page",
+      "actions": [
+        {
+          "click": {
+            "text": "기타"
+          }
+        },
+        {
+          "fill": {
+            "placeholder": "취소 사유를 최소 2자 이상 입력해주세요.",
+            "text": "테스트 사유"
+          }
+        }
+      ],
+      "requiredText": [
+        "6/150"
+      ],
+      "minRequests": 0
+    },
+    {
+      "name": "cancel-confirm-modal",
+      "auth": "auth",
+      "params": {
+        "op": "/orderCancel/42",
+        "cp": "/order/cancel/42"
+      },
+      "cassette": "cancel-page",
+      "actions": [
+        {
+          "click": {
+            "text": "단순 변심이에요"
+          }
+        },
+        {
+          "click": {
+            "role": "button",
+            "name": "취소하기"
+          }
+        }
+      ],
+      "requiredText": [
+        "주문 취소를 그만두시겠어요?",
+        "그만하기",
+        "계속하기"
+      ],
+      "minRequests": 0
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

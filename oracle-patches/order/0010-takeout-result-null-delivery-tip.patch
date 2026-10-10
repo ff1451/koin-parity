@@ -1,0 +1,26 @@
+diff --git a/src/pages/OrderFinish/components/ReceiptModal.tsx b/src/pages/OrderFinish/components/ReceiptModal.tsx
+index b6c5eb2..bd3a51b 100644
+--- a/src/pages/OrderFinish/components/ReceiptModal.tsx
++++ b/src/pages/OrderFinish/components/ReceiptModal.tsx
+@@ -53,7 +53,7 @@ export default function ReceiptModal({ isOpen, onClose, paymentInfo }: ReceiptMo
+             </div>
+             <div className="flex justify-between">
+               <div className="font-semibold">배달비</div>
+-              <div>{formatKRW(paymentInfo.delivery_tip)}</div>
++              <div>{formatKRW(paymentInfo.delivery_tip ?? 0)}</div>
+             </div>
+           </div>
+           <div className="h-[1px] border-b border-neutral-200" />
+diff --git a/src/pages/OrderFinish/index.tsx b/src/pages/OrderFinish/index.tsx
+index 8f5dcb3..dd6f516 100644
+--- a/src/pages/OrderFinish/index.tsx
++++ b/src/pages/OrderFinish/index.tsx
+@@ -229,7 +229,7 @@ export default function OrderFinish() {
+               메뉴 금액<div>{formatKRW(paymentInfo.total_menu_price)}</div>
+             </div>
+             <div className="flex justify-between">
+-              배달 금액<div>{formatKRW(paymentInfo.delivery_tip)}</div>
++              배달 금액<div>{formatKRW(paymentInfo.delivery_tip ?? 0)}</div>
+             </div>
+             <div className="my-4 h-[1px] border-b border-neutral-200" />
+           </div>

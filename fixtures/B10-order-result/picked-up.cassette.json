@@ -1,0 +1,65 @@
+{
+  "entries": [
+    {
+      "key": "GET /payments/1? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/payments/1",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MSwib3JkZXJhYmxlX3Nob3BfaWQiOjMsImRlbGl2ZXJ5X2FkZHJlc3MiOm51bGwsImRlbGl2ZXJ5X2FkZHJlc3NfZGV0YWlscyI6bnVsbCwic2hvcF9hZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOy2qeygiOuhnCAxNTk0IiwibG9uZ2l0dWRlIjpudWxsLCJsYXRpdHVkZSI6bnVsbCwidG9fb3duZXIiOiIiLCJ0b19yaWRlciI6bnVsbCwicHJvdmlkZV9jdXRsZXJ5IjpmYWxzZSwidG90YWxfbWVudV9wcmljZSI6MTcwMDAsImRlbGl2ZXJ5X3RpcCI6bnVsbCwiYW1vdW50IjoxNzAwMCwic2hvcF9uYW1lIjoi6rmA67Cl7LKc6rWtIiwibWVudXMiOlt7Im5hbWUiOiLsoJzsnKHrja7rsKUiLCJxdWFudGl0eSI6MiwicHJpY2UiOjg1MDAsIm9wdGlvbnMiOlt7Im9wdGlvbl9ncm91cF9uYW1lIjoi66e16riwIOyhsOygiCIsIm9wdGlvbl9uYW1lIjoi7Iic7ZWc66ebIiwib3B0aW9uX3ByaWNlIjowfV19XSwib3JkZXJfdHlwZSI6IlRBS0VfT1VUIiwiZWFzeV9wYXlfY29tcGFueSI6Iu2GoOyKpO2OmOydtCIsInJlcXVlc3RlZF9hdCI6IjIwMjUuMDkuMDcgMTk6MTMiLCJhcHByb3ZlZF9hdCI6IjIwMjUuMDkuMDcgMTk6MTMiLCJwYXltZW50X21ldGhvZCI6IuqwhO2OuOqysOygnCIsImVzdGltYXRlZF9hdCI6IjE2OjEzIiwib3JkZXJfc3RhdHVzIjoiUElDS0VEX1VQIn0="
+      }
+    },
+    {
+      "key": "GET /v2/web/auth/session? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/web/auth/session",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [
+          "__Secure-koin-stage-web-csrf=parity-csrf; Path=/; Domain=stage.koreatech.in; Max-Age=7775982; Expires=Fri, 08 Jan 2027 13:21:14 GMT; Secure; SameSite=Lax"
+        ],
+        "body": "eyJhdXRoZW50aWNhdGVkIjp0cnVlLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwiY3NyZl90b2tlbiI6IngwMHh4eDB4eDB4eDB4eHgweDB4eHh4eHgweC14eHh4MHgweHgteHh4eHgueHh4eHh4eHh4eC14eHh4eF94eHh4eHh4eHh4eDB4eHgweHgwMHh4eC14eCJ9"
+      }
+    },
+    {
+      "key": "GET /v3/users/me? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/users/me",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MjQ3OCwibG9naW5faWQiOiJ4eDAwMDAiLCJhbm9ueW1vdXNfbmlja25hbWUiOiLsnbXrqoVfMTYxNDQyMTEyNjM0OCIsImVtYWlsIjoieHgwMDAwQHh4eHh4eHh4eC54eC54eCIsImdlbmRlciI6MCwibmFtZSI6IuqwgOqwgOqwgCIsIm5pY2tuYW1lIjoi6rO167Cx6rCAIiwicGhvbmVfbnVtYmVyIjoiMDAwMDAwMDAwMDAiLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwic3R1ZGVudF9udW1iZXIiOiIwMDAwMDAwMDAwIiwibWFqb3IiOiLqsIDqsIDqsIDqsIDqsIAifQ=="
+      }
+    }
+  ]
+}
