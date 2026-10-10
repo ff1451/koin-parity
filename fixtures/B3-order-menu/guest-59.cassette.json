@@ -1,0 +1,42 @@
+{
+  "entries": [
+    {
+      "key": "GET /order/shop/8/menus/59? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/order/shop/8/menus/59",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6NTksIm5hbWUiOiLrtojqs6DquLAg7IyA7ZS87J6QIiwiZGVzY3JpcHRpb24iOiLri6zsvaTtlZwg67aI6rOg6riw7JmAIOyVvOyxhOqwgCDrk6zrv40g7Jis65286rCEIO2VnOq1reyduOydmCDshozsmrgg7ZS87J6QIiwiaW1hZ2VzIjpbImh0dHBzOi8vc3RhZ2Utc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvU0hPUFMvMjAyNS83LzI2LzM0YzBiODllLWVhZmYtNGExNi1hOTM2LTgyMGQ3ZmEwMDFiNS8lRUQlOTQlQkMlRUMlOUUlOTBfJUVCJUI2JTg4JUVBJUIzJUEwJUVBJUI4JUIwJUVEJTk0JUJDJUVDJTlFJTkwLmpwZyJdLCJwcmljZXMiOlt7ImlkIjo4NSwibmFtZSI6Ik0iLCJwcmljZSI6MTg5MDB9LHsiaWQiOjg2LCJuYW1lIjoiTCIsInByaWNlIjoyMjkwMH1dLCJvcHRpb25fZ3JvdXBzIjpbeyJpZCI6MjAsIm5hbWUiOiLrj4TsmrAv7Jej7KeAIOuzgOqyvSIsImRlc2NyaXB0aW9uIjoi7ZS87J6QIOuPhOyasOydmCDrgZ3rtoDrtoTsnYQg7Yq567OE7ZWY6rKMIOuzgOqyve2VoCDsiJgg7J6I7Iq164uI64ukLiIsImlzX3JlcXVpcmVkIjpmYWxzZSwibWluX3NlbGVjdCI6MCwibWF4X3NlbGVjdCI6MSwib3B0aW9ucyI6W3siaWQiOjU1LCJuYW1lIjoi7LmY7KaI7YGs65+s7Iqk7Yq4IiwicHJpY2UiOjMwMDB9LHsiaWQiOjU2LCJuYW1lIjoi6rOg6rWs66eI66y07IqkIiwicHJpY2UiOjMwMDB9LHsiaWQiOjU3LCJuYW1lIjoi7JSsKFRoaW4p64+E7JqwIiwicHJpY2UiOjB9XX0seyJpZCI6MjEsIm5hbWUiOiLthqDtlZEg7LaU6rCAIiwiZGVzY3JpcHRpb24iOiLsm5DtlZjripQg7Yag7ZWR7J2EIOy2lOqwgO2VmOyXrCDrgpjrp4zsnZgg7ZS87J6Q66W8IOunjOuTpOyWtOuztOyEuOyalC4iLCJpc19yZXF1aXJlZCI6ZmFsc2UsIm1pbl9zZWxlY3QiOjAsIm1heF9zZWxlY3QiOjQsIm9wdGlvbnMiOlt7ImlkIjo1OCwibmFtZSI6Iuy5mOymiCIsInByaWNlIjoyMDAwfSx7ImlkIjo1OSwibmFtZSI6Iu2OmO2NvOuhnOuLiCIsInByaWNlIjoyMDAwfSx7ImlkIjo2MCwibmFtZSI6IuuyoOydtOy7qCIsInByaWNlIjoyMDAwfSx7ImlkIjo2MSwibmFtZSI6Iuu2iOqzoOq4sCIsInByaWNlIjozMDAwfSx7ImlkIjo2MiwibmFtZSI6IuyDiOyasCIsInByaWNlIjozMDAwfV19LHsiaWQiOjIzLCJuYW1lIjoi7IaM7IqkIOy2lOqwgCIsImRlc2NyaXB0aW9uIjoi7ZS87J6Q7JmAIO2VqOq7mCDsppDquLgg7IiYIOyeiOuKlCDshozsiqTrpbwg7LaU6rCA7ZWp64uI64ukLiIsImlzX3JlcXVpcmVkIjpmYWxzZSwibWluX3NlbGVjdCI6MCwibWF4X3NlbGVjdCI6Mywib3B0aW9ucyI6W3siaWQiOjcxLCJuYW1lIjoi6rCI66at65SU7ZWR7IaM7IqkIiwicHJpY2UiOjUwMH0seyJpZCI6NzIsIm5hbWUiOiLtlavshozsiqQiLCJwcmljZSI6MzAwfSx7ImlkIjo3MywibmFtZSI6Iu2MjOuniOyCsCDsuZjspojqsIDro6giLCJwcmljZSI6MzAwfSx7ImlkIjo3NCwibmFtZSI6Iu2UvO2BtCIsInByaWNlIjo1MDB9XX1dfQ=="
+      }
+    },
+    {
+      "key": "POST /cart/add? #d04bdc7334c2",
+      "epoch": 0,
+      "request": {
+        "method": "POST",
+        "path": "/cart/add",
+        "query": "",
+        "body": "{\"orderable_shop_id\":8,\"orderable_shop_menu_id\":59,\"orderable_shop_menu_option_ids\":[],\"orderable_shop_menu_price_id\":85,\"quantity\":1}"
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb2RlIjoiVU5BVVRIT1JJWkVEX1VTRVIiLCJtZXNzYWdlIjoi7J247Kad7J20IO2VhOyalO2VqeuLiOuLpC4iLCJlcnJvclRyYWNlSWQiOiI0NzIwMWI3Ny04Y2VhLTRkYTgtOWNlNS05YjM2NDYyYmQ3NDUifQ=="
+      }
+    }
+  ]
+}

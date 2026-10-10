@@ -1,0 +1,176 @@
+{
+  "id": "B3-order-menu",
+  "description": "메뉴 상세(주문 흐름). 상태는 explore.mjs(깊이 1)와 데이터 분기(가격 여러 개·옵션 그룹·필수 옵션·이미지 없음)·로그인 장바구니 추가 거절(기록 시점 오구쌀피자 영업시간 아님 → 안내 모달, 400)로 정함. 쓰기: 비로그인 장바구니 추가(401), 로그인 장바구니 추가(영업시간 아님 → 거절)만 — 둘 다 stage 데이터를 바꾸지 않는다. 초기화 확인은 누르지 않는다",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/shop/true/{shopId}/menus/{menuId}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/order/shops/{shopId}/menus/{menuId}"
+  },
+  "device": "Pixel 5",
+  "chrome": "none",
+  "primaryRequest": "/stage/order/shop/\\d+/menus/\\d+",
+  "states": [
+    {
+      "name": "default",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "guest-59",
+      "requiredText": [
+        "불고기 쌀피자",
+        "가격",
+        "필수",
+        "도우/엣지 변경"
+      ]
+    },
+    {
+      "name": "image-viewer",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "guest-59",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "slide 0"
+          }
+        }
+      ],
+      "requiredText": []
+    },
+    {
+      "name": "price-l",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "guest-59",
+      "actions": [
+        {
+          "click": {
+            "text": "L"
+          }
+        }
+      ],
+      "requiredText": [
+        "22,900"
+      ]
+    },
+    {
+      "name": "option-selected",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "guest-59",
+      "actions": [
+        {
+          "click": {
+            "text": "치즈크러스트"
+          }
+        }
+      ],
+      "requiredText": [
+        "21,900"
+      ]
+    },
+    {
+      "name": "count-up",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "guest-59",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "",
+            "nth": 1
+          }
+        }
+      ],
+      "requiredText": [
+        "37,800"
+      ]
+    },
+    {
+      "name": "guest-add",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "guest-59",
+      "actions": [
+        {
+          "click": {
+            "text": "장바구니 추가"
+          }
+        }
+      ],
+      "requiredText": [
+        "확인"
+      ]
+    },
+    {
+      "name": "required-options",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 64
+      },
+      "cassette": "guest-64",
+      "requiredText": [
+        "반반피자",
+        "필수"
+      ]
+    },
+    {
+      "name": "no-image",
+      "auth": "guest",
+      "params": {
+        "shopId": 8,
+        "menuId": 60
+      },
+      "cassette": "guest-60",
+      "requiredText": [
+        "포테이토 쌀피자"
+      ]
+    },
+    {
+      "name": "auth-add-rejected",
+      "auth": "auth",
+      "params": {
+        "shopId": 8,
+        "menuId": 59
+      },
+      "cassette": "auth-59",
+      "actions": [
+        {
+          "click": {
+            "text": "장바구니 추가"
+          }
+        }
+      ],
+      "requiredText": [
+        "상점의 영업시간이 아닙니다."
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}
