@@ -1,0 +1,61 @@
+{
+  "entries": [
+    {
+      "key": "GET /order/shop/11/summary? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/order/shop/11/summary",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjoyOTIsIm9yZGVyYWJsZV9zaG9wX2lkIjoxMSwibmFtZSI6IltNT0NLXSDsgqzsnqXri5gg7KO866y4IDBjZTY0OWNlIiwiaW50cm9kdWN0aW9uIjpudWxsLCJpc19kZWxpdmVyeV9hdmFpbGFibGUiOnRydWUsImlzX3Rha2VvdXRfYXZhaWxhYmxlIjp0cnVlLCJwYXlfY2FyZCI6dHJ1ZSwicGF5X2JhbmsiOmZhbHNlLCJtaW5pbXVtX29yZGVyX2Ftb3VudCI6MTAwMDAsInJhdGluZ19hdmVyYWdlIjowLCJyZXZpZXdfY291bnQiOjAsIm1pbmltdW1fZGVsaXZlcnlfdGlwIjowLCJtYXhpbXVtX2RlbGl2ZXJ5X3RpcCI6MCwiaW1hZ2VzIjpbXX0="
+      }
+    },
+    {
+      "key": "GET /shops/292/reviews?limit=50&page=1&sorter=LATEST #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/shops/292/reviews",
+        "query": "limit=50&page=1&sorter=LATEST",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0b3RhbF9jb3VudCI6MCwiY3VycmVudF9jb3VudCI6MCwidG90YWxfcGFnZSI6MCwiY3VycmVudF9wYWdlIjoxLCJzdGF0aXN0aWNzIjp7ImF2ZXJhZ2VfcmF0aW5nIjowLCJyYXRpbmdzIjp7IjEiOjAsIjIiOjAsIjMiOjAsIjQiOjAsIjUiOjB9fSwicmV2aWV3cyI6W119"
+      }
+    },
+    {
+      "key": "GET /v2/shops/292? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/shops/292",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJhZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOy2qeygiOuhnCAxNjAwIiwiZGVsaXZlcnkiOnRydWUsImRlbGl2ZXJ5X3ByaWNlIjozMDAwLCJkZXNjcmlwdGlvbiI6Ik93bmVyT3JkZXJDb250cm9sbGVyIOyghOyaqSDrqqkg642w7J207YSwIiwiaWQiOjI5MiwiaW1hZ2VfdXJscyI6WyJodHRwczovL3N0YWdlLXN0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL01BUktFVC8yMDI2LzkvMjYvNGFmNTViNDctNTk4MC00YzM2LTkzNWMtY2M4ZjU2ODVkMjJhL3Bob3RvcGlja2VyLTEwMDAwMDExODUucG5nIl0sIm1lbnVfY2F0ZWdvcmllcyI6W3siaWQiOjEwNjksIm5hbWUiOiLjhYHjhLTjhYfjhLkifV0sIm5hbWUiOiJbTU9DS10g7IKs7J6l64uYIOyjvOusuCAwY2U2NDljZSIsIm9wZW4iOlt7ImRheV9vZl93ZWVrIjoiTU9OREFZIiwiY2xvc2VkIjpmYWxzZSwib3Blbl90aW1lIjoiMDA6MDAiLCJjbG9zZV90aW1lIjoiMjM6NTkifSx7ImRheV9vZl93ZWVrIjoiVFVFU0RBWSIsImNsb3NlZCI6ZmFsc2UsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjIzOjU5In0seyJkYXlfb2Zfd2VlayI6IldFRE5FU0RBWSIsImNsb3NlZCI6ZmFsc2UsIm9wZW5fdGltZSI6IjAwOjAwIiwiY2xvc2VfdGltZSI6IjIzOjU5In0seyJkYXlfb2Zfd2VlayI6IlRIVVJTREFZIiwiY2xvc2VkIjpmYWxzZSwib3Blbl90aW1lIjoiMDA6MDAiLCJjbG9zZV90aW1lIjoiMjM6NTkifSx7ImRheV9vZl93ZWVrIjoiRlJJREFZIiwiY2xvc2VkIjpmYWxzZSwib3Blbl90aW1lIjoiMDA6MDAiLCJjbG9zZV90aW1lIjoiMjM6NTkifSx7ImRheV9vZl93ZWVrIjoiU0FUVVJEQVkiLCJjbG9zZWQiOmZhbHNlLCJvcGVuX3RpbWUiOiIwMDowMCIsImNsb3NlX3RpbWUiOiIyMzo1OSJ9LHsiZGF5X29mX3dlZWsiOiJTVU5EQVkiLCJjbG9zZWQiOmZhbHNlLCJvcGVuX3RpbWUiOiIwMDowMCIsImNsb3NlX3RpbWUiOiIyMzo1OSJ9XSwicGF5X2JhbmsiOmZhbHNlLCJwYXlfY2FyZCI6dHJ1ZSwicGhvbmUiOiIwMDAtMDAwMC0wMDAwIiwibWFpbl9jYXRlZ29yeV9pZCI6Niwic2hvcF9jYXRlZ29yaWVzIjpbeyJpZCI6NiwibmFtZSI6Iuykkeq1reynkSJ9XSwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjYiLCJpc19ldmVudCI6ZmFsc2UsImJhbmsiOm51bGwsImFjY291bnRfbnVtYmVyIjpudWxsLCJvcGVuX3RpbWUiOiIwMDowMCIsImNsb3NlX3RpbWUiOiIyMzo1OSJ9"
+      }
+    }
+  ]
+}

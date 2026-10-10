@@ -1,0 +1,158 @@
+{
+  "id": "B5-order-reviews",
+  "description": "주문 가능 상점 리뷰 목록. 오라클 review/true(패치 0008)는 A6와 같은 ShopReview를 렌더한다. order 버그: 상점 화면 링크가 orderable_shop_id를 넘기는데 리뷰 화면은 그 값을 shop_id로 써서 빈 화면·다른 상점 리뷰가 된다. 사용자 결정(2026-10-10)으로 후보는 고쳐서 이전: order 요약 API의 shop_id로 리뷰를 조회한다. 그래서 오라클은 /review/true/{shopId}(올바른 shop_id), 후보는 /order/shops/{orderableShopId}/reviews로 같은 리뷰 데이터를 비교하고, 후보만 부르는 요약 요청은 허용한다. 주문 가능 2→shop 11(리뷰 26개), 11→shop 292(리뷰 0개). 테스트 계정 리뷰가 없는 상점이라 내 리뷰 수정·삭제는 A6에서 본다",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/review/true/{shopId}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/order/shops/{orderableShopId}/reviews"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/shops/\\d+/reviews",
+  "states": [
+    {
+      "name": "guest",
+      "auth": "guest",
+      "params": {
+        "shopId": 11,
+        "orderableShopId": 2
+      },
+      "cassette": "guest-2",
+      "requiredText": [
+        "리뷰 작성하기",
+        "최신순",
+        "내가 작성한 리뷰",
+        "신고하기"
+      ]
+    },
+    {
+      "name": "guest-login-required",
+      "auth": "guest",
+      "params": {
+        "shopId": 11,
+        "orderableShopId": 2
+      },
+      "cassette": "guest-2",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "리뷰 작성하기"
+          }
+        }
+      ],
+      "requiredText": [
+        "로그인이 필요해요",
+        "로그인하기"
+      ]
+    },
+    {
+      "name": "guest-sort-modal",
+      "auth": "guest",
+      "params": {
+        "shopId": 11,
+        "orderableShopId": 2
+      },
+      "cassette": "guest-2",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "최신순"
+          }
+        }
+      ],
+      "requiredText": [
+        "오래된순",
+        "평점 높은순",
+        "평점 낮은순"
+      ]
+    },
+    {
+      "name": "guest-sort-oldest",
+      "auth": "guest",
+      "params": {
+        "shopId": 11,
+        "orderableShopId": 2
+      },
+      "cassette": "guest-2",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "최신순"
+          }
+        },
+        {
+          "click": {
+            "text": "오래된순"
+          }
+        }
+      ],
+      "requiredText": [
+        "오래된순"
+      ]
+    },
+    {
+      "name": "guest-empty",
+      "auth": "guest",
+      "params": {
+        "shopId": 292,
+        "orderableShopId": 11
+      },
+      "cassette": "guest-11",
+      "requiredText": [
+        "리뷰 작성하기"
+      ]
+    },
+    {
+      "name": "auth",
+      "auth": "auth",
+      "params": {
+        "shopId": 11,
+        "orderableShopId": 2
+      },
+      "cassette": "auth-2",
+      "requiredText": [
+        "신고하기"
+      ]
+    },
+    {
+      "name": "auth-mine-only",
+      "auth": "auth",
+      "params": {
+        "shopId": 11,
+        "orderableShopId": 2
+      },
+      "cassette": "auth-2",
+      "actions": [
+        {
+          "click": {
+            "text": "내가 작성한 리뷰"
+          }
+        }
+      ],
+      "requiredText": [
+        "내가 작성한 리뷰"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {},
+    "ignoreRequests": [
+      {
+        "method": "GET",
+        "path": "/order/shop/2/summary",
+        "reason": "후보만: orderable_shop_id → shop_id 변환(order ID 버그 수정, 사용자 결정 2026-10-10). 리뷰 요청 자체는 G2로 같음을 본다"
+      },
+      {
+        "method": "GET",
+        "path": "/order/shop/11/summary",
+        "reason": "후보만: orderable_shop_id → shop_id 변환(order ID 버그 수정, 사용자 결정 2026-10-10). 리뷰 요청 자체는 G2로 같음을 본다"
+      }
+    ]
+  }
+}
