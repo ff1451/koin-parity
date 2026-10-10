@@ -84,7 +84,7 @@ ${args.targets.map((t) => `- ${t}`).join('\n')}
 ${feedback}
 
 ## 마무리 (반드시)
-1. ${ENV}cd ${WEB} && yarn typecheck, 변경한 ts/tsx에 yarn eslint, 변경한 scss에 yarn stylelint --config .stylelint.json — 오류가 없을 때까지 고친다
+1. ${ENV}cd ${WEB} && yarn typecheck, yarn lint(경고도 실패다: max-warnings 0. CI와 같은 명령) — 둘 다 종료 코드 0이 될 때까지 고친다
 2. 바꾼 파일만 명시적으로 git add 하고 커밋: git commit -m "feat: ${args.title} 모바일 화면 이전 작업 ${i}" (본문·서명 없이)
 3. git status --porcelain 이 비어 있는지 확인
 4. 결과를 스키마로 반환`
