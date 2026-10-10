@@ -28,6 +28,7 @@
     "/order/checkout?orderType=DELIVERY",
     "/order/checkout/return?orderType=TAKE_OUT",
     "/order/result/42",
-    "/order/cancel/42"
+    "/order/cancel/42",
+    "/order/orders"
   ]
 }

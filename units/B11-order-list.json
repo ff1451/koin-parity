@@ -1,0 +1,144 @@
+{
+  "id": "B11-order-list",
+  "description": "주문 내역. 오라클 /orders(패치 0009). 테스트 계정의 실제 주문(지난 주문 7건: 배달 완료·수령 완료·취소, 준비 중 7건). 지난 주문 탭(기본)·준비 중 탭·필터 모달·필터 적용(포장)·검색(결과 있음·없음)",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/orders"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/order/orders"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/order",
+  "states": [
+    {
+      "name": "past",
+      "auth": "auth",
+      "params": {},
+      "cassette": "past",
+      "requiredText": [
+        "지난 주문",
+        "준비 중",
+        "조회 기간",
+        "주문 상태 · 정보",
+        "주문상세",
+        "마슬랜"
+      ]
+    },
+    {
+      "name": "preparing",
+      "auth": "auth",
+      "params": {},
+      "cassette": "past",
+      "actions": [
+        {
+          "click": {
+            "text": "준비 중"
+          }
+        }
+      ],
+      "requiredText": [
+        "굿모닝살로만치킨"
+      ]
+    },
+    {
+      "name": "filter-modal",
+      "auth": "auth",
+      "params": {},
+      "cassette": "past",
+      "actions": [
+        {
+          "click": {
+            "text": "조회 기간"
+          }
+        }
+      ],
+      "requiredText": [
+        "필터",
+        "최근 3개월",
+        "주문 상태",
+        "주문 정보",
+        "초기화",
+        "적용하기"
+      ]
+    },
+    {
+      "name": "filter-takeout",
+      "auth": "auth",
+      "params": {},
+      "cassette": "filter-takeout",
+      "actions": [
+        {
+          "click": {
+            "text": "조회 기간"
+          }
+        },
+        {
+          "click": {
+            "text": "포장"
+          }
+        },
+        {
+          "click": {
+            "text": "적용하기"
+          }
+        }
+      ],
+      "requiredText": [
+        "포장",
+        "김밥천국"
+      ]
+    },
+    {
+      "name": "search",
+      "auth": "auth",
+      "params": {},
+      "cassette": "search",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주문한 메뉴/매장을 찾아보세요",
+            "text": "김밥"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주문한 메뉴/매장을 찾아보세요",
+            "key": "Enter"
+          }
+        }
+      ],
+      "requiredText": [
+        "김밥천국"
+      ]
+    },
+    {
+      "name": "search-empty",
+      "auth": "auth",
+      "params": {},
+      "cassette": "search-empty",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주문한 메뉴/매장을 찾아보세요",
+            "text": "없는메뉴"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주문한 메뉴/매장을 찾아보세요",
+            "key": "Enter"
+          }
+        }
+      ],
+      "requiredText": [
+        "주문 내역이 없어요"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}
