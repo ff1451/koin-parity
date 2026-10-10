@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 … (결정 39) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 → #1598 B8 … (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -64,7 +64,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ✅ draft PR #1590. 상태 7개. order의 주문 상점 번호/상점 번호 혼동 버그는 고쳐서 이전(사용자 결정, engineering-log 35). 내 리뷰 수정·삭제는 A6에서 검증(주문 상점에 테스트 계정 리뷰 없음) |
 | B6 장바구니 | `cart` → `/order/cart` | ✅ draft PR #1593. 상태 8개(쓰기 상태는 `prepare.cart`로 시작 장바구니 복구). 주문하기(검증→결제 이동)는 B8에서. B3의 담기 성공은 B2 `auth-add-success`로 검증 완료 |
 | B7 배달지 | `delivery/{campus,outside,outside/detail}` → `/order/delivery/...` | ✅ draft PR #1594. 상태 11개, 네이버 지도 실제 로드(`live.naverMaps`). 교외 검증 모달 버튼 뒤바뀜은 order 그대로(결정 41). 최종 "주소 선택"(결제 이동)은 B8 |
-| B8 결제 | `payment` → `/order/checkout` | ⏳ (결제 위젯까지, 결정 38) |
+| B8 결제 | `payment?orderType=` → `/order/checkout?orderType=` | ✅ draft PR #1598. 상태 7개, Toss 위젯·지도 실제 로드(iframe은 요소 단위 비교, engineering-log 41). Toss SDK 의존성 추가. 배달비 0원 "0" 표시 버그는 고쳐서 이전(사용자 결정) |
 | B9 결제 승인 | `payment/return` → `/order/checkout/return` | ⏳ |
 | B10 주문 완료·취소 | `result/:paymentId`·`orderCancel/:paymentId` → `/order/result/[paymentId]`·`/order/cancel/[paymentId]` | ⏳ |
 | B11 주문 내역 | `orders` → `/order/orders` | ⏳ |
@@ -150,6 +150,7 @@ KOIN `.claude/settings.local.json` (git 추적 안 됨, 루프 실행 중 하네
 - 주문 화면(B2~B4) 금액 표시가 `toLocaleString()`(locale 미지정). 서버(Node)와 사용자 브라우저 locale이 다르면(예: de-DE는 `15.000`) 하이드레이션 텍스트가 갈린다. order도 같은 코드라 대조에는 안 걸림. Track B 끝에 `ko-KR` 고정으로 한 번에 정리
 - 해시 스크롤 상태의 고정 헤더 띠는 compare가 가리고 scrollY 값을 비교한다(engineering-log 34). `chrome: none` 단위에는 적용 안 됨
 - 테스트 계정 장바구니 기준 상태는 `fixtures/_cart-states/b6-base.json`(상점 2: 후라이드 x2(순살 변경)·x1, 양념 x2). 수동 확인 뒤에는 `node cart-state.mjs restore b6-base`로 되돌린다
+- Track B 결제는 order와 같은 Toss **공개 테스트 키**를 쓴다. 웹 주문을 열기 전에 운영 키(환경 변수)로 바꿀 것
 - 아직 없는 게이트: G5(브릿지, 결제 단위에서), G7(SSR DOM 파괴율), G9(301·SEO)
 - 하네스가 띄운 서버는 예외 종료 시에도 정리된다(`lib/apps.mjs` exit 핸들러). 프로세스를 직접 죽일 때 `pkill -f <패턴>`은 실행 중인 셸 자신과 매칭돼 셸이 죽으니 PID로 죽일 것
 - `docs/foundation.md` F3이 참조하는 `css-improvement-survey.md`는 KOIN 저장소에서 추적되지 않는 로컬 문서(원래 기기에만 있음). F3은 완료돼 필요 없음

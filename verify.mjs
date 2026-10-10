@@ -11,6 +11,7 @@ import { join } from 'node:path';
 import { capture } from './capture.mjs';
 import { compare } from './compare.mjs';
 import { APPS, PARITY_DIR, startOrder, startProxy, startWeb, WEB_REPO } from './lib/apps.mjs';
+import { stateParams } from './lib/toss-payment.mjs';
 
 const unitId = process.argv[2];
 const ref = process.argv.includes('--ref') ? process.argv[process.argv.indexOf('--ref') + 1] : 'HEAD';
@@ -51,14 +52,14 @@ try {
     const candidateDir = join(stateDir, 'candidate');
 
     try {
-      await capture({ ...common, baseURL: APPS.order.baseURL, path: fillPath(unit.oracle.path, state.params), outDir: oracleDir });
+      await capture({ ...common, baseURL: APPS.order.baseURL, path: fillPath(unit.oracle.path, await stateParams(state)), outDir: oracleDir });
     } catch (error) {
       // 오라클이 상태에 도달하지 못하면 단위 스펙·픽스처 문제다 (후보 탓 아님)
       states.push({ name: state.name, pass: false, error: `oracle capture failed: ${firstLine(error)}` });
       continue;
     }
     try {
-      await capture({ ...common, baseURL: APPS.web.baseURL, path: fillPath(unit.candidate.path, state.params), outDir: candidateDir, candidateOnly: unit.candidateOnly ?? [] });
+      await capture({ ...common, baseURL: APPS.web.baseURL, path: fillPath(unit.candidate.path, await stateParams(state)), outDir: candidateDir, candidateOnly: unit.candidateOnly ?? [] });
     } catch (error) {
       states.push({ name: state.name, pass: false, error: `candidate unreachable: ${firstLine(error)}` });
       continue;

@@ -23,6 +23,9 @@
     "/order/cart",
     "/order/delivery/campus",
     "/order/delivery/outside",
-    "/order/delivery/outside/detail?roadAddress=%EA%B0%80%EC%A0%848%EA%B8%B8"
+    "/order/delivery/outside/detail?roadAddress=%EA%B0%80%EC%A0%848%EA%B8%B8",
+    "/order/checkout?orderType=TAKE_OUT",
+    "/order/checkout?orderType=DELIVERY",
+    "/order/checkout/return?orderType=TAKE_OUT"
   ]
 }

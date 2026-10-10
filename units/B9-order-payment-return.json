@@ -1,0 +1,72 @@
+{
+  "id": "B9-order-payment-return",
+  "description": "결제 승인 화면(/payment/return, 패치 0009). 결정 38 변경으로 Toss 테스트 결제를 실제로 만들어(prepare.payment, lib/toss-payment.mjs: 임시 주문 + 퀵계좌이체 데모) 그 paymentKey·orderId로 승인 화면을 연다. 2026-10-10 기록 시점에 stage의 payments/confirm이 500(INTERNAL_SERVER_ERROR, errorTraceId a6448d6c-1668-4295-b842-c339bcb0f665)을 내 성공 흐름은 기록할 수 없었다(order의 Toss 문서용 테스트 클라이언트 키와 백엔드 시크릿 키 불일치 추정, 백엔드 확인 필요). 그래서 이 단위는 승인 실패(서버 오류 → 결제 화면 실패 모달), 중복 승인(이미 처리된 결제), 파라미터 누락을 본다. 주문 완료 화면은 테스트 계정의 기존 주문으로 B10에서 본다. 백엔드가 고쳐지면 confirm-success 상태를 추가한다. 영업시간(상점 2: 16~23시)에만 기록 가능",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "{op}?orderType={orderType}&entryPoint=payment&paymentKey={paymentKey}&orderId={orderId}&amount={amount}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "{cp}?orderType={orderType}&entryPoint=payment&paymentKey={paymentKey}&orderId={orderId}&amount={amount}"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/payments",
+  "live": {
+    "naverMaps": true,
+    "toss": true
+  },
+  "states": [
+    {
+      "name": "confirm-server-error",
+      "auth": "auth",
+      "params": {
+        "op": "/payment/return",
+        "cp": "/order/checkout/return"
+      },
+      "cassette": "confirm-server-error",
+      "prepare": {
+        "cart": "b6-base",
+        "payment": "b9-takeout"
+      },
+      "requiredText": [
+        "서버에서 오류가 발생했습니다."
+      ]
+    },
+    {
+      "name": "confirm-duplicate",
+      "auth": "auth",
+      "params": {
+        "op": "/payment/return",
+        "cp": "/order/checkout/return"
+      },
+      "cassette": "confirm-duplicate",
+      "prepare": {
+        "payment": "b9-takeout"
+      },
+      "requiredText": [
+        "이미 처리된 결제입니다."
+      ]
+    },
+    {
+      "name": "missing-params",
+      "auth": "auth",
+      "params": {
+        "op": "/payment/return",
+        "cp": "/order/checkout/return",
+        "orderType": "TAKE_OUT",
+        "paymentKey": "",
+        "orderId": "",
+        "amount": ""
+      },
+      "cassette": "missing",
+      "minRequests": 0,
+      "requiredText": [
+        "결제 정보가 부족합니다."
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

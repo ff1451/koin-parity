@@ -10,6 +10,7 @@ import { join } from 'node:path';
 
 import { openPage, performAction, proxyControl } from './capture.mjs';
 import { APPS, PARITY_DIR, startOrder, startProxy } from './lib/apps.mjs';
+import { stateParams } from './lib/toss-payment.mjs';
 
 const arg = (name, fallback) => (process.argv.includes(name) ? process.argv[process.argv.indexOf(name) + 1] : fallback);
 const unitId = process.argv[2];
@@ -24,7 +25,7 @@ const maxStates = Number(arg('--max', '30'));
 const mode = process.argv.includes('--fill') ? 'fill' : 'replay';
 const runDir = join(PARITY_DIR, 'runs', `${new Date().toISOString().replace(/[:.]/g, '-')}-${unitId}-explore`);
 const fillPath = (template, params) => template.replace(/\{(\w+)\}/g, (_, k) => String(params[k]));
-const path = fillPath(unit.oracle.path, state.params);
+const path = fillPath(unit.oracle.path, await stateParams(state));
 const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`);
 
 // 페이지 안: 실제로 보이는 텍스트 집합 + 열린 다이얼로그 수 → 상태 서명.

@@ -10,6 +10,7 @@ import { join } from 'node:path';
 import { capture } from './capture.mjs';
 import { APPS, PARITY_DIR, startProxy, startWeb, WEB_REPO } from './lib/apps.mjs';
 import { restoreCart } from './lib/cart-state.mjs';
+import { stateParams } from './lib/toss-payment.mjs';
 
 const unitId = process.argv[2];
 const ref = process.argv.includes('--ref') ? process.argv[process.argv.indexOf('--ref') + 1] : 'HEAD';
@@ -34,7 +35,7 @@ try {
     // 한 상태가 도달 불가여도 나머지 상태는 보충한다
     const result = await capture({
       baseURL: APPS.web.baseURL,
-      path: fillPath(unit.candidate.path, state.params),
+      path: fillPath(unit.candidate.path, await stateParams(state)),
       outDir: join(runDir, state.name),
       cassette: join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`),
       assetsDir: join(PARITY_DIR, '.cache', 'assets'),

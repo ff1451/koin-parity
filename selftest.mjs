@@ -10,6 +10,7 @@ import { capture } from './capture.mjs';
 import { compare } from './compare.mjs';
 import { APPS, PARITY_DIR, startOrder, startProxy, startWeb } from './lib/apps.mjs';
 import { restoreCart } from './lib/cart-state.mjs';
+import { stateParams } from './lib/toss-payment.mjs';
 import { MUTATIONS } from './mutations.mjs';
 
 const unitId = process.argv[2];
@@ -36,12 +37,13 @@ try {
   stops.push(app === 'web' ? await startWeb() : await startOrder());
   for (const state of unit.states) {
     const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`);
-    const path = fillPath(app === 'web' ? unit.candidate.path : unit.oracle.path, state.params);
+    // 쓰기 상태가 stage를 바꾸므로 기록 전에 시작 상태를 복구한다(lib/cart-state.mjs). 테스트 결제는 기록 때 새로 만든다(lib/toss-payment.mjs)
+    if ((shouldRecord || shouldFill) && state.prepare?.cart) await restoreCart(state.prepare.cart);
+    const params = await stateParams(state, { fresh: shouldRecord });
+    const path = fillPath(app === 'web' ? unit.candidate.path : unit.oracle.path, params);
     const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks, auth: state.auth, live: unit.live };
 
     if (shouldRecord || shouldFill) {
-      // 쓰기 상태가 stage를 바꾸므로 기록 전에 시작 상태를 복구한다(lib/cart-state.mjs)
-      if (state.prepare?.cart) await restoreCart(state.prepare.cart);
       await capture({ ...common, mode: shouldRecord ? 'record' : 'fill', outDir: join(runDir, state.name, 'record') });
     }
     const runA = join(runDir, state.name, 'replay-1');
