@@ -19,3 +19,4 @@
 | `0008-enable-orderable-shop-routes.patch` | Track B: 주문 가능 상점 상세·정보·리뷰 라우트(`shop/true`, `shop-detail/true`, `review/true`)와 import의 주석만 해제. 화면 코드는 그대로 (2026-10-10 사용자 승인) |
 | `0009-enable-order-flow-routes.patch` | Track B: 주문 흐름 전체(주문 홈, 메뉴 상세, 장바구니, 배달지, 결제·결제 승인, 주문 완료·취소, 주문 내역) 라우트와 import 주석 해제. 화면 코드는 그대로 (2026-10-10 사용자 승인: 주문 관련 페이지·기능을 모두 그대로 이전하고 develop 머지 전에 진입을 막는다) |
 | `0010-takeout-result-null-delivery-tip.patch` | 포장 주문은 `delivery_tip`이 null이라 주문 완료 화면·영수증의 `formatKRW(null)`이 오류를 내 화면 전체가 빈 화면. 없으면 0원으로 표시 (2026-10-10 사용자 승인: 고쳐서 이전) |
+| `0011-result-map-marker-cleanup.patch` | 주문 완료 지도의 `useMarkers` 정리 함수가 지도가 null일 때만 마커를 지워, 가게 주소 지오코딩 후 다시 렌더될 때 집 마커가 같은 자리에 하나 더 쌓임(테두리가 진해짐). 항상 지우도록 (2026-10-10 사용자 승인) |

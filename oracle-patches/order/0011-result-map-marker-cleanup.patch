@@ -1,0 +1,21 @@
+diff --git a/src/pages/OrderFinish/hooks/useMarkers.ts b/src/pages/OrderFinish/hooks/useMarkers.ts
+index b6e5b21..e085e73 100644
+--- a/src/pages/OrderFinish/hooks/useMarkers.ts
++++ b/src/pages/OrderFinish/hooks/useMarkers.ts
+@@ -58,12 +58,10 @@ export default function useMarkers(map: MapInstance, inputs: MarkerInput[]) {
+     });
+ 
+     return () => {
+-      if (!map) {
+-        markersRef.current.forEach((marker) => {
+-          marker.setMap(null);
+-        });
+-        markersRef.current.clear();
+-      }
++      markersRef.current.forEach((marker) => {
++        marker.setMap(null);
++      });
++      markersRef.current.clear();
+     };
+   }, [map, normalized]);
+ 
