@@ -136,12 +136,27 @@ function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate, chrome) 
   };
   const pa = pad(a);
   const pb = pad(b);
+  // 스크롤된 상태(해시 스크롤 등)에서는 고정 헤더가 문서 y=scrollY 위치에 그려져 본문 영역 안으로 들어온다(B4 delivery-anchor).
+  // 헤더는 본문 비교 대상이 아니므로 그 띠를 두 이미지 모두 같은 색으로 덮고, 스크롤 위치는 값으로 따로 비교한다
+  const oracleScroll = oracle.scrollY ?? 0;
+  const candidateScroll = candidate.scrollY ?? 0;
+  const scrollMismatch = Math.abs(oracleScroll - candidateScroll) > BOX_TOLERANCE;
+  const band = chrome !== 'none' && oracleScroll > 0 ? { top: oracleScroll, bottom: oracleScroll + CHROME_HEADER_HEIGHT } : null;
+  if (band) {
+    const dpr = oracle.devicePixelRatio ?? 1;
+    for (const [img, region] of [[pa, oracleRegion], [pb, candidateRegion]]) {
+      const from = Math.max(0, Math.round((band.top - region.top) * dpr));
+      const to = Math.min(img.height, Math.round((band.bottom - region.top) * dpr));
+      for (let y = from; y < to; y += 1) img.data.fill(255, y * img.width * 4, (y + 1) * img.width * 4);
+    }
+  }
   const diff = new PNG({ width, height });
   const diffPixels = pixelmatch(pa.data, pb.data, diff.data, width, height, { threshold: FUZZ, includeAA: false });
   writeFileSync(join(outDir, 'diff.png'), PNG.sync.write(diff));
 
   // 선언된 마스크 안의 요소는 짝 맞추기에서 제외한다 (마스크 면적은 리포트에 남는다)
-  const unmasked = (items, region) => items.filter((i) => !i.masked && inRegion(i, region));
+  const inBand = (i) => band && i.box.y >= band.top && i.box.y + i.box.h <= band.bottom + 1;
+  const unmasked = (items, region) => items.filter((i) => !i.masked && inRegion(i, region) && !inBand(i));
   // 본문 영역 기준 좌표로 맞춰 비교한다
   const shift = (items, region) => items.map((i) => ({ ...i, box: { ...i.box, y: i.box.y - region.top } }));
   const inventory = matchInventory(
@@ -152,8 +167,9 @@ function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate, chrome) 
   const area = (regions) => regions.reduce((sum, r) => sum + r.w * r.h, 0);
   const pageArea = oracle.page.width * oracle.page.height;
   return {
-    pass: diffPixels === 0 && !sizeMismatch && inventory.missing.length === 0 && inventory.extra.length === 0,
+    pass: diffPixels === 0 && !sizeMismatch && !scrollMismatch && inventory.missing.length === 0 && inventory.extra.length === 0,
     diffPixels,
+    scrollY: { oracle: oracleScroll, candidate: candidateScroll, ...(band ? { maskedHeaderBand: band } : {}) },
     maskedRatio: Number((area(oracle.dynamicRegions ?? []) / pageArea).toFixed(4)),
     declaredMaskedElements: oracle.inventory.filter((i) => i.masked).length,
     size: { oracle: [a.width, a.height], candidate: [b.width, b.height] },

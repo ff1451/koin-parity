@@ -482,12 +482,14 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
     return el ? Math.round(el.getBoundingClientRect().top + scrollY) : null;
   }, chrome.footerSelector);
   const devicePixelRatio = await page.evaluate(() => window.devicePixelRatio);
+  // 스크롤된 상태에서는 고정(fixed·sticky) 헤더가 전체 페이지 스크린샷의 scrollY 위치에 그려진다. compare가 그 띠를 가리고 값 자체를 비교한다
+  const scroll = await page.evaluate(() => Math.round(window.scrollY));
 
   if (mode !== 'replay') await proxyControl('flush', {});
   const { log, foreign } = await proxyControl('log');
   if (foreign.length) console.warn(`[capture] 외부 클라이언트 요청 ${foreign.length}건을 거절함(하네스 포트를 쓰는 다른 탭?): ${foreign.slice(0, 3).map((f) => `${f.method} ${f.path} ${f.origin ?? ''}`).join(', ')}`);
 
-  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
+  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, scrollY: scroll, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();

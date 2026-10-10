@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 … (결정 39) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 … (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -60,7 +60,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | **Track B** (결정 36: order 주문 흐름 전체를 그대로, 브랜치 `feat/#1572/order-track-b`, develop 머지 전 진입 차단) | | 오라클 패치 0008·0009로 order 주문 라우트 전부 개방 |
 | B2 주문 가능 상점 상세 | `shop/true/:id` → `/order/shops/[id]` | ✅ draft PR #1586. 상태 5개. 주문 화면은 order viewport meta 사용(접근성 재검토 필요) |
 | B3 메뉴 상세 | `shop/true/:id/menus/:menuId` → `/order/shops/[id]/menus/[menuId]` | ✅ draft PR #1587. 상태 9개(담기 성공은 기록 시점 영업시간 아님 → B6에서 확인) |
-| B4 상점 정보 | `shop-detail/true/:id` → `/order/shops/[id]/info` | ⏳ |
+| B4 상점 정보 | `shop-detail/true/:id` → `/order/shops/[id]/info` | ✅ draft PR #1589. 상태 4개(해시 스크롤 상태는 헤더 띠 가림 + scrollY 비교, engineering-log 34) |
 | B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ⏳ |
 | B6 장바구니 | `cart` → `/order/cart` | ⏳ (로그인, 테스트 계정으로 장바구니 실제 등록) |
 | B7 배달지 | `delivery/campus`·`outside`·`outside/detail` → `/order/delivery/...` | ⏳ |
@@ -145,8 +145,10 @@ KOIN `.claude/settings.local.json` (git 추적 안 됨, 루프 실행 중 하네
 
 - stage가 가끔 5xx·연결 끊김을 낸다. `--fill` 중 5xx가 빌드 카세트(`.cache/web-build.cassette.json`)에 저장되면 빌드 프리렌더가 계속 실패하므로 그 항목을 지우고 다시 채운다. `fetch failed`로 한 케이스만 실패하면 그 페이지만 `--fill --pages`로 다시 채운다
 
-- `R-regression`의 `cafeteria.desktop`이 간헐적으로 1336px 차이(이전 기기, 같은 조건 재실행 시 통과). 이 기기에서는 재현되지 않음. 원인 후보: 정착 대기 부족(engineering-log 19, 500ms로 수정됨) 또는 외부 요청 혼입(30, 수정됨)
+- `R-regression`의 `cafeteria.desktop`이 간헐적으로 1336px 차이(같은 조건 재실행 시 통과). 2026-10-10 이 기기에서도 1회 재현(B3→B4, 이어서 3회 연속 통과): 차이는 "식단 정보는 운영 상황에 따라 변동될 수 있습니다." 문구의 세로 위치(234px)뿐 — 식단 데이터 도착 시점에 따라 본문 높이가 갈리는 것으로 보임. 원인 후보: 정착 대기 부족(engineering-log 19, 500ms로 수정됨) 또는 외부 요청 혼입(30, 수정됨)
 - WEB_RECODE 버그(범위 밖, 별도 이슈 후보): EventCarousel 초기 인덱스 경합("2/2" 표시), 리뷰 변경 후 로그인 사용자 상세 캐시 미무효화 (`docs/foundation.md` §7)
+- 주문 화면(B2~B4) 금액 표시가 `toLocaleString()`(locale 미지정). 서버(Node)와 사용자 브라우저 locale이 다르면(예: de-DE는 `15.000`) 하이드레이션 텍스트가 갈린다. order도 같은 코드라 대조에는 안 걸림. Track B 끝에 `ko-KR` 고정으로 한 번에 정리
+- 해시 스크롤 상태의 고정 헤더 띠는 compare가 가리고 scrollY 값을 비교한다(engineering-log 34). `chrome: none` 단위에는 적용 안 됨
 - 아직 없는 게이트: G5(브릿지, 결제 단위에서), G7(SSR DOM 파괴율), G9(301·SEO)
 - 하네스가 띄운 서버는 예외 종료 시에도 정리된다(`lib/apps.mjs` exit 핸들러). 프로세스를 직접 죽일 때 `pkill -f <패턴>`은 실행 중인 셸 자신과 매칭돼 셸이 죽으니 PID로 죽일 것
 - `docs/foundation.md` F3이 참조하는 `css-improvement-survey.md`는 KOIN 저장소에서 추적되지 않는 로컬 문서(원래 기기에만 있음). F3은 완료돼 필요 없음
