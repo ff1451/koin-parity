@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 → #1598 B8 → #1599 B9 … (결정 39) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 → #1598 B8 → #1599 B9 → #1600 B10 … (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -66,7 +66,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | B7 배달지 | `delivery/{campus,outside,outside/detail}` → `/order/delivery/...` | ✅ draft PR #1594. 상태 11개, 네이버 지도 실제 로드(`live.naverMaps`). 교외 검증 모달 버튼 뒤바뀜은 order 그대로(결정 41). 최종 "주소 선택"(결제 이동)은 B8 |
 | B8 결제 | `payment?orderType=` → `/order/checkout?orderType=` | ✅ draft PR #1598. 상태 7개, Toss 위젯·지도 실제 로드(iframe은 요소 단위 비교, engineering-log 41). Toss SDK 의존성 추가. 배달비 0원 "0" 표시 버그는 고쳐서 이전(사용자 결정) |
 | B9 결제 승인 | `payment/return` → `/order/checkout/return` | ✅ draft PR #1599. 상태 3개(서버 오류·중복 승인·파라미터 부족). Toss 테스트 결제를 기록 직전에 만든다(`prepare.payment`). **승인 성공은 stage 500으로 미검증** — 백엔드 확인 필요(errorTraceId a6448d6c-1668-4295-b842-c339bcb0f665) |
-| B10 주문 완료·취소 | `result/:paymentId`, `orderCancel/:paymentId` → `/order/result/[paymentId]`, `/order/cancel/[paymentId]` | ⏳ 테스트 계정 기존 주문(42·33·45·441·3·1·437)으로 상태별 검증. 취소 "계속하기"는 실제 취소라 제외 |
+| B10 주문 완료·취소 | `result/:paymentId`, `orderCancel/:paymentId` → `/order/result/[paymentId]`, `/order/cancel/[paymentId]` | ✅ draft PR #1600. 상태 12개, 테스트 계정 기존 주문(42·33·45·441·3·1·437)으로 상태별 검증. 오라클 패치 0010(포장 빈 화면)·0011(중복 마커). 취소 "계속하기"는 실제 취소라 제외 |
 | B11 주문 내역 | `orders` → `/order/orders` | ⏳ |
 | B1 주문 홈 | `home` → `/order` | ⏳ |
 | P6 전환 | 링크 교체, 헤더 높이 통일(Track A), 아이콘 폴더 정리 | ✅ PR #1584. order 301은 하지 않음(결정 33). Track B 헤더는 Track B 완료 때 통일. 남은 것: 스택 리뷰·머지 → develop |
