@@ -442,6 +442,13 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
     await page.addStyleTag({ content: `${selector} { visibility: hidden !important; }` });
   }
 
+  // 캡처 직전에 스타일 재계산을 한 번 강제한다(두 앱 모두 같게). 직전 상호작용(이미지 뷰어 열기 등) 직후의 첫 전체 페이지
+  // 래스터가 재계산 전 상태로 찍히는 경우가 있어, 같은 화면도 한쪽 앱만 다르게 찍혔다(B2 image-viewer, engineering-log 32)
+  await page.addStyleTag({ content: '/* parity: force style recalc */' });
+  // 가짜 시계가 requestAnimationFrame도 멈춰 두므로 프레임을 기다리지 않고, 레이아웃 값을 읽어 재계산을 강제한 뒤 잠깐 그린다
+  await page.evaluate(() => document.body.getBoundingClientRect().height);
+  await page.waitForTimeout(100);
+
   // 분석 이벤트·토스트는 스크린샷 전에 읽는다: 전체 페이지 스크린샷이 뷰포트 크기를 잠깐 바꾸면서 생기는 resize로
   // 스크롤 로깅 같은 이벤트가 실제 시간 타이밍에 따라 찍히거나 안 찍힌다(A4 menu-group 간헐 실패). 캡처 도구가 만든 이벤트는 사용자 행동이 아니다
   const instrumented = await page.evaluate(() => window.__parity ?? { gtag: [], toasts: [] });
