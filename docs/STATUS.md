@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `feat/#1572/order-track-b` | draft PR **#1585** → #1584 (Track B, 스택 밖, 메인 반영 전 진입 차단) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 … (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -58,8 +58,8 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | A6 리뷰 목록 | `/store/[id]/reviews` | ✅ PR #1580 (루프 1회, 상태 8개: 비로그인 5·로그인 3) |
 | A7·A8·A9 리뷰 작성·수정·신고 | 기존 WEB_RECODE 페이지 모바일 UI | ✅ PR #1581·#1582·#1583 (제출 직전까지만 검증. 데스크톱 기존 훅은 자체 토스트로 중복되어 모바일은 공용 mutation 직접 사용) |
 | **Track B** (결정 36: order 주문 흐름 전체를 그대로, 브랜치 `feat/#1572/order-track-b`, develop 머지 전 진입 차단) | | 오라클 패치 0008·0009로 order 주문 라우트 전부 개방 |
-| B2 주문 가능 상점 상세 | `shop/true/:id` → `/order/shops/[id]` | ✅ draft PR #1585(Track B 브랜치, base #1584). 상태 5개. 주문 화면은 order viewport meta 사용(결정, 접근성 재검토 필요) |
-| B3 메뉴 상세 | `shop/true/:id/menus/:menuId` → `/order/shops/[id]/menus/[menuId]` | ⏳ |
+| B2 주문 가능 상점 상세 | `shop/true/:id` → `/order/shops/[id]` | ✅ draft PR #1586. 상태 5개. 주문 화면은 order viewport meta 사용(접근성 재검토 필요) |
+| B3 메뉴 상세 | `shop/true/:id/menus/:menuId` → `/order/shops/[id]/menus/[menuId]` | ✅ draft PR #1587. 상태 9개(담기 성공은 기록 시점 영업시간 아님 → B6에서 확인) |
 | B4 상점 정보 | `shop-detail/true/:id` → `/order/shops/[id]/info` | ⏳ |
 | B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ⏳ |
 | B6 장바구니 | `cart` → `/order/cart` | ⏳ (로그인, 테스트 계정으로 장바구니 실제 등록) |
