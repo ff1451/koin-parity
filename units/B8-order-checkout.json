@@ -1,0 +1,230 @@
+{
+  "id": "B8-order-checkout",
+  "description": "결제(주문서) 화면. 오라클 /payment?orderType=(패치 0009), 후보 /order/checkout?orderType=. 장바구니(주문하기 → 검증) 또는 교내 배달지(주소 선택)에서 들어오는 흐름으로 도달한다(주문 상태는 앱마다 저장소가 달라 직접 주입하지 않음). Toss 결제 위젯과 네이버 지도(포장 시 가게 위치)는 실제로 불러 비교한다(live, 결정 38 변경·engineering-log 39). 연락처 모달은 열기만 한다(제출하면 실제 SMS 발송). 결제하기 → Toss 테스트 결제창 이후는 B9. 영업시간(상점 2: 16~23시)에만 기록 가능. 교내 배달지에서 넘어오면 이전 화면의 스크롤이 경합으로 남으므로(오라클끼리 85/36) 이동 직후 scrollTo로 맨 위에 맞춘다",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "{op}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "{cp}"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/cart",
+  "live": {
+    "naverMaps": true,
+    "toss": true
+  },
+  "states": [
+    {
+      "name": "takeout",
+      "auth": "auth",
+      "params": {
+        "op": "/cart",
+        "cp": "/order/cart"
+      },
+      "cassette": "takeout",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "포장"
+          }
+        },
+        {
+          "click": {
+            "text": "주문하기"
+          }
+        }
+      ],
+      "requiredText": [
+        "포장",
+        "굿모닝살로만치킨",
+        "연락처",
+        "사장님에게",
+        "수저 · 포크 안받기",
+        "결제하기"
+      ]
+    },
+    {
+      "name": "delivery-no-address",
+      "auth": "auth",
+      "params": {
+        "op": "/cart",
+        "cp": "/order/cart"
+      },
+      "cassette": "delivery",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "text": "주문하기"
+          }
+        }
+      ],
+      "requiredText": [
+        "배달",
+        "어디로 배달할까요?",
+        "배달기사님에게",
+        "결제하기"
+      ]
+    },
+    {
+      "name": "delivery-campus",
+      "auth": "auth",
+      "params": {
+        "op": "/delivery/campus",
+        "cp": "/order/delivery/campus"
+      },
+      "cassette": "delivery-campus",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        },
+        {
+          "scrollTo": {
+            "y": 0
+          }
+        }
+      ],
+      "requiredText": [
+        "배달",
+        "105동(함지)",
+        "배달기사님에게",
+        "결제하기"
+      ]
+    },
+    {
+      "name": "contact-modal",
+      "auth": "auth",
+      "params": {
+        "op": "/cart",
+        "cp": "/order/cart"
+      },
+      "cassette": "takeout",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "포장"
+          }
+        },
+        {
+          "click": {
+            "text": "주문하기"
+          }
+        },
+        {
+          "click": {
+            "text": "000-0000-0000"
+          }
+        }
+      ],
+      "requiredText": [
+        "연락처",
+        "번호 변경"
+      ]
+    },
+    {
+      "name": "owner-request-modal",
+      "auth": "auth",
+      "params": {
+        "op": "/cart",
+        "cp": "/order/cart"
+      },
+      "cassette": "takeout",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "포장"
+          }
+        },
+        {
+          "click": {
+            "text": "주문하기"
+          }
+        },
+        {
+          "click": {
+            "text": "요청사항 없음"
+          }
+        }
+      ],
+      "requiredText": [
+        "일회용 수저, 포크는 빼 주세요",
+        "저장하기"
+      ]
+    },
+    {
+      "name": "rider-request-modal",
+      "auth": "auth",
+      "params": {
+        "op": "/delivery/campus",
+        "cp": "/order/delivery/campus"
+      },
+      "cassette": "delivery-campus",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        },
+        {
+          "scrollTo": {
+            "y": 0
+          }
+        },
+        {
+          "click": {
+            "text": "요청사항 없음",
+            "nth": 1
+          }
+        }
+      ],
+      "requiredText": [
+        "직접 입력"
+      ]
+    },
+    {
+      "name": "fail-message",
+      "auth": "auth",
+      "params": {
+        "op": "/payment?orderType=TAKE_OUT&message=%EA%B2%B0%EC%A0%9C%EA%B0%80%20%EC%B7%A8%EC%86%8C%EB%90%98%EC%97%88%EC%8A%B5%EB%8B%88%EB%8B%A4",
+        "cp": "/order/checkout?orderType=TAKE_OUT&message=%EA%B2%B0%EC%A0%9C%EA%B0%80%20%EC%B7%A8%EC%86%8C%EB%90%98%EC%97%88%EC%8A%B5%EB%8B%88%EB%8B%A4"
+      },
+      "cassette": "fail",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "requiredText": [
+        "결제가 취소되었습니다"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

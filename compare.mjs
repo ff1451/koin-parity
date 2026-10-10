@@ -166,12 +166,34 @@ function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate, chrome) 
     shift(unmasked(oracle.inventory, oracleRegion), oracleRegion),
     shift(unmasked(candidate.inventory, candidateRegion), candidateRegion),
   );
+  // 외부 위젯 iframe(live.toss)은 따로 찍은 요소 스크린샷끼리 순서대로 비교한다(capture.mjs frameShots)
+  const frameDiffs = [];
+  const oracleFrames = oracle.frames ?? [];
+  const candidateFrames = candidate.frames ?? [];
+  if (oracleFrames.length !== candidateFrames.length) frameDiffs.push({ count: [oracleFrames.length, candidateFrames.length] });
+  oracleFrames.forEach((of, i) => {
+    const cf = candidateFrames[i];
+    if (!cf) return;
+    const fa = PNG.sync.read(readFileSync(join(oracleDir, of.file)));
+    const fb = PNG.sync.read(readFileSync(join(candidateDir, cf.file)));
+    if (of.host !== cf.host || fa.width !== fb.width || fa.height !== fb.height) {
+      frameDiffs.push({ index: i, host: [of.host, cf.host], size: [[fa.width, fa.height], [fb.width, fb.height]] });
+      return;
+    }
+    const fd = new PNG({ width: fa.width, height: fa.height });
+    const pixels = pixelmatch(fa.data, fb.data, fd.data, fa.width, fa.height, { threshold: FUZZ, includeAA: false });
+    if (pixels > 0) {
+      writeFileSync(join(outDir, `frame-${i}-diff.png`), PNG.sync.write(fd));
+      frameDiffs.push({ index: i, host: of.host, diffPixels: pixels });
+    }
+  });
   const sizeMismatch = a.width !== b.width || a.height !== b.height;
   const area = (regions) => regions.reduce((sum, r) => sum + r.w * r.h, 0);
   const pageArea = oracle.page.width * oracle.page.height;
   return {
-    pass: diffPixels === 0 && !sizeMismatch && !scrollMismatch && inventory.missing.length === 0 && inventory.extra.length === 0,
+    pass: diffPixels === 0 && !sizeMismatch && !scrollMismatch && frameDiffs.length === 0 && inventory.missing.length === 0 && inventory.extra.length === 0,
     diffPixels,
+    ...(oracleFrames.length || candidateFrames.length ? { frames: oracleFrames.length, frameDiffs } : {}),
     scrollY: { oracle: oracleScroll, candidate: candidateScroll, ...(band ? { maskedHeaderBand: band } : {}) },
     maskedRatio: Number((area(oracle.dynamicRegions ?? []) / pageArea).toFixed(4)),
     declaredMaskedElements: oracle.inventory.filter((i) => i.masked).length,

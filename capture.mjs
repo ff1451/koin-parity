@@ -494,7 +494,27 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const declared = maskSelectors.map((sel) => page.locator(sel));
   // 토스트는 앱마다 표시 시간이 달라(1.5초 vs react-toastify) 같은 시점에 한쪽만 남는다 → 픽셀·요소 목록에서 빼고 문구 기록으로 비교
   const toasts = page.locator(chrome.toastSelector);
-  await page.screenshot({ path: join(outDir, 'screenshot.png'), fullPage: true, mask: [dynamic, ...declared, toasts], maskColor: '#FF00FF' });
+  // 실제로 불러오는 외부 위젯(live.toss)은 다른 출처 iframe이다. 처음 뷰포트 밖에 통째로 있는 다른 출처 iframe은 전체 페이지
+  // 스크린샷에 합성되지 않아 빈칸으로 찍힌다(B8 약관 위젯, engineering-log 41). 요소 스크린샷은 정상으로 찍히므로 iframe마다 따로 찍어
+  // 순서대로 비교하고(compare G6 frames), 전체 페이지에서는 같은 색으로 가린다. 찍는 동안 바뀐 스크롤은 되돌린다
+  const frameShots = [];
+  const frameLocator = page.locator('iframe');
+  if (live.toss) {
+    const scrollBefore = await page.evaluate(() => window.scrollY);
+    const count = await frameLocator.count();
+    for (let i = 0; i < count; i += 1) {
+      const frame = frameLocator.nth(i);
+      const box = await frame.boundingBox();
+      if (!box || box.width < 1 || box.height < 1) continue;
+      const host = new URL((await frame.getAttribute('src')) ?? 'about:blank', page.url()).host;
+      const file = `frame-${frameShots.length}.png`;
+      await frame.screenshot({ path: join(outDir, file) });
+      frameShots.push({ host, file, width: Math.round(box.width), height: Math.round(box.height) });
+    }
+    await page.evaluate((y) => window.scrollTo(0, y), scrollBefore);
+    await page.waitForTimeout(100);
+  }
+  await page.screenshot({ path: join(outDir, 'screenshot.png'), fullPage: true, mask: [dynamic, ...declared, toasts, ...(live.toss ? [frameLocator] : [])], maskColor: '#FF00FF' });
   const inventory = await page.evaluate(collectInventory, [...maskSelectors, chrome.toastSelector]);
   const pageSize = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight }));
   // 본문 영역 비교(foundation D1)용: 푸터 시작 위치. 헤더는 두 앱 모두 60px로 맞춰 compare가 위쪽을 잘라낸다
@@ -510,7 +530,7 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const { log, foreign } = await proxyControl('log');
   if (foreign.length) console.warn(`[capture] 외부 클라이언트 요청 ${foreign.length}건을 거절함(하네스 포트를 쓰는 다른 탭?): ${foreign.slice(0, 3).map((f) => `${f.method} ${f.path} ${f.origin ?? ''}`).join(', ')}`);
 
-  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, scrollY: scroll, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
+  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, scrollY: scroll, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, frames: frameShots, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();

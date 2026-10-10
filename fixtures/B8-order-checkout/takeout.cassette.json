@@ -1,0 +1,159 @@
+{
+  "entries": [
+    {
+      "key": "GET /cart?type=DELIVERY #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/cart",
+        "query": "type=DELIVERY",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX25hbWUiOiLqtb/rqqjri53sgrTroZzrp4zsuZjtgqgiLCJzaG9wX3RodW1ibmFpbF9pbWFnZV91cmwiOiJodHRwczovL3N0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL293bmVycy8yMDI0LzAzLzI4L2ViZWY4MGFmLTlkMTgtNDRjOC1iNGRkLTQ0YzY0ZjIxYTUyMC0xNzExNjE3ODY5MjM2LzE2OTM2NDU3ODcxNjUuanBnIiwib3JkZXJhYmxlX3Nob3BfaWQiOjIsImlzX2RlbGl2ZXJ5X2F2YWlsYWJsZSI6dHJ1ZSwiaXNfdGFrZW91dF9hdmFpbGFibGUiOnRydWUsInNob3BfbWluaW11bV9vcmRlcl9hbW91bnQiOjE0MDAwLCJpdGVtcyI6W3siY2FydF9tZW51X2l0ZW1faWQiOjExNDcsIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjExLCJuYW1lIjoi7ZuE65287J2065OcIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQyMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MTkwMDB9LCJvcHRpb25zIjpbeyJvcHRpb25fZ3JvdXBfbmFtZSI6Iuu8iC/siJzsgrQg67OA6rK9Iiwib3B0aW9uX25hbWUiOiLsiJzsgrTroZwg67OA6rK9Iiwib3B0aW9uX3ByaWNlIjoyMDAwfV0sImlzX21vZGlmaWVkIjpmYWxzZX0seyJjYXJ0X21lbnVfaXRlbV9pZCI6MTE0OCwib3JkZXJhYmxlX3Nob3BfbWVudV9pZCI6MTEsIm5hbWUiOiLtm4TrnbzsnbTrk5wg7LmY7YKoIiwibWVudV90aHVtYm5haWxfaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9vd25lcnMvMjAyNC8wMy8wNi8yZDc2ODdkNi01N2RkLTQyNDEtOTg4YS0yNmQyYjI4NTUwMzAtMTcwOTczMjMwODY4NC8yMDI0MDMwNF8xODI1MTEuanBnIiwicXVhbnRpdHkiOjEsInRvdGFsX2Ftb3VudCI6MTkwMDAsInByaWNlIjp7Im5hbWUiOm51bGwsInByaWNlIjoxOTAwMH0sIm9wdGlvbnMiOltdLCJpc19tb2RpZmllZCI6ZmFsc2V9LHsiY2FydF9tZW51X2l0ZW1faWQiOjExNDksIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjEyLCJuYW1lIjoi7JaR64WQIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQwMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MjAwMDB9LCJvcHRpb25zIjpbXSwiaXNfbW9kaWZpZWQiOmZhbHNlfV0sIml0ZW1zX2Ftb3VudCI6MTAxMDAwLCJkZWxpdmVyeV9mZWUiOjE1MDAsInRvdGFsX2Ftb3VudCI6MTAyNTAwLCJmaW5hbF9wYXltZW50X2Ftb3VudCI6MTAyNTAwfQ=="
+      }
+    },
+    {
+      "key": "GET /cart?type=TAKE_OUT #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/cart",
+        "query": "type=TAKE_OUT",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX25hbWUiOiLqtb/rqqjri53sgrTroZzrp4zsuZjtgqgiLCJzaG9wX3RodW1ibmFpbF9pbWFnZV91cmwiOiJodHRwczovL3N0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL293bmVycy8yMDI0LzAzLzI4L2ViZWY4MGFmLTlkMTgtNDRjOC1iNGRkLTQ0YzY0ZjIxYTUyMC0xNzExNjE3ODY5MjM2LzE2OTM2NDU3ODcxNjUuanBnIiwib3JkZXJhYmxlX3Nob3BfaWQiOjIsImlzX2RlbGl2ZXJ5X2F2YWlsYWJsZSI6dHJ1ZSwiaXNfdGFrZW91dF9hdmFpbGFibGUiOnRydWUsInNob3BfbWluaW11bV9vcmRlcl9hbW91bnQiOjE0MDAwLCJpdGVtcyI6W3siY2FydF9tZW51X2l0ZW1faWQiOjExNDcsIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjExLCJuYW1lIjoi7ZuE65287J2065OcIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQyMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MTkwMDB9LCJvcHRpb25zIjpbeyJvcHRpb25fZ3JvdXBfbmFtZSI6Iuu8iC/siJzsgrQg67OA6rK9Iiwib3B0aW9uX25hbWUiOiLsiJzsgrTroZwg67OA6rK9Iiwib3B0aW9uX3ByaWNlIjoyMDAwfV0sImlzX21vZGlmaWVkIjpmYWxzZX0seyJjYXJ0X21lbnVfaXRlbV9pZCI6MTE0OCwib3JkZXJhYmxlX3Nob3BfbWVudV9pZCI6MTEsIm5hbWUiOiLtm4TrnbzsnbTrk5wg7LmY7YKoIiwibWVudV90aHVtYm5haWxfaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9vd25lcnMvMjAyNC8wMy8wNi8yZDc2ODdkNi01N2RkLTQyNDEtOTg4YS0yNmQyYjI4NTUwMzAtMTcwOTczMjMwODY4NC8yMDI0MDMwNF8xODI1MTEuanBnIiwicXVhbnRpdHkiOjEsInRvdGFsX2Ftb3VudCI6MTkwMDAsInByaWNlIjp7Im5hbWUiOm51bGwsInByaWNlIjoxOTAwMH0sIm9wdGlvbnMiOltdLCJpc19tb2RpZmllZCI6ZmFsc2V9LHsiY2FydF9tZW51X2l0ZW1faWQiOjExNDksIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjEyLCJuYW1lIjoi7JaR64WQIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQwMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MjAwMDB9LCJvcHRpb25zIjpbXSwiaXNfbW9kaWZpZWQiOmZhbHNlfV0sIml0ZW1zX2Ftb3VudCI6MTAxMDAwLCJkZWxpdmVyeV9mZWUiOjAsInRvdGFsX2Ftb3VudCI6MTAxMDAwLCJmaW5hbF9wYXltZW50X2Ftb3VudCI6MTAxMDAwfQ=="
+      }
+    },
+    {
+      "key": "GET /cart/validate?order_type=TAKE_OUT #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/cart/validate",
+        "query": "order_type=TAKE_OUT",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": ""
+      }
+    },
+    {
+      "key": "GET /delivery/rider-message? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/delivery/rider-message",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb3VudCI6NSwiY29udGVudHMiOlt7ImNvbnRlbnQiOiLrrLgg7JWe7JeQIOuGlOyjvOyEuOyalCAo67KoIOuIjOufrOyjvOyEuOyalCkifSx7ImNvbnRlbnQiOiLrrLgg7JWe7JeQIOuGlOyjvOyEuOyalCAo64W47YGs7ZW07KO87IS47JqUKSJ9LHsiY29udGVudCI6IuusuCDslZ7sl5Ag64aU7KO87IS47JqUICjrsqhYLCDrhbjtgawgWCkifSx7ImNvbnRlbnQiOiLsp4HsoJEg67Cb7J2E6rKM7JqUIn0seyJjb250ZW50Ijoi7KCE7ZmU7KO87Iuc66m0IOuniOykkSDrgpjqsIjqsozsmpQifV19"
+      }
+    },
+    {
+      "key": "GET /order/shop/2/detail? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/order/shop/2/detail",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjoxMSwib3JkZXJhYmxlX3Nob3BfaWQiOjIsIm5hbWUiOiLqtb/rqqjri53sgrTroZzrp4zsuZjtgqgiLCJhZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOy2qeygiOuhnCAxNjM4ICjsi6DtlZzslYTtjIztirgpIiwib3Blbl90aW1lIjoiMTY6MDAiLCJjbG9zZV90aW1lIjoiMjM6MDAiLCJjbG9zZWRfZGF5cyI6WyJXRURORVNEQVkiXSwicGhvbmUiOiIwMDAtMDAwLTAwMDAiLCJpbnRyb2R1Y3Rpb24iOiLslYjrhZXtlZjshLjsmpQsIOq1v+uqqOuLnSDsgrTroZzrp4wg7LmY7YKo7J6F64uI64ukIVxu7LWc7IOB6riJIOq1reuCtOyCsCDri63qs6DquLDrpbwg7IKs7Jqp7ZW0IOuwlOyCre2VmOqzoCDstInstIntlZwg7LmY7YKo7J2EIOygnOqzte2VqeuLiOuLpC5cbuunpOydvCDsi6DshKDtlZwg7J6s66OM66GcIOygleyEseq7jyDsmpTrpqztlZjrqbAsIOqzoOqwneuLmOydmCDtlonrs7XtlZwg7Iud7IKs66W8IOychO2VtCDstZzshKDsnYQg64uk7ZWY6rKg7Iq164uI64ukLlxu6rCA7KGxLCDsuZzqtazsmYAg7ZWo6ruYIOymkOq4sOuKlCDrp5vsnojripQg7LmY7YKo7Jy866GcIO2KueuzhO2VnCDsiJzqsITsnYQg66eM65Ok7Ja0IOuztOyEuOyalCFcbuyWuOygnOuCmCDqtb/rqqjri53sspjrn7wg7IOB7L6M7ZWcIOq4sOu2hOydhCDrk5zrpqzqsqDsirXri4jri6QuIiwibm90aWNlIjoiKuq1v+uqqOuLnSDsuZjtgqgg7J2067Kk7Yq4Klxu7LmY7YKoIDLrp4jrpqwg7KO866y4IOyLnCDsvZzrnbwgMS4yNUwg66y066OMIOymneyglSFcbjUwLDAwMOybkCDsnbTsg4Eg7KO866y4IOyLnCDqsJDsnpDtioDquYAg7ISc67mE7IqkIOygnOqztSFcbuunpOyjvCDsm5TsmpTsnbzsnYAg7LmY7YKoIDEwJSDtlaDsnbgg642w7J20IVxu7Y+s7J6lIOyjvOusuCDsi5wg7LaU6rCAIDUlIO2VoOyduCFcbuuwsOuLrCDso7zrrLjsnYAg67mg66W06rOgIOuUsOucu+2VmOqyjCDrj4TssKntlanri4jri6QuIiwiZGVsaXZlcnlfdGlwcyI6W3siZnJvbV9hbW91bnQiOjE1MDAwLCJ0b19hbW91bnQiOjIwMDAwLCJmZWUiOjM1MDB9LHsiZnJvbV9hbW91bnQiOjIwMDAwLCJ0b19hbW91bnQiOm51bGwsImZlZSI6MTUwMH1dLCJvd25lcl9pbmZvIjp7Im5hbWUiOm51bGwsInNob3BfbmFtZSI6bnVsbCwiYWRkcmVzcyI6bnVsbCwiY29tcGFueV9yZWdpc3RyYXRpb25fbnVtYmVyIjpudWxsfSwib3JpZ2lucyI6W3siaW5ncmVkaWVudCI6IuyGjOqzoOq4sCIsIm9yaWdpbiI6Iuq1reuCtOyCsCDtlZzsmrAifSx7ImluZ3JlZGllbnQiOiLsjIAiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLrsLDstpQiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLqs6DstpQiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLrp4jripgiLCJvcmlnaW4iOiLqta3rgrTsgrAifV19"
+      }
+    },
+    {
+      "key": "GET /user/student/me? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/user/student/me",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MjQ3OCwibG9naW5faWQiOiJ4eDAwMDAiLCJhbm9ueW1vdXNfbmlja25hbWUiOiLsnbXrqoVfMTYxNDQyMTEyNjM0OCIsImVtYWlsIjoieHgwMDAwQHh4eHh4eHh4eC54eC54eCIsImdlbmRlciI6MCwibWFqb3IiOiLqsIDqsIDqsIDqsIDqsIAiLCJuYW1lIjoi6rCA6rCA6rCAIiwibmlja25hbWUiOiLqs7XrsLHqsIAiLCJwaG9uZV9udW1iZXIiOiIwMDAwMDAwMDAwMCIsInN0dWRlbnRfbnVtYmVyIjoiMDAwMDAwMDAwMCIsInVzZXJfdHlwZSI6IlNUVURFTlQifQ=="
+      }
+    },
+    {
+      "key": "GET /v2/web/auth/session? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/web/auth/session",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [
+          "__Secure-koin-stage-web-csrf=parity-csrf; Path=/; Domain=stage.koreatech.in; Max-Age=7775998; Expires=Fri, 08 Jan 2027 11:31:25 GMT; Secure; SameSite=Lax"
+        ],
+        "body": "eyJhdXRoZW50aWNhdGVkIjp0cnVlLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwiY3NyZl90b2tlbiI6IjB4eHh4MHgweHh4eHh4eHh4MHh4eHh4eHh4eHh4eDB4MHh4eHh4eHh4eHgueHh4eHh4eDB4eHh4LTB4eHh4eDB4eHh4eHh4eHh4eF94eHgweHh4eDB4eCJ9"
+      }
+    },
+    {
+      "key": "GET /v3/users/me? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/users/me",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MjQ3OCwibG9naW5faWQiOiJ4eDAwMDAiLCJhbm9ueW1vdXNfbmlja25hbWUiOiLsnbXrqoVfMTYxNDQyMTEyNjM0OCIsImVtYWlsIjoieHgwMDAwQHh4eHh4eHh4eC54eC54eCIsImdlbmRlciI6MCwibmFtZSI6IuqwgOqwgOqwgCIsIm5pY2tuYW1lIjoi6rO167Cx6rCAIiwicGhvbmVfbnVtYmVyIjoiMDAwMDAwMDAwMDAiLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwic3R1ZGVudF9udW1iZXIiOiIwMDAwMDAwMDAwIiwibWFqb3IiOiLqsIDqsIDqsIDqsIDqsIAifQ=="
+      }
+    }
+  ]
+}
