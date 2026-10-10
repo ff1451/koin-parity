@@ -257,18 +257,19 @@ function collectInventory(maskSelectors = []) {
 async function settle(page, firstRunMs) {
   await page.clock.runFor(firstRunMs);
   await page.waitForLoadState('networkidle');
+  // 가짜 시계는 매번 같은 총량(8 × 500ms)만큼 진행한다. "화면이 두 번 연속 같으면 멈춤"으로 끝내면 멈추는 시점이
+  // 이미지 로딩 같은 실제 시간에 좌우돼, 자동 넘김 캐러셀처럼 가짜 시간에 반응하는 화면이 앱·실행마다 다르게 찍힌다(A4).
+  // 500ms 단위는 React Suspense의 노출 지연(300ms)보다 길게(engineering-log 19). 정착 여부는 마지막 두 스냅샷으로만 판단한다
   let previous = '';
-  // 한 번에 500ms씩 진행한다: React Suspense는 숨겼던 내용을 다시 보일 때 300ms 지연 타이머를 쓰므로,
-  // 100ms 단위로는 그 타이머가 돌기 전에 "변화 없음"으로 판단해 숨겨진 상태(display:none)를 찍는다
-  // (develop 데스크톱 리뷰 수정 페이지의 헤더 누락으로 확인)
+  let stable = false;
   for (let i = 0; i < 8; i += 1) {
     await page.waitForTimeout(250);
     await page.clock.runFor(500);
     const snapshot = JSON.stringify(await page.evaluate(collectInventory, []));
-    if (snapshot === previous) return true;
+    stable = snapshot === previous;
     previous = snapshot;
   }
-  return false;
+  return stable;
 }
 
 
@@ -433,6 +434,9 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
 
   // 전체 페이지 스크린샷은 찍는 동안 뷰포트를 늘려 100vh 기반 레이아웃이 다시 계산된다(경합 확인됨).
   // 미리 뷰포트를 페이지 높이로 늘리고 정착시킨 뒤, 그 레이아웃에서 스크린샷·요소 목록을 함께 얻는다
+  // 분석 이벤트·토스트는 스크린샷 전에 읽는다: 전체 페이지 스크린샷이 뷰포트 크기를 잠깐 바꾸면서 생기는 resize로
+  // 스크롤 로깅 같은 이벤트가 실제 시간 타이밍에 따라 찍히거나 안 찍힌다(A4 menu-group 간헐 실패). 캡처 도구가 만든 이벤트는 사용자 행동이 아니다
+  const instrumented = await page.evaluate(() => window.__parity ?? { gtag: [], toasts: [] });
   const viewport = page.viewportSize();
   for (let i = 0; viewportMode === 'expand' && i < 5; i += 1) {
     const height = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -463,7 +467,6 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
     return el ? Math.round(el.getBoundingClientRect().top + scrollY) : null;
   }, chrome.footerSelector);
   const devicePixelRatio = await page.evaluate(() => window.devicePixelRatio);
-  const instrumented = await page.evaluate(() => window.__parity ?? { gtag: [], toasts: [] });
 
   if (mode !== 'replay') await proxyControl('flush', {});
   const { log, foreign } = await proxyControl('log');
