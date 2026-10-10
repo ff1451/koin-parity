@@ -56,8 +56,18 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | A5 상점 정보 | `/store/[id]/info` | ✅ PR #1579 (루프 1회, 상태 2개: 휴무일 유무) |
 | A6 리뷰 목록 | `/store/[id]/reviews` | ✅ PR #1580 (루프 1회, 상태 8개: 비로그인 5·로그인 3) |
 | A7·A8·A9 리뷰 작성·수정·신고 | 기존 WEB_RECODE 페이지 모바일 UI | ✅ PR #1581·#1582·#1583 (제출 직전까지만 검증. 데스크톱 기존 훅은 자체 토스트로 중복되어 모바일은 공용 mutation 직접 사용) |
-| B2·B4·B5 주문 가능 상점 조회 | `/order/shops/[id]` | ⏳ (오라클 커밋 7243571 + 라우트 주석 해제 패치 필요) |
-| B9·B10 앱 결제 웹뷰 | `/order/checkout*` | ⏳ 스펙 단위, 백엔드·Android 계약 후 |
+| **Track B** (결정 36: order 주문 흐름 전체를 그대로, 브랜치 `feat/#1572/order-track-b`, develop 머지 전 진입 차단) | | 오라클 패치 0008·0009로 order 주문 라우트 전부 개방 |
+| B2 주문 가능 상점 상세 | `shop/true/:id` → `/order/shops/[id]` | ⏳ 진행 중(첫 구현 커밋 있음, CTA 철회 반영 필요) |
+| B3 메뉴 상세 | `shop/true/:id/menus/:menuId` → `/order/shops/[id]/menus/[menuId]` | ⏳ |
+| B4 상점 정보 | `shop-detail/true/:id` → `/order/shops/[id]/info` | ⏳ |
+| B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ⏳ |
+| B6 장바구니 | `cart` → `/order/cart` | ⏳ (로그인, 테스트 계정으로 장바구니 실제 등록) |
+| B7 배달지 | `delivery/campus`·`outside`·`outside/detail` → `/order/delivery/...` | ⏳ |
+| B8 결제 | `payment` → `/order/checkout` | ⏳ (결제 위젯까지, 결정 38) |
+| B9 결제 승인 | `payment/return` → `/order/checkout/return` | ⏳ |
+| B10 주문 완료·취소 | `result/:paymentId`·`orderCancel/:paymentId` → `/order/result/[paymentId]`·`/order/cancel/[paymentId]` | ⏳ |
+| B11 주문 내역 | `orders` → `/order/orders` | ⏳ |
+| B1 주문 홈 | `home` → `/order` | ⏳ |
 | P6 전환 | 링크 교체, 헤더 높이 통일(Track A), 아이콘 폴더 정리 | ✅ PR #1584. order 301은 하지 않음(결정 33). Track B 헤더는 Track B 완료 때 통일. 남은 것: 스택 리뷰·머지 → develop |
 
 ## 6. 바로 다음 할 일

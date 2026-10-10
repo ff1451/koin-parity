@@ -17,3 +17,4 @@
 | `0006-report-all-reasons.patch` | 신고 사유를 다중 선택해도 첫 번째만 전송 → KOIN_WEB_RECODE 신고 페이지처럼 모두 전송 (D6 #9) |
 | `0007-invalidate-reviews-after-write.patch` | 리뷰 작성·수정 후 목록이 갱신되지 않음 → KOIN_WEB_RECODE처럼 리뷰 쿼리 무효화 (D6 #11) |
 | `0008-enable-orderable-shop-routes.patch` | Track B: 주문 가능 상점 상세·정보·리뷰 라우트(`shop/true`, `shop-detail/true`, `review/true`)와 import의 주석만 해제. 화면 코드는 그대로 (2026-10-10 사용자 승인) |
+| `0009-enable-order-flow-routes.patch` | Track B: 주문 흐름 전체(주문 홈, 메뉴 상세, 장바구니, 배달지, 결제·결제 승인, 주문 완료·취소, 주문 내역) 라우트와 import 주석 해제. 화면 코드는 그대로 (2026-10-10 사용자 승인: 주문 관련 페이지·기능을 모두 그대로 이전하고 develop 머지 전에 진입을 막는다) |
