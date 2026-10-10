@@ -66,8 +66,9 @@ const PHONE = /\b0\d{1,2}-?\d{3,4}-?\d{4}\b/g;
 const maskChars = (v) => v.replace(/\d/g, '0').replace(/[A-Za-z]/g, 'x').replace(/[가-힣]/g, '가');
 
 // 사용자 본인 정보 객체(내 정보 응답 등)의 실명·전공·성별. 상점명 등 다른 name은 가리면 화면이 바뀌므로 사용자 객체에서만 가린다
-const USER_OBJECT_KEY = /^(login_id|student_number)$/;
-const USER_PRIVATE_KEY = /^(name|major|gender)$/;
+// 사업자 정보 객체(주문 가능 상점 상세의 owner_info)도 대표자 이름·등록번호를 가린다(stage 데이터라도 실제 이름일 수 있음)
+const USER_OBJECT_KEY = /^(login_id|student_number|company_registration_number)$/;
+const USER_PRIVATE_KEY = /^(name|major|gender|company_registration_number)$/;
 
 function scrub(value, key = '') {
   if (Array.isArray(value)) return value.map((v) => scrub(v, key));

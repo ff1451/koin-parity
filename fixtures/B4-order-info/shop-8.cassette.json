@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "GET /order/shop/8/detail? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/order/shop/8/detail",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjo2NSwib3JkZXJhYmxlX3Nob3BfaWQiOjgsIm5hbWUiOiLsmKTqtazsjIDtlLzsnpAiLCJhZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOyVhOyasOuCtOyInOuMgOq4uCAzNSIsIm9wZW5fdGltZSI6IjExOjAwIiwiY2xvc2VfdGltZSI6IjIyOjMwIiwiY2xvc2VkX2RheXMiOltdLCJwaG9uZSI6IjAwMC0wMDAtMDAwMCIsImludHJvZHVjdGlvbiI6IuyYpOq1rOyMgO2UvOyekOyXkCDsmKTsi6Ag6rKD7J2EIO2ZmOyYge2VqeuLiOuLpCFcbuq1reuCtOyCsCDsjIDroZwg66eM65OgIOuPhOyasOyZgCDsi6DshKDtlZwg7Yag7ZWR7Jy866GcIOqxtOqwle2VnCDtlLzsnpDrpbwg7KCc6rO17ZWp64uI64ukLlxu7JWE7J2065Ok67aA7YSwIOyWtOuluOq5jOyngCDrqqjrkZDqsIAg7KaQ6ri4IOyImCDsnojripQg64uk7JaR7ZWcIOuplOuJtOulvCDspIDruYTtlojsirXri4jri6QuXG7rp6TsnqUg67Cp66y4LCDtj6zsnqUsIOuwsOuLrCDrqqjrkZAg6rCA64ql7ZWY64uIIOyWuOygnOuToCDsmKTqtazsjIDtlLzsnpDrpbwg7LC+7JWE7KO87IS47JqUIVxu66eb6rO8IOqxtOqwleydhCDrj5nsi5zsl5Ag7LGZ6riw64qUIO2UvOyekCDsoITrrLjsoJDsnoXri4jri6QuIiwibm90aWNlIjoiKuyYpOq1rOyMgO2UvOyekCDsnbTrsqTtirgqXG7tlLzsnpAgMe2MkCDso7zrrLgg7IucIOy5mOymiOyKpO2LsSDrrLTro4wg7KCc6rO1IVxuNTAsMDAw7JuQIOydtOyDgSDso7zrrLgg7IucIOy9nOudvCAxLjI1TCDspp3soJUhXG7rp6Tso7wg66qp7JqU7J287J2AIO2UvOyekCAyMCUg7ZWg7J24IOuNsOydtCFcbuyYqOudvOyduCDso7zrrLgg7IucIOy2lOqwgCA1JSDtlaDsnbghXG7ruaDrpbgg67Cw64us66GcIOuUsOucu+2VnCDtlLzsnpDrpbwg65Oc66a964uI64ukLiIsImRlbGl2ZXJ5X3RpcHMiOlt7ImZyb21fYW1vdW50IjoxMDAwMCwidG9fYW1vdW50IjoxODAwMCwiZmVlIjo0NTAwfSx7ImZyb21fYW1vdW50IjoxODAwMCwidG9fYW1vdW50IjpudWxsLCJmZWUiOjI1MDB9XSwib3duZXJfaW5mbyI6eyJuYW1lIjpudWxsLCJzaG9wX25hbWUiOm51bGwsImFkZHJlc3MiOm51bGwsImNvbXBhbnlfcmVnaXN0cmF0aW9uX251bWJlciI6bnVsbH0sIm9yaWdpbnMiOlt7ImluZ3JlZGllbnQiOiLshozqs6DquLAiLCJvcmlnaW4iOiLtmLjso7zsgrAifSx7ImluZ3JlZGllbnQiOiLsjIAiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLrsoTshK8iLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLsi5zquIjsuZgiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLqs6DsgqzrpqwiLCJvcmlnaW4iOiLqta3rgrTsgrAifV19"
+      }
+    }
+  ]
+}

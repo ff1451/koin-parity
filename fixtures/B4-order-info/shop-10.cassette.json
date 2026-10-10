@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "GET /order/shop/10/detail? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/order/shop/10/detail",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjozNCwib3JkZXJhYmxlX3Nob3BfaWQiOjEwLCJuYW1lIjoi7LKc7JWI66y4IiwiYWRkcmVzcyI6Iuy2qeyyreuCqOuPhCDsspzslYjsi5wg64+Z64Ko6rWsIOuzkeyynOuptCDstqnsoIjroZwgMTU1OCIsIm9wZW5fdGltZSI6IjEwOjAwIiwiY2xvc2VfdGltZSI6IjIwOjAwIiwiY2xvc2VkX2RheXMiOltdLCJwaG9uZSI6IjAwMC0wMDAtMDAwMCIsImludHJvZHVjdGlvbiI6bnVsbCwibm90aWNlIjpudWxsLCJkZWxpdmVyeV90aXBzIjpbeyJmcm9tX2Ftb3VudCI6MTAwMDAsInRvX2Ftb3VudCI6MjAwMDAsImZlZSI6MzAwMH0seyJmcm9tX2Ftb3VudCI6MjAwMDAsInRvX2Ftb3VudCI6bnVsbCwiZmVlIjowfV0sIm93bmVyX2luZm8iOnsibmFtZSI6IuqwgOqwgOqwgDAiLCJzaG9wX25hbWUiOiLsspzslYjrrLgiLCJhZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOy2qeygiOuhnCAxNTU4IiwiY29tcGFueV9yZWdpc3RyYXRpb25fbnVtYmVyIjoiMDAwLTAwLTAwMDAwIn0sIm9yaWdpbnMiOltdfQ=="
+      }
+    }
+  ]
+}

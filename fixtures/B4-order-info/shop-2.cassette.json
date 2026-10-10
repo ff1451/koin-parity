@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "GET /order/shop/2/detail? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/order/shop/2/detail",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX2lkIjoxMSwib3JkZXJhYmxlX3Nob3BfaWQiOjIsIm5hbWUiOiLqtb/rqqjri53sgrTroZzrp4zsuZjtgqgiLCJhZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOy2qeygiOuhnCAxNjM4ICjsi6DtlZzslYTtjIztirgpIiwib3Blbl90aW1lIjoiMTY6MDAiLCJjbG9zZV90aW1lIjoiMjM6MDAiLCJjbG9zZWRfZGF5cyI6WyJXRURORVNEQVkiXSwicGhvbmUiOiIwMDAtMDAwLTAwMDAiLCJpbnRyb2R1Y3Rpb24iOiLslYjrhZXtlZjshLjsmpQsIOq1v+uqqOuLnSDsgrTroZzrp4wg7LmY7YKo7J6F64uI64ukIVxu7LWc7IOB6riJIOq1reuCtOyCsCDri63qs6DquLDrpbwg7IKs7Jqp7ZW0IOuwlOyCre2VmOqzoCDstInstIntlZwg7LmY7YKo7J2EIOygnOqzte2VqeuLiOuLpC5cbuunpOydvCDsi6DshKDtlZwg7J6s66OM66GcIOygleyEseq7jyDsmpTrpqztlZjrqbAsIOqzoOqwneuLmOydmCDtlonrs7XtlZwg7Iud7IKs66W8IOychO2VtCDstZzshKDsnYQg64uk7ZWY6rKg7Iq164uI64ukLlxu6rCA7KGxLCDsuZzqtazsmYAg7ZWo6ruYIOymkOq4sOuKlCDrp5vsnojripQg7LmY7YKo7Jy866GcIO2KueuzhO2VnCDsiJzqsITsnYQg66eM65Ok7Ja0IOuztOyEuOyalCFcbuyWuOygnOuCmCDqtb/rqqjri53sspjrn7wg7IOB7L6M7ZWcIOq4sOu2hOydhCDrk5zrpqzqsqDsirXri4jri6QuIiwibm90aWNlIjoiKuq1v+uqqOuLnSDsuZjtgqgg7J2067Kk7Yq4Klxu7LmY7YKoIDLrp4jrpqwg7KO866y4IOyLnCDsvZzrnbwgMS4yNUwg66y066OMIOymneyglSFcbjUwLDAwMOybkCDsnbTsg4Eg7KO866y4IOyLnCDqsJDsnpDtioDquYAg7ISc67mE7IqkIOygnOqztSFcbuunpOyjvCDsm5TsmpTsnbzsnYAg7LmY7YKoIDEwJSDtlaDsnbgg642w7J20IVxu7Y+s7J6lIOyjvOusuCDsi5wg7LaU6rCAIDUlIO2VoOyduCFcbuuwsOuLrCDso7zrrLjsnYAg67mg66W06rOgIOuUsOucu+2VmOqyjCDrj4TssKntlanri4jri6QuIiwiZGVsaXZlcnlfdGlwcyI6W3siZnJvbV9hbW91bnQiOjE1MDAwLCJ0b19hbW91bnQiOjIwMDAwLCJmZWUiOjM1MDB9LHsiZnJvbV9hbW91bnQiOjIwMDAwLCJ0b19hbW91bnQiOm51bGwsImZlZSI6MTUwMH1dLCJvd25lcl9pbmZvIjp7Im5hbWUiOm51bGwsInNob3BfbmFtZSI6bnVsbCwiYWRkcmVzcyI6bnVsbCwiY29tcGFueV9yZWdpc3RyYXRpb25fbnVtYmVyIjpudWxsfSwib3JpZ2lucyI6W3siaW5ncmVkaWVudCI6IuyGjOqzoOq4sCIsIm9yaWdpbiI6Iuq1reuCtOyCsCDtlZzsmrAifSx7ImluZ3JlZGllbnQiOiLsjIAiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLrsLDstpQiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLqs6DstpQiLCJvcmlnaW4iOiLqta3rgrTsgrAifSx7ImluZ3JlZGllbnQiOiLrp4jripgiLCJvcmlnaW4iOiLqta3rgrTsgrAifV19"
+      }
+    }
+  ]
+}

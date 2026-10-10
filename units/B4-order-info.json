@@ -1,0 +1,15 @@
+{
+  "id": "B4-order-info",
+  "description": "주문 가능 상점 정보(가게정보·원산지). 오라클 shop-detail/true(패치 0008). isOrderable 분기: 주문금액별 배달팁 표, 사업자 정보, 원산지. #배달금액 해시면 해당 구역 강조·스크롤(B2 최소주문 카드에서 진입). 상태는 데이터 분기(휴무일·원산지·소개·공지 유무)로 정함",
+  "oracle": { "app": "order", "commit": "1b51c34", "path": "/shop-detail/true/{shopId}{hash}" },
+  "candidate": { "app": "web", "path": "/order/shops/{shopId}/info{hash}" },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/order/shop/\\d+/detail",
+  "states": [
+    { "name": "default", "auth": "guest", "params": { "shopId": 2, "hash": "" }, "cassette": "shop-2", "requiredText": ["굿모닝살로만치킨", "주문금액별 총 배달팁", "사업자 정보", "원산지 표기", "매주"] },
+    { "name": "delivery-anchor", "auth": "guest", "params": { "shopId": 2, "hash": "#배달금액" }, "cassette": "shop-2", "requiredText": ["주문금액별 총 배달팁"] },
+    { "name": "no-closed-days", "auth": "guest", "params": { "shopId": 8, "hash": "" }, "cassette": "shop-8", "requiredText": ["오구쌀피자", "연중무휴"] },
+    { "name": "empty-texts", "auth": "guest", "params": { "shopId": 10, "hash": "" }, "cassette": "shop-10", "requiredText": ["천안문", "가게 소개"] }
+  ],
+  "normalize": { "paths": {} }
+}
