@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #B7PR B7 … (결정 39) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 … (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -63,7 +63,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | B4 상점 정보 | `shop-detail/true/:id` → `/order/shops/[id]/info` | ✅ draft PR #1589. 상태 4개(해시 스크롤 상태는 헤더 띠 가림 + scrollY 비교, engineering-log 34) |
 | B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ✅ draft PR #1590. 상태 7개. order의 주문 상점 번호/상점 번호 혼동 버그는 고쳐서 이전(사용자 결정, engineering-log 35). 내 리뷰 수정·삭제는 A6에서 검증(주문 상점에 테스트 계정 리뷰 없음) |
 | B6 장바구니 | `cart` → `/order/cart` | ✅ draft PR #1593. 상태 8개(쓰기 상태는 `prepare.cart`로 시작 장바구니 복구). 주문하기(검증→결제 이동)는 B8에서. B3의 담기 성공은 B2 `auth-add-success`로 검증 완료 |
-| B7 배달지 | `delivery/{campus,outside,outside/detail}` → `/order/delivery/...` | ✅ draft PR #B7PR. 상태 11개, 네이버 지도 실제 로드(`live.naverMaps`). 교외 검증 모달 버튼 뒤바뀜은 order 그대로(결정 41). 최종 "주소 선택"(결제 이동)은 B8 |
+| B7 배달지 | `delivery/{campus,outside,outside/detail}` → `/order/delivery/...` | ✅ draft PR #1594. 상태 11개, 네이버 지도 실제 로드(`live.naverMaps`). 교외 검증 모달 버튼 뒤바뀜은 order 그대로(결정 41). 최종 "주소 선택"(결제 이동)은 B8 |
 | B8 결제 | `payment` → `/order/checkout` | ⏳ (결제 위젯까지, 결정 38) |
 | B9 결제 승인 | `payment/return` → `/order/checkout/return` | ⏳ |
 | B10 주문 완료·취소 | `result/:paymentId`·`orderCancel/:paymentId` → `/order/result/[paymentId]`·`/order/cancel/[paymentId]` | ⏳ |
