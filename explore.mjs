@@ -138,7 +138,7 @@ try {
     await proxyControl('session', { mode, cassette, session: runDir });
     let opened;
     try {
-      opened = await openPage({ baseURL: APPS.order.baseURL, path, assetsDir: join(PARITY_DIR, '.cache', 'assets'), mode, device: unit.device, auth: state.auth, actions: node.actions });
+      opened = await openPage({ baseURL: APPS.order.baseURL, path, assetsDir: join(PARITY_DIR, '.cache', 'assets'), mode, device: unit.device, auth: state.auth, actions: node.actions, stubs: unit.stubs });
     } catch (error) {
       leaves.push({ via: node.labels, kind: 'unreachable', detail: String(error).split('\n')[0] });
       continue;

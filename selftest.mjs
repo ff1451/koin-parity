@@ -37,7 +37,7 @@ try {
   for (const state of unit.states) {
     const cassette = join(PARITY_DIR, 'fixtures', unitId, `${state.cassette ?? state.name}.cassette.json`);
     const path = fillPath(app === 'web' ? unit.candidate.path : unit.oracle.path, state.params);
-    const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks, auth: state.auth };
+    const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks, auth: state.auth, stubs: unit.stubs };
 
     if (shouldRecord || shouldFill) {
       // 쓰기 상태가 stage를 바꾸므로 기록 전에 시작 상태를 복구한다(lib/cart-state.mjs)

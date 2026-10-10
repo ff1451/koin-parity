@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "key": "GET /address/search?countPerPage=10&currentPage=1&keyword=가전8길 102 #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/address/search",
+        "query": "countPerPage=10&currentPage=1&keyword=가전8길 102",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0b3RhbF9jb3VudCI6IjUiLCJjdXJyZW50X3BhZ2UiOjEsImNvdW50X3Blcl9wYWdlIjoxMCwiYWRkcmVzc2VzIjpbeyJyb2FkX2FkZHJlc3MiOiLstqnssq3rgqjrj4Qg7LKc7JWI7IucIOuPmeuCqOq1rCDrs5HsspzrqbQg6rCA7KCEOOq4uCAxMDIgKOudvOydtO2UhOybkOujuCkiLCJqaWJ1bl9hZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOqwgOyghOumrCAxNjUtNCDrnbzsnbTtlITsm5Dro7giLCJlbmdfYWRkcmVzcyI6IjEwMiBHYWplb24gOC1naWwsIEJ5ZW9uZ2NoZW9uLW15ZW9uLCBEb25nbmFtLWd1LCBDaGVvbmFuLXNpLCBDaHVuZ2NoZW9uZ25hbS1kbyIsInppcF9ubyI6IjMxMjUzIiwiYmRfbm0iOiLrnbzsnbTtlITsm5Dro7giLCJzaV9ubSI6Iuy2qeyyreuCqOuPhCIsInNnZ19ubSI6IuyynOyViOyLnCDrj5nrgqjqtawiLCJlbWRfbm0iOiLrs5HsspzrqbQiLCJsaV9ubSI6IuqwgOyghOumrCIsInJuIjoi6rCA7KCEOOq4uCJ9LHsicm9hZF9hZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOqwgOyghDjquLggMTAyLTIiLCJqaWJ1bl9hZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOqwgOyghOumrCAxNjItMTQiLCJlbmdfYWRkcmVzcyI6IjEwMi0yIEdhamVvbiA4LWdpbCwgQnllb25nY2hlb24tbXllb24sIERvbmduYW0tZ3UsIENoZW9uYW4tc2ksIENodW5nY2hlb25nbmFtLWRvIiwiemlwX25vIjoiMzEyNTMiLCJiZF9ubSI6IiIsInNpX25tIjoi7Lap7LKt64Ko64+EIiwic2dnX25tIjoi7LKc7JWI7IucIOuPmeuCqOq1rCIsImVtZF9ubSI6IuuzkeyynOuptCIsImxpX25tIjoi6rCA7KCE66asIiwicm4iOiLqsIDsoIQ46ri4In0seyJyb2FkX2FkZHJlc3MiOiLstqnssq3rgqjrj4Qg7LKc7JWI7IucIOuPmeuCqOq1rCDrs5HsspzrqbQg6rCA7KCEOOq4uCAxMDItMyIsImppYnVuX2FkZHJlc3MiOiLstqnssq3rgqjrj4Qg7LKc7JWI7IucIOuPmeuCqOq1rCDrs5HsspzrqbQg6rCA7KCE66asIDE2Mi0yIiwiZW5nX2FkZHJlc3MiOiIxMDItMyBHYWplb24gOC1naWwsIEJ5ZW9uZ2NoZW9uLW15ZW9uLCBEb25nbmFtLWd1LCBDaGVvbmFuLXNpLCBDaHVuZ2NoZW9uZ25hbS1kbyIsInppcF9ubyI6IjMxMjUzIiwiYmRfbm0iOiIiLCJzaV9ubSI6Iuy2qeyyreuCqOuPhCIsInNnZ19ubSI6IuyynOyViOyLnCDrj5nrgqjqtawiLCJlbWRfbm0iOiLrs5HsspzrqbQiLCJsaV9ubSI6IuqwgOyghOumrCIsInJuIjoi6rCA7KCEOOq4uCJ9LHsicm9hZF9hZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOqwgOyghDjquLggMTAyLTQiLCJqaWJ1bl9hZGRyZXNzIjoi7Lap7LKt64Ko64+EIOyynOyViOyLnCDrj5nrgqjqtawg67OR7LKc66m0IOqwgOyghOumrCAxNjEtMSIsImVuZ19hZGRyZXNzIjoiMTAyLTQgR2FqZW9uIDgtZ2lsLCBCeWVvbmdjaGVvbi1teWVvbiwgRG9uZ25hbS1ndSwgQ2hlb25hbi1zaSwgQ2h1bmdjaGVvbmduYW0tZG8iLCJ6aXBfbm8iOiIzMTI1MyIsImJkX25tIjoiIiwic2lfbm0iOiLstqnssq3rgqjrj4QiLCJzZ2dfbm0iOiLsspzslYjsi5wg64+Z64Ko6rWsIiwiZW1kX25tIjoi67OR7LKc66m0IiwibGlfbm0iOiLqsIDsoITrpqwiLCJybiI6IuqwgOyghDjquLgifSx7InJvYWRfYWRkcmVzcyI6Iuy2qeyyreuCqOuPhCDsspzslYjsi5wg64+Z64Ko6rWsIOuzkeyynOuptCDqsIDsoIQ46ri4IDEwMi01IiwiamlidW5fYWRkcmVzcyI6Iuy2qeyyreuCqOuPhCDsspzslYjsi5wg64+Z64Ko6rWsIOuzkeyynOuptCDqsIDsoITrpqwgMTYyLTMyIiwiZW5nX2FkZHJlc3MiOiIxMDItNSBHYWplb24gOC1naWwsIEJ5ZW9uZ2NoZW9uLW15ZW9uLCBEb25nbmFtLWd1LCBDaGVvbmFuLXNpLCBDaHVuZ2NoZW9uZ25hbS1kbyIsInppcF9ubyI6IjMxMjUzIiwiYmRfbm0iOiIiLCJzaV9ubSI6Iuy2qeyyreuCqOuPhCIsInNnZ19ubSI6IuyynOyViOyLnCDrj5nrgqjqtawiLCJlbWRfbm0iOiLrs5HsspzrqbQiLCJsaV9ubSI6IuqwgOyghOumrCIsInJuIjoi6rCA7KCEOOq4uCJ9XX0="
+      }
+    },
+    {
+      "key": "GET /address/search?countPerPage=10&currentPage=1&keyword=없는주소없는주소 #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/address/search",
+        "query": "countPerPage=10&currentPage=1&keyword=없는주소없는주소",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0b3RhbF9jb3VudCI6IjAiLCJjdXJyZW50X3BhZ2UiOjEsImNvdW50X3Blcl9wYWdlIjoxMCwiYWRkcmVzc2VzIjpbXX0="
+      }
+    },
+    {
+      "key": "GET /v2/web/auth/session? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/web/auth/session",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [
+          "__Secure-koin-stage-web-csrf=parity-csrf; Path=/; Domain=stage.koreatech.in; Max-Age=7775988; Expires=Fri, 08 Jan 2027 08:32:04 GMT; Secure; SameSite=Lax"
+        ],
+        "body": "eyJhdXRoZW50aWNhdGVkIjp0cnVlLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwiY3NyZl90b2tlbiI6Inh4eHh4LXgteHh4eHh4MHh4eHgweHgweHh4MHh4eHh4LXh4eHh4eHh4eHgueHgwMHgweHh4eHh4eHh4eHh4eHh4eDB4LXh4eHh4eDB4eHh4eHh4MHh4eCJ9"
+      }
+    },
+    {
+      "key": "GET /v3/users/me? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/users/me",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MjQ3OCwibG9naW5faWQiOiJ4eDAwMDAiLCJhbm9ueW1vdXNfbmlja25hbWUiOiLsnbXrqoVfMTYxNDQyMTEyNjM0OCIsImVtYWlsIjoieHgwMDAwQHh4eHh4eHh4eC54eC54eCIsImdlbmRlciI6MCwibmFtZSI6IuqwgOqwgOqwgCIsIm5pY2tuYW1lIjoi6rO167Cx6rCAIiwicGhvbmVfbnVtYmVyIjoiMDAwMDAwMDAwMDAiLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwic3R1ZGVudF9udW1iZXIiOiIwMDAwMDAwMDAwIiwibWFqb3IiOiLqsIDqsIDqsIDqsIDqsIAifQ=="
+      }
+    }
+  ]
+}

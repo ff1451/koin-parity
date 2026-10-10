@@ -1,0 +1,326 @@
+{
+  "id": "B7-order-delivery",
+  "description": "배달지 선택(교내·교외·교외 상세). 오라클 /delivery/{campus,outside}(패치 0009). 지도는 하네스가 차단하므로 두 앱에 같은 네이버 지도 대역(stubs.naverMaps: 빈 지도, 고정 지오코딩)을 넣는다 — 지도 영역은 빈 상자로 비교. 교외 상세는 location.state가 필요해 교외 검색→선택→주소 선택 흐름으로 도달한다. 최종 \"주소 선택\"(결제 화면 이동·배달지 등록)은 B8에서 본다. order 버그(교외 검증 모달 버튼이 뒤바뀜: 불가 지역에 아니오/예(교내 이동), 교내 확인에 확인만)는 사용자 결정(2026-10-10)으로 그대로 이전",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/delivery/{kind}"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/order/delivery/{kind}"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/(address|delivery)/",
+  "stubs": {
+    "naverMaps": true
+  },
+  "states": [
+    {
+      "name": "campus-default",
+      "auth": "auth",
+      "params": {
+        "kind": "campus"
+      },
+      "cassette": "campus",
+      "requiredText": [
+        "105동(함지)",
+        "앞으로 배달돼요!",
+        "배달주소",
+        "기숙사",
+        "주소 선택"
+      ]
+    },
+    {
+      "name": "campus-dorm-open",
+      "auth": "auth",
+      "params": {
+        "kind": "campus"
+      },
+      "cassette": "campus",
+      "actions": [
+        {
+          "click": {
+            "text": "기숙사"
+          }
+        }
+      ],
+      "requiredText": [
+        "101동(해울)"
+      ]
+    },
+    {
+      "name": "campus-select",
+      "auth": "auth",
+      "params": {
+        "kind": "campus"
+      },
+      "cassette": "campus",
+      "actions": [
+        {
+          "click": {
+            "text": "기숙사"
+          }
+        },
+        {
+          "click": {
+            "text": "101동(해울)"
+          }
+        }
+      ],
+      "requiredText": [
+        "101동(해울)",
+        "앞으로 배달돼요!"
+      ]
+    },
+    {
+      "name": "outside-default",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside",
+      "requiredText": [
+        "배달주소",
+        "주소지는 병천으로만 설정 가능해요",
+        "이렇게 검색해보세요!",
+        "주소 선택"
+      ],
+      "minRequests": 0
+    },
+    {
+      "name": "outside-search",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "가전8길 102"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        }
+      ],
+      "requiredText": [
+        "라이프원룸"
+      ]
+    },
+    {
+      "name": "outside-selected",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "가전8길 102"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        },
+        {
+          "click": {
+            "text": "라이프원룸"
+          }
+        }
+      ],
+      "requiredText": [
+        "라이프원룸"
+      ]
+    },
+    {
+      "name": "outside-no-result",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "없는주소없는주소"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        }
+      ],
+      "requiredText": [
+        "검색결과가 없어요"
+      ]
+    },
+    {
+      "name": "outside-invalid-area",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside-invalid-area",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "서울역"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        },
+        {
+          "click": {
+            "text": "서울역(철도역)"
+          }
+        },
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        }
+      ],
+      "requiredText": [
+        "배달이 불가능한 지역이에요."
+      ]
+    },
+    {
+      "name": "outside-campus-building",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside-campus-building",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "충절로 1600"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        },
+        {
+          "click": {
+            "text": "한국기술교육대학교"
+          }
+        },
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        }
+      ],
+      "requiredText": [
+        "교내 주문으로 바꾸시겠어요?"
+      ]
+    },
+    {
+      "name": "outside-detail",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside-detail",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "가전8길 102"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        },
+        {
+          "click": {
+            "text": "라이프원룸"
+          }
+        },
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        }
+      ],
+      "requiredText": [
+        "상세주소",
+        "충청남도 천안시 동남구 병천면 가전8길 102 (라이프원룸)"
+      ]
+    },
+    {
+      "name": "outside-detail-empty",
+      "auth": "auth",
+      "params": {
+        "kind": "outside"
+      },
+      "cassette": "outside-detail",
+      "actions": [
+        {
+          "fill": {
+            "placeholder": "주소를 입력해주세요.",
+            "text": "가전8길 102"
+          }
+        },
+        {
+          "press": {
+            "placeholder": "주소를 입력해주세요.",
+            "key": "Enter"
+          }
+        },
+        {
+          "click": {
+            "text": "라이프원룸"
+          }
+        },
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        },
+        {
+          "click": {
+            "role": "button",
+            "name": "주소 선택"
+          }
+        }
+      ],
+      "requiredText": [
+        "정확한 상세 주소를 입력해주세요."
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

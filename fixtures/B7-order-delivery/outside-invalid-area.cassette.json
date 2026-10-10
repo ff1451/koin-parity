@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "key": "GET /address/search?countPerPage=10&currentPage=1&keyword=서울역 #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/address/search",
+        "query": "countPerPage=10&currentPage=1&keyword=서울역",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJ0b3RhbF9jb3VudCI6IjE1IiwiY3VycmVudF9wYWdlIjoxLCJjb3VudF9wZXJfcGFnZSI6MTAsImFkZHJlc3NlcyI6W3sicm9hZF9hZGRyZXNzIjoi7ISc7Jq47Yq567OE7IucIOyaqeyCsOq1rCDtlZzqsJXrjIDroZwg7KeA7ZWYMzkyICjrj5nsnpDrj5kpIiwiamlidW5fYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDsmqnsgrDqtawg64+Z7J6Q64+ZIDE0LTE1MSA07Zi47ISgIOyEnOyauOyXrSIsImVuZ19hZGRyZXNzIjoiQjM5MiBIYW5nYW5nLWRhZXJvLCBZb25nc2FuLWd1LCBTZW91bCIsInppcF9ubyI6IjA0MzIzIiwiYmRfbm0iOiI07Zi47ISgIOyEnOyauOyXrSIsInNpX25tIjoi7ISc7Jq47Yq567OE7IucIiwic2dnX25tIjoi7Jqp7IKw6rWsIiwiZW1kX25tIjoi64+Z7J6Q64+ZIiwibGlfbm0iOiIiLCJybiI6Iu2VnOqwleuMgOuhnCJ9LHsicm9hZF9hZGRyZXNzIjoi7ISc7Jq47Yq567OE7IucIOyaqeyCsOq1rCDtlZzqsJXrjIDroZwgNDA1ICjrj5nsnpDrj5kpIiwiamlidW5fYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDsmqnsgrDqtawg64+Z7J6Q64+ZIDQzLTIwNSDshJzsmrjsl60o7LKg64+E7JetKSIsImVuZ19hZGRyZXNzIjoiNDA1IEhhbmdhbmctZGFlcm8sIFlvbmdzYW4tZ3UsIFNlb3VsIiwiemlwX25vIjoiMDQzMjAiLCJiZF9ubSI6IuyEnOyauOyXrSjssqDrj4Tsl60pIiwic2lfbm0iOiLshJzsmrjtirnrs4Tsi5wiLCJzZ2dfbm0iOiLsmqnsgrDqtawiLCJlbWRfbm0iOiLrj5nsnpDrj5kiLCJsaV9ubSI6IiIsInJuIjoi7ZWc6rCV64yA66GcIn0seyJyb2FkX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KSR6rWsIOunjOumrOyerOuhnCAxOTMgKOunjOumrOuPmTHqsIApIiwiamlidW5fYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDspJHqtawg66eM66as64+ZMeqwgCA2Mi03IOyEnOyauOyXrSDrlJTsmKTruYwiLCJlbmdfYWRkcmVzcyI6IjE5MyBNYWxsaWphZS1ybywgSnVuZy1ndSwgU2VvdWwiLCJ6aXBfbm8iOiIwNDUwMSIsImJkX25tIjoi7ISc7Jq47JetIOuUlOyYpOu5jCIsInNpX25tIjoi7ISc7Jq47Yq567OE7IucIiwic2dnX25tIjoi7KSR6rWsIiwiZW1kX25tIjoi66eM66as64+ZMeqwgCIsImxpX25tIjoiIiwicm4iOiLrp4zrpqzsnqzroZwifSx7InJvYWRfYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDspJHqtawg66eM66as7J6s66GcMzPquLggMjEgKOunjOumrOuPmTHqsIAsIExJRyDshJzsmrjsl60g66as6rCAKSIsImppYnVuX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KSR6rWsIOunjOumrOuPmTHqsIAgMjMxIExJRyDshJzsmrjsl60g66as6rCAIiwiZW5nX2FkZHJlc3MiOiIyMSBNYWxsaWphZS1ybyAzMy1naWwsIEp1bmctZ3UsIFNlb3VsIiwiemlwX25vIjoiMDQ1MDEiLCJiZF9ubSI6IkxJRyDshJzsmrjsl60g66as6rCAIiwic2lfbm0iOiLshJzsmrjtirnrs4Tsi5wiLCJzZ2dfbm0iOiLspJHqtawiLCJlbWRfbm0iOiLrp4zrpqzrj5kx6rCAIiwibGlfbm0iOiIiLCJybiI6IuunjOumrOyerOuhnDMz6ri4In0seyJyb2FkX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KSR6rWsIOyEuOyiheuMgOuhnCDsp4DtlZgyICjrgqjrjIDrrLjroZw16rCAKSIsImppYnVuX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KSR6rWsIOuCqOuMgOusuOuhnDXqsIAgNzMtNiDshJzsmrjsl60gMe2YuOyEoCIsImVuZ19hZGRyZXNzIjoiQjIgU2Vqb25nLWRhZXJvLCBKdW5nLWd1LCBTZW91bCIsInppcF9ubyI6IjA0NTI3IiwiYmRfbm0iOiLshJzsmrjsl60gMe2YuOyEoCIsInNpX25tIjoi7ISc7Jq47Yq567OE7IucIiwic2dnX25tIjoi7KSR6rWsIiwiZW1kX25tIjoi64Ko64yA66y466GcNeqwgCIsImxpX25tIjoiIiwicm4iOiLshLjsooXrjIDroZwifSx7InJvYWRfYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDspJHqtawg7LKt7YyM66GcIDQ1NCAo7KSR66a864+ZKSIsImppYnVuX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KSR6rWsIOykkeumvOuPmSAzNjMg7IyN7JqpIOuNlCDtlIzrnpjti7DrhJgg7ISc7Jq47JetIiwiZW5nX2FkZHJlc3MiOiI0NTQgQ2hlb25ncGEtcm8sIEp1bmctZ3UsIFNlb3VsIiwiemlwX25vIjoiMDQ1MTAiLCJiZF9ubSI6IuyMjeyaqSDrjZQg7ZSM656Y7Yuw64SYIOyEnOyauOyXrSIsInNpX25tIjoi7ISc7Jq47Yq567OE7IucIiwic2dnX25tIjoi7KSR6rWsIiwiZW1kX25tIjoi7KSR66a864+ZIiwibGlfbm0iOiIiLCJybiI6Iuyyre2MjOuhnCJ9LHsicm9hZF9hZGRyZXNzIjoi7ISc7Jq47Yq567OE7IucIOykkeq1rCDthrXsnbzroZwgMSAo67SJ656Y64+ZMuqwgCkiLCJqaWJ1bl9hZGRyZXNzIjoi7ISc7Jq47Yq567OE7IucIOykkeq1rCDrtInrnpjrj5ky6rCAIDEyMi0yOCDshJzsmrjsl60o67O47JilKSIsImVuZ19hZGRyZXNzIjoiMSBUb25naWwtcm8sIEp1bmctZ3UsIFNlb3VsIiwiemlwX25vIjoiMDQ1MDkiLCJiZF9ubSI6IuyEnOyauOyXrSjrs7jsmKUpIiwic2lfbm0iOiLshJzsmrjtirnrs4Tsi5wiLCJzZ2dfbm0iOiLspJHqtawiLCJlbWRfbm0iOiLrtInrnpjrj5ky6rCAIiwibGlfbm0iOiIiLCJybiI6Iu2GteydvOuhnCJ9LHsicm9hZF9hZGRyZXNzIjoi7ISc7Jq47Yq567OE7IucIOyaqeyCsOq1rCDrp4zrpqzsnqzroZwgMjAyICjshJzqs4Trj5kpIiwiamlidW5fYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDsmqnsgrDqtawg7ISc6rOE64+ZIDIxOS0xNyDshJzsmrjsl63tko3rprzslYTsnbTsm5DtlIzrn6zsiqQiLCJlbmdfYWRkcmVzcyI6IjIwMiBNYWxsaWphZS1ybywgWW9uZ3Nhbi1ndSwgU2VvdWwiLCJ6aXBfbm8iOiIwNDMwMCIsImJkX25tIjoi7ISc7Jq47Jet7ZKN66a87JWE7J207JuQ7ZSM65+s7IqkIiwic2lfbm0iOiLshJzsmrjtirnrs4Tsi5wiLCJzZ2dfbm0iOiLsmqnsgrDqtawiLCJlbWRfbm0iOiLshJzqs4Trj5kiLCJsaV9ubSI6IiIsInJuIjoi66eM66as7J6s66GcIn0seyJyb2FkX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KKF66Gc6rWsIOyDiOusuOyViOuhnCA1NSAo7Iug66y466GcMuqwgCkiLCJqaWJ1bl9hZGRyZXNzIjoi7ISc7Jq47Yq567OE7IucIOyiheuhnOq1rCDsi6DrrLjroZwy6rCAIDItMSDshJzsmrjsl63sgqzrsJXrrLzqtIAiLCJlbmdfYWRkcmVzcyI6IjU1IFNhZW11bmFuLXJvLCBKb25nbm8tZ3UsIFNlb3VsIiwiemlwX25vIjoiMDMxNzciLCJiZF9ubSI6IuyEnOyauOyXreyCrOuwleusvOq0gCIsInNpX25tIjoi7ISc7Jq47Yq567OE7IucIiwic2dnX25tIjoi7KKF66Gc6rWsIiwiZW1kX25tIjoi7Iug66y466GcMuqwgCIsImxpX25tIjoiIiwicm4iOiLsg4jrrLjslYjroZwifSx7InJvYWRfYWRkcmVzcyI6IuyEnOyauO2KueuzhOyLnCDspJHqtawg66eM66as7J6s66GcIDE3NSAo66eM66as64+ZMuqwgCwg7ISc7Jq47Jet7IS87Yq465+07J6Q7J20KSIsImppYnVuX2FkZHJlc3MiOiLshJzsmrjtirnrs4Tsi5wg7KSR6rWsIOunjOumrOuPmTLqsIAgMjczIOyEnOyauOyXreyEvO2KuOuftOyekOydtCIsImVuZ19hZGRyZXNzIjoiMTc1IE1hbGxpamFlLXJvLCBKdW5nLWd1LCBTZW91bCIsInppcF9ubyI6IjA0NTAwIiwiYmRfbm0iOiLshJzsmrjsl63shLztirjrn7TsnpDsnbQiLCJzaV9ubSI6IuyEnOyauO2KueuzhOyLnCIsInNnZ19ubSI6Iuykkeq1rCIsImVtZF9ubSI6IuunjOumrOuPmTLqsIAiLCJsaV9ubSI6IiIsInJuIjoi66eM66as7J6s66GcIn1dfQ=="
+      }
+    },
+    {
+      "key": "GET /v2/web/auth/session? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/web/auth/session",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [
+          "__Secure-koin-stage-web-csrf=parity-csrf; Path=/; Domain=stage.koreatech.in; Max-Age=7775975; Expires=Fri, 08 Jan 2027 08:32:04 GMT; Secure; SameSite=Lax"
+        ],
+        "body": "eyJhdXRoZW50aWNhdGVkIjp0cnVlLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwiY3NyZl90b2tlbiI6Inh4eHh4LXgteHh4eHh4MHh4eHgweHgweHh4MHh4eHh4LXh4eHh4eHh4eHgueHgwMHgweHh4eHh4eHh4eHh4eHh4eDB4LXh4eHh4eDB4eHh4eHh4MHh4eCJ9"
+      }
+    },
+    {
+      "key": "GET /v3/users/me? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/users/me",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MjQ3OCwibG9naW5faWQiOiJ4eDAwMDAiLCJhbm9ueW1vdXNfbmlja25hbWUiOiLsnbXrqoVfMTYxNDQyMTEyNjM0OCIsImVtYWlsIjoieHgwMDAwQHh4eHh4eHh4eC54eC54eCIsImdlbmRlciI6MCwibmFtZSI6IuqwgOqwgOqwgCIsIm5pY2tuYW1lIjoi6rO167Cx6rCAIiwicGhvbmVfbnVtYmVyIjoiMDAwMDAwMDAwMDAiLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwic3R1ZGVudF9udW1iZXIiOiIwMDAwMDAwMDAwIiwibWFqb3IiOiLqsIDqsIDqsIDqsIDqsIAifQ=="
+      }
+    },
+    {
+      "key": "POST /delivery/address/off-campus/validate? #0443880f2f45",
+      "epoch": 0,
+      "request": {
+        "method": "POST",
+        "path": "/delivery/address/off-campus/validate",
+        "query": "",
+        "body": "{\"building\":\"서울역(철도역)\",\"eup_myeon_dong\":\"동자동\",\"si_do\":\"서울특별시\",\"si_gun_gu\":\"용산구\"}"
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJjb2RlIjoiSU5WQUxJRF9ERUxJVkVSWV9BUkVBIiwibWVzc2FnZSI6IuuwsOuLrOydtCDrtojqsIDriqXtlZwg7KeA7Jet7J207JeQ7JqULiIsImVycm9yVHJhY2VJZCI6IjE0MTgyNmJkLWUxNDMtNDdkZS1hYjY3LWE3NGRmNGY3NWJmYSJ9"
+      }
+    }
+  ]
+}
