@@ -1,0 +1,31 @@
+{
+  "orderable_shop_id": 2,
+  "items": [
+    {
+      "name": "후라이드 치킨",
+      "quantity": 2,
+      "menuId": 11,
+      "priceId": 23,
+      "options": [
+        {
+          "option_group_id": 4,
+          "option_id": 10
+        }
+      ]
+    },
+    {
+      "name": "후라이드 치킨",
+      "quantity": 1,
+      "menuId": 11,
+      "priceId": 23,
+      "options": []
+    },
+    {
+      "name": "양념 치킨",
+      "quantity": 2,
+      "menuId": 12,
+      "priceId": 24,
+      "options": []
+    }
+  ]
+}

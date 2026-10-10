@@ -296,6 +296,12 @@ export async function performAction(page, action) {
     });
     return;
   }
+  // 스크롤 위치 고정: 뒤로 가기 후 스크롤 복원처럼 재조회 레이아웃과 경합해 실행마다 달라지는 위치를 맞춘다.
+  // 복원 위치 자체는 비교 대상이 아닐 때만 쓴다(B2 auth-add-success)
+  if (action.scrollTo) {
+    await page.evaluate((y) => window.scrollTo(0, y), action.scrollTo.y ?? 0);
+    return;
+  }
   // 키 입력: 입력창에 포커스한 뒤 키를 누른다(태그 추가 Enter 등)
   if (action.press) {
     await page.getByPlaceholder(action.press.placeholder, { exact: true }).nth(action.press.nth ?? 0).press(action.press.key, { timeout: 5000 });

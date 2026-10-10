@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import { capture } from './capture.mjs';
 import { compare } from './compare.mjs';
 import { APPS, PARITY_DIR, startOrder, startProxy, startWeb } from './lib/apps.mjs';
+import { restoreCart } from './lib/cart-state.mjs';
 import { MUTATIONS } from './mutations.mjs';
 
 const unitId = process.argv[2];
@@ -39,6 +40,8 @@ try {
     const common = { baseURL: APPS[app].baseURL, path, cassette, assetsDir, device: unit.device, actions: state.actions, masks: unit.masks, auth: state.auth };
 
     if (shouldRecord || shouldFill) {
+      // 쓰기 상태가 stage를 바꾸므로 기록 전에 시작 상태를 복구한다(lib/cart-state.mjs)
+      if (state.prepare?.cart) await restoreCart(state.prepare.cart);
       await capture({ ...common, mode: shouldRecord ? 'record' : 'fill', outDir: join(runDir, state.name, 'record') });
     }
     const runA = join(runDir, state.name, 'replay-1');

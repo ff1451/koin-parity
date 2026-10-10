@@ -9,6 +9,7 @@ import { join } from 'node:path';
 
 import { capture } from './capture.mjs';
 import { APPS, PARITY_DIR, startProxy, startWeb, WEB_REPO } from './lib/apps.mjs';
+import { restoreCart } from './lib/cart-state.mjs';
 
 const unitId = process.argv[2];
 const ref = process.argv.includes('--ref') ? process.argv[process.argv.indexOf('--ref') + 1] : 'HEAD';
@@ -28,6 +29,8 @@ try {
   stops.push(await startProxy());
   stops.push(await startWeb(sha));
   for (const state of unit.states) {
+    // 보충하는 GET이 기록 때와 같은 stage 상태를 보도록 시작 상태를 복구한다
+    if (state.prepare?.cart) await restoreCart(state.prepare.cart);
     // 한 상태가 도달 불가여도 나머지 상태는 보충한다
     const result = await capture({
       baseURL: APPS.web.baseURL,

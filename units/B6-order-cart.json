@@ -1,0 +1,155 @@
+{
+  "id": "B6-order-cart",
+  "description": "장바구니. 오라클 /cart(패치 0009). 로그인 필수 화면(비로그인은 빈 장바구니). 쓰기 상태(수량 증가·항목 삭제)는 stage 장바구니를 바꾸므로 states[].prepare.cart로 기록 전 시작 상태를 복구한다(cart-state.mjs, fixtures/_cart-states). 주문하기(검증 → 결제 화면 이동)는 B8에서 본다. 상점 2(굿모닝살로만치킨, 최소주문 14,000원, 배달·포장 모두 가능)",
+  "oracle": {
+    "app": "order",
+    "commit": "1b51c34",
+    "path": "/cart"
+  },
+  "candidate": {
+    "app": "web",
+    "path": "/order/cart"
+  },
+  "device": "Pixel 5",
+  "primaryRequest": "/stage/cart\\b",
+  "states": [
+    {
+      "name": "guest-empty",
+      "auth": "guest",
+      "params": {},
+      "cassette": "guest",
+      "requiredText": [
+        "장바구니가 비었어요",
+        "메뉴 추가"
+      ]
+    },
+    {
+      "name": "auth-empty",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "empty"
+      },
+      "cassette": "auth-empty",
+      "requiredText": [
+        "장바구니가 비었어요",
+        "메뉴 추가"
+      ]
+    },
+    {
+      "name": "default",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "cassette": "auth-base",
+      "requiredText": [
+        "굿모닝살로만치킨",
+        "후라이드 치킨",
+        "양념 치킨",
+        "옵션 변경",
+        "더 담으러 가기",
+        "배달 가능",
+        "주문하기"
+      ]
+    },
+    {
+      "name": "takeout",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "cassette": "auth-base",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "포장"
+          }
+        }
+      ],
+      "requiredText": [
+        "주문 가능"
+      ]
+    },
+    {
+      "name": "reset-modal",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "cassette": "auth-base",
+      "actions": [
+        {
+          "click": {
+            "text": "전체삭제"
+          }
+        }
+      ],
+      "requiredText": [
+        "전체 삭제하시겠어요?"
+      ]
+    },
+    {
+      "name": "below-minimum",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "b6-small"
+      },
+      "cassette": "auth-small",
+      "requiredText": [
+        "치즈볼",
+        "9,000원 더 담으면 배달 가능"
+      ]
+    },
+    {
+      "name": "quantity-plus",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "cassette": "auth-quantity-plus",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "",
+            "nth": 1
+          }
+        }
+      ],
+      "requiredText": [
+        "후라이드 치킨"
+      ]
+    },
+    {
+      "name": "delete-item",
+      "auth": "auth",
+      "params": {},
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "cassette": "auth-delete-item",
+      "actions": [
+        {
+          "click": {
+            "role": "button",
+            "name": "",
+            "nth": 2
+          }
+        }
+      ],
+      "requiredText": [
+        "양념 치킨"
+      ]
+    }
+  ],
+  "normalize": {
+    "paths": {}
+  }
+}

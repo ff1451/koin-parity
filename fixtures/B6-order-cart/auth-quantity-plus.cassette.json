@@ -1,0 +1,102 @@
+{
+  "entries": [
+    {
+      "key": "GET /cart?type=DELIVERY #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/cart",
+        "query": "type=DELIVERY",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX25hbWUiOiLqtb/rqqjri53sgrTroZzrp4zsuZjtgqgiLCJzaG9wX3RodW1ibmFpbF9pbWFnZV91cmwiOiJodHRwczovL3N0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL293bmVycy8yMDI0LzAzLzI4L2ViZWY4MGFmLTlkMTgtNDRjOC1iNGRkLTQ0YzY0ZjIxYTUyMC0xNzExNjE3ODY5MjM2LzE2OTM2NDU3ODcxNjUuanBnIiwib3JkZXJhYmxlX3Nob3BfaWQiOjIsImlzX2RlbGl2ZXJ5X2F2YWlsYWJsZSI6dHJ1ZSwiaXNfdGFrZW91dF9hdmFpbGFibGUiOnRydWUsInNob3BfbWluaW11bV9vcmRlcl9hbW91bnQiOjE0MDAwLCJpdGVtcyI6W3siY2FydF9tZW51X2l0ZW1faWQiOjEwNDQsIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjExLCJuYW1lIjoi7ZuE65287J2065OcIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQyMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MTkwMDB9LCJvcHRpb25zIjpbeyJvcHRpb25fZ3JvdXBfbmFtZSI6Iuu8iC/siJzsgrQg67OA6rK9Iiwib3B0aW9uX25hbWUiOiLsiJzsgrTroZwg67OA6rK9Iiwib3B0aW9uX3ByaWNlIjoyMDAwfV0sImlzX21vZGlmaWVkIjpmYWxzZX0seyJjYXJ0X21lbnVfaXRlbV9pZCI6MTA0NSwib3JkZXJhYmxlX3Nob3BfbWVudV9pZCI6MTEsIm5hbWUiOiLtm4TrnbzsnbTrk5wg7LmY7YKoIiwibWVudV90aHVtYm5haWxfaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9vd25lcnMvMjAyNC8wMy8wNi8yZDc2ODdkNi01N2RkLTQyNDEtOTg4YS0yNmQyYjI4NTUwMzAtMTcwOTczMjMwODY4NC8yMDI0MDMwNF8xODI1MTEuanBnIiwicXVhbnRpdHkiOjEsInRvdGFsX2Ftb3VudCI6MTkwMDAsInByaWNlIjp7Im5hbWUiOm51bGwsInByaWNlIjoxOTAwMH0sIm9wdGlvbnMiOltdLCJpc19tb2RpZmllZCI6ZmFsc2V9LHsiY2FydF9tZW51X2l0ZW1faWQiOjEwNDYsIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjEyLCJuYW1lIjoi7JaR64WQIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQwMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MjAwMDB9LCJvcHRpb25zIjpbXSwiaXNfbW9kaWZpZWQiOmZhbHNlfV0sIml0ZW1zX2Ftb3VudCI6MTAxMDAwLCJkZWxpdmVyeV9mZWUiOjE1MDAsInRvdGFsX2Ftb3VudCI6MTAyNTAwLCJmaW5hbF9wYXltZW50X2Ftb3VudCI6MTAyNTAwfQ=="
+      }
+    },
+    {
+      "key": "GET /cart?type=DELIVERY #-",
+      "epoch": 1,
+      "request": {
+        "method": "GET",
+        "path": "/cart",
+        "query": "type=DELIVERY",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJzaG9wX25hbWUiOiLqtb/rqqjri53sgrTroZzrp4zsuZjtgqgiLCJzaG9wX3RodW1ibmFpbF9pbWFnZV91cmwiOiJodHRwczovL3N0YXRpYy5rb3JlYXRlY2guaW4vdXBsb2FkL293bmVycy8yMDI0LzAzLzI4L2ViZWY4MGFmLTlkMTgtNDRjOC1iNGRkLTQ0YzY0ZjIxYTUyMC0xNzExNjE3ODY5MjM2LzE2OTM2NDU3ODcxNjUuanBnIiwib3JkZXJhYmxlX3Nob3BfaWQiOjIsImlzX2RlbGl2ZXJ5X2F2YWlsYWJsZSI6dHJ1ZSwiaXNfdGFrZW91dF9hdmFpbGFibGUiOnRydWUsInNob3BfbWluaW11bV9vcmRlcl9hbW91bnQiOjE0MDAwLCJpdGVtcyI6W3siY2FydF9tZW51X2l0ZW1faWQiOjEwNDQsIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjExLCJuYW1lIjoi7ZuE65287J2065OcIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjozLCJ0b3RhbF9hbW91bnQiOjYzMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MTkwMDB9LCJvcHRpb25zIjpbeyJvcHRpb25fZ3JvdXBfbmFtZSI6Iuu8iC/siJzsgrQg67OA6rK9Iiwib3B0aW9uX25hbWUiOiLsiJzsgrTroZwg67OA6rK9Iiwib3B0aW9uX3ByaWNlIjoyMDAwfV0sImlzX21vZGlmaWVkIjpmYWxzZX0seyJjYXJ0X21lbnVfaXRlbV9pZCI6MTA0NSwib3JkZXJhYmxlX3Nob3BfbWVudV9pZCI6MTEsIm5hbWUiOiLtm4TrnbzsnbTrk5wg7LmY7YKoIiwibWVudV90aHVtYm5haWxfaW1hZ2VfdXJsIjoiaHR0cHM6Ly9zdGF0aWMua29yZWF0ZWNoLmluL3VwbG9hZC9vd25lcnMvMjAyNC8wMy8wNi8yZDc2ODdkNi01N2RkLTQyNDEtOTg4YS0yNmQyYjI4NTUwMzAtMTcwOTczMjMwODY4NC8yMDI0MDMwNF8xODI1MTEuanBnIiwicXVhbnRpdHkiOjEsInRvdGFsX2Ftb3VudCI6MTkwMDAsInByaWNlIjp7Im5hbWUiOm51bGwsInByaWNlIjoxOTAwMH0sIm9wdGlvbnMiOltdLCJpc19tb2RpZmllZCI6ZmFsc2V9LHsiY2FydF9tZW51X2l0ZW1faWQiOjEwNDYsIm9yZGVyYWJsZV9zaG9wX21lbnVfaWQiOjEyLCJuYW1lIjoi7JaR64WQIOy5mO2CqCIsIm1lbnVfdGh1bWJuYWlsX2ltYWdlX3VybCI6Imh0dHBzOi8vc3RhdGljLmtvcmVhdGVjaC5pbi91cGxvYWQvb3duZXJzLzIwMjQvMDMvMDYvMmQ3Njg3ZDYtNTdkZC00MjQxLTk4OGEtMjZkMmIyODU1MDMwLTE3MDk3MzIzMDg2ODQvMjAyNDAzMDRfMTgyNTExLmpwZyIsInF1YW50aXR5IjoyLCJ0b3RhbF9hbW91bnQiOjQwMDAwLCJwcmljZSI6eyJuYW1lIjpudWxsLCJwcmljZSI6MjAwMDB9LCJvcHRpb25zIjpbXSwiaXNfbW9kaWZpZWQiOmZhbHNlfV0sIml0ZW1zX2Ftb3VudCI6MTIyMDAwLCJkZWxpdmVyeV9mZWUiOjE1MDAsInRvdGFsX2Ftb3VudCI6MTIzNTAwLCJmaW5hbF9wYXltZW50X2Ftb3VudCI6MTIzNTAwfQ=="
+      }
+    },
+    {
+      "key": "GET /v2/web/auth/session? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v2/web/auth/session",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [
+          "__Secure-koin-stage-web-csrf=parity-csrf; Path=/; Domain=stage.koreatech.in; Max-Age=7775966; Expires=Fri, 08 Jan 2027 07:24:35 GMT; Secure; SameSite=Lax"
+        ],
+        "body": "eyJhdXRoZW50aWNhdGVkIjp0cnVlLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwiY3NyZl90b2tlbiI6IngweHgweHgweHh4eDB4eHh4MHh4eHgweHh4eHh4eHh4MDB4eDAweDB4eHgueHgweHh4eHh4eHh4eHh4eHh4eHh4eHh4eDBfMDB4LTB4eHh4eHh4eHh4eCJ9"
+      }
+    },
+    {
+      "key": "GET /v3/users/me? #-",
+      "epoch": 0,
+      "request": {
+        "method": "GET",
+        "path": "/v3/users/me",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store",
+          "content-type": "application/json",
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": "eyJpZCI6MjQ3OCwibG9naW5faWQiOiJ4eDAwMDAiLCJhbm9ueW1vdXNfbmlja25hbWUiOiLsnbXrqoVfMTYxNDQyMTEyNjM0OCIsImVtYWlsIjoieHgwMDAwQHh4eHh4eHh4eC54eC54eCIsImdlbmRlciI6MCwibmFtZSI6IuqwgOqwgOqwgCIsIm5pY2tuYW1lIjoi6rO167Cx6rCAIiwicGhvbmVfbnVtYmVyIjoiMDAwMDAwMDAwMDAiLCJ1c2VyX3R5cGUiOiJTVFVERU5UIiwic3R1ZGVudF9udW1iZXIiOiIwMDAwMDAwMDAwIiwibWFqb3IiOiLqsIDqsIDqsIDqsIDqsIAifQ=="
+      }
+    },
+    {
+      "key": "POST /cart/quantity/1044/3? #-",
+      "epoch": 0,
+      "request": {
+        "method": "POST",
+        "path": "/cart/quantity/1044/3",
+        "query": "",
+        "body": ""
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "server": "nginx"
+        },
+        "setCookie": [],
+        "body": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "orderable_shop_id": 2,
+  "items": [
+    {
+      "name": "치즈볼",
+      "quantity": 1,
+      "menuId": 17,
+      "priceId": 30,
+      "options": []
+    }
+  ]
+}

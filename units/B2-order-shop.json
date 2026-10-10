@@ -1,6 +1,6 @@
 {
   "id": "B2-order-shop",
-  "description": "주문 가능 상점 상세. 오라클은 패치 0008로 연 shop/true 화면을 그대로 이전(결정 36: CTA 철회, 장바구니 막대 포함). A4처럼 이미지 위 투명 고정 헤더라 헤더까지 전체 비교(chrome none). 장바구니 막대는 로그인+이 상점 물건이 장바구니에 있을 때만(auth-cart, 테스트 계정 장바구니에 상점 2 메뉴를 stage에 실제 등록)",
+  "description": "주문 가능 상점 상세. 오라클은 패치 0008로 연 shop/true 화면을 그대로 이전(결정 36: CTA 철회, 장바구니 막대 포함). A4처럼 이미지 위 투명 고정 헤더라 헤더까지 전체 비교(chrome none). 장바구니 막대는 로그인+이 상점 물건이 장바구니에 있을 때만(auth-cart, 테스트 계정 장바구니에 상점 2 메뉴를 stage에 실제 등록) auth-add-success(2026-10-10 추가): 영업시간에 메뉴 상세에서 담기 성공 → 토스트 후 상점 화면으로 돌아와 장바구니 막대 갱신(B3에서 미뤘던 흐름). 쓰기 상태라 prepare.cart로 시작 장바구니를 복구한다",
   "oracle": {
     "app": "order",
     "commit": "1b51c34",
@@ -71,6 +71,41 @@
         "shopId": 2
       },
       "cassette": "auth-shop-2",
+      "requiredText": [
+        "굿모닝살로만치킨",
+        "장바구니 보기"
+      ],
+      "prepare": {
+        "cart": "b6-base"
+      }
+    },
+    {
+      "name": "auth-add-success",
+      "auth": "auth",
+      "params": {
+        "shopId": 2
+      },
+      "cassette": "auth-add-success",
+      "prepare": {
+        "cart": "b6-base"
+      },
+      "actions": [
+        {
+          "click": {
+            "text": "양념 치킨"
+          }
+        },
+        {
+          "click": {
+            "text": "장바구니 추가"
+          }
+        },
+        {
+          "scrollTo": {
+            "y": 0
+          }
+        }
+      ],
       "requiredText": [
         "굿모닝살로만치킨",
         "장바구니 보기"
