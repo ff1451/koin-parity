@@ -24,6 +24,7 @@ const BLOCKED_HOSTS = [
   'map.naver.com',
   'map.naver.net',
   'pstatic.net',
+  'nelo.navercorp.com', // 네이버 지도 오류 수집
 ];
 
 // 래스터 결과가 실행마다 같도록 GPU·부분 래스터·LCD 텍스트·색 프로파일 변수를 없앤다.
@@ -49,75 +50,12 @@ export function launchBrowser() {
   return chromium.connect(ws, { headers: { 'x-playwright-launch-options': JSON.stringify({ args: DETERMINISTIC_ARGS }) } });
 }
 
-// 네이버 지도 대역(단위 스펙 stubs.naverMaps). 지도 스크립트는 결정성 때문에 차단하는데(BLOCKED_HOSTS), 차단하면 order는
-// naver 전역이 없어 오류가 나고 지오코딩 실패 시 alert()로 브라우저를 멈춘다. 두 앱에 같은 대역을 넣어 지도 영역은 빈 상자로 두고,
-// 지오코딩은 고정 좌표(한국기술교육대학교)를 돌려준다. 지도 자체(타일·마커)는 비교 대상이 아니다
-const NAVER_MAPS_STUB = () => {
-  class LatLng {
-    constructor(lat, lng) {
-      this.y = lat;
-      this.x = lng;
-    }
-    lat() {
-      return this.y;
-    }
-    lng() {
-      return this.x;
-    }
-  }
-  class MapStub {
-    constructor(el, opts = {}) {
-      this.center = opts.center ?? new LatLng(0, 0);
-      this.zoom = opts.zoom ?? 17;
-    }
-    getCenter() {
-      return this.center;
-    }
-    setCenter(c) {
-      this.center = c;
-    }
-    panTo(c) {
-      this.center = c;
-    }
-    getZoom() {
-      return this.zoom;
-    }
-    setZoom(z) {
-      this.zoom = z;
-    }
-    setOptions() {}
-    destroy() {}
-  }
-  class Overlay {
-    constructor(opts = {}) {
-      this.opts = opts;
-    }
-    setMap() {}
-    setPosition() {}
-    getPosition() {
-      return this.opts.position;
-    }
-    setIcon() {}
-  }
-  const noop = class {};
-  window.naver = {
-    maps: {
-      Map: MapStub,
-      LatLng,
-      Marker: Overlay,
-      InfoWindow: Overlay,
-      Point: noop,
-      Size: noop,
-      Position: {},
-      Event: { addListener: () => ({}), removeListener() {}, once: () => ({}) },
-      Service: {
-        Status: { OK: 200, ERROR: 500 },
-        geocode(query, callback) {
-          setTimeout(() => callback(200, { v2: { addresses: [{ x: '127.28281109', y: '36.76202833' }] } }), 0);
-        },
-      },
-    },
-  };
+// 실제로 불러 비교하는 외부 서비스(단위 스펙 live). 녹화하지 않고 매번 실제 서버에서 받는다.
+// 한 번의 검증에서 오라클·후보를 몇 초 간격으로 찍으므로 같은 내용을 본다(지도 타일·결제 위젯, engineering-log 39).
+// 켜지 않은 단위에서는 BLOCKED_HOSTS대로 막는다
+const LIVE_HOSTS = {
+  naverMaps: ['map.naver.com', 'map.naver.net', 'static.naver.net', 'pstatic.net', 'maps.apigw.ntruss.com'],
+  toss: ['tosspayments.com', 'toss.im'],
 };
 
 // lottie-web은 svg 안에 __lottie_element_* id를 만든다
@@ -187,7 +125,7 @@ export async function proxyControl(path, body, retried = false) {
 }
 
 // 외부 정적 리소스(이미지 등)는 API 프록시를 거치지 않으므로 page.route로 기록·재생한다
-async function routeAssets(context, { assetsDir, mode, assetLog }) {
+async function routeAssets(context, { assetsDir, mode, assetLog, live = {} }) {
   mkdirSync(assetsDir, { recursive: true });
 
   const serveAsset = async (route, url) => {
@@ -230,6 +168,11 @@ async function routeAssets(context, { assetsDir, mode, assetLog }) {
     async (route) => {
       const url = route.request().url();
       const { hostname } = new URL(url);
+      const liveHosts = Object.entries(LIVE_HOSTS).flatMap(([key, hosts]) => (live[key] ? hosts : []));
+      if (liveHosts.some((h) => hostname === h || hostname.endsWith(`.${h}`))) {
+        assetLog.push({ url, action: 'live' });
+        return route.continue();
+      }
       if (BLOCKED_HOSTS.some((h) => hostname === h || hostname.endsWith(`.${h}`))) {
         assetLog.push({ url, action: 'blocked' });
         return route.abort('blockedbyclient');
@@ -401,16 +344,15 @@ export async function performAction(page, action) {
 }
 
 // 브라우저를 띄우고 경로를 열어 정착시킨 뒤 actions로 상태에 도달한다 (capture·explore 공용)
-export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel 5', beforeGoto, actions = [], chrome = DEFAULT_CHROME, auth = 'guest', tag = null, stubs = {} }) {
+export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel 5', beforeGoto, actions = [], chrome = DEFAULT_CHROME, auth = 'guest', tag = null, live = {} }) {
   const browser = await launchBrowser();
   const context = await browser.newContext({ ...devices[device], locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
   // 프록시가 이 브라우저의 요청만 캡처 세션으로 받도록 표시한다(proxy.mjs state.tag)
   if (tag) await context.setExtraHTTPHeaders({ 'x-parity-session': tag });
   const assetLog = [];
-  await routeAssets(context, { assetsDir, mode, assetLog });
+  await routeAssets(context, { assetsDir, mode, assetLog, live });
   if (auth === 'auth') await applyAuth(context, mode);
   await context.addInitScript(INSTRUMENT, { toastSelector: chrome.toastSelector });
-  if (stubs.naverMaps) await context.addInitScript(NAVER_MAPS_STUB);
   // 부드러운 스크롤은 가짜 시계가 아니라 실제 시간으로 움직여 캐러셀 자동 넘김 중간이 실행마다 다르게 찍힌다(A4).
   // CSS(scroll-behavior)와 JS({ behavior: 'smooth' }) 모두 즉시 이동으로 바꾼다
   await context.addInitScript(() => {
@@ -499,15 +441,15 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
  *   expand: 페이지 높이로 늘린 뒤 캡처(같은 앱끼리의 회귀 비교 — 전체 페이지 캡처 중 레이아웃 재계산 경합 회피)
  * @param {{ toastSelector: string, footerSelector: string }} [opts.chrome] 토스트·푸터 선택자 (units/_common.json chrome)
  * @param {'guest'|'auth'} [opts.auth] 로그인 상태 (lib/auth.mjs)
- * @param {{ naverMaps?: boolean }} [opts.stubs] 외부 스크립트 대역 (단위 스펙 stubs)
+ * @param {{ naverMaps?: boolean, toss?: boolean }} [opts.live] 실제로 불러 비교하는 외부 서비스 (단위 스펙 live)
  */
-export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest', candidateOnly = [], stubs = {} }) {
+export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode, device = 'Pixel 5', mutate, beforeGoto, actions = [], masks = [], viewportMode = 'device', chrome = DEFAULT_CHROME, auth = 'guest', candidateOnly = [], live = {} }) {
   const maskSelectors = masks.map((m) => m.selector);
   mkdirSync(outDir, { recursive: true });
   const tag = createHash('sha1').update(`${outDir}:${Date.now()}`).digest('hex').slice(0, 16);
   await proxyControl('session', { mode, cassette, session: outDir, tag });
 
-  const { browser, page, assetLog, consoleErrors, settled: openSettled } = await openPage({ baseURL, path, assetsDir, mode, device, beforeGoto, actions, chrome, auth, tag, stubs });
+  const { browser, page, assetLog, consoleErrors, settled: openSettled } = await openPage({ baseURL, path, assetsDir, mode, device, beforeGoto, actions, chrome, auth, tag, live });
   let settled = openSettled;
   const mutationApplied = mutate ? await mutate(page) : null;
 

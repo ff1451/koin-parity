@@ -1,6 +1,6 @@
 {
   "id": "B7-order-delivery",
-  "description": "배달지 선택(교내·교외·교외 상세). 오라클 /delivery/{campus,outside}(패치 0009). 지도는 하네스가 차단하므로 두 앱에 같은 네이버 지도 대역(stubs.naverMaps: 빈 지도, 고정 지오코딩)을 넣는다 — 지도 영역은 빈 상자로 비교. 교외 상세는 location.state가 필요해 교외 검색→선택→주소 선택 흐름으로 도달한다. 최종 \"주소 선택\"(결제 화면 이동·배달지 등록)은 B8에서 본다. order 버그(교외 검증 모달 버튼이 뒤바뀜: 불가 지역에 아니오/예(교내 이동), 교내 확인에 확인만)는 사용자 결정(2026-10-10)으로 그대로 이전",
+  "description": "배달지 선택(교내·교외·교외 상세). 오라클 /delivery/{campus,outside}(패치 0009). 네이버 지도는 실제로 불러 비교한다(live.naverMaps, 키는 .cache/credentials.env, 사용자 결정 2026-10-10). 교외 상세는 location.state가 필요해 교외 검색→선택→주소 선택 흐름으로 도달한다. 최종 \"주소 선택\"(결제 화면 이동·배달지 등록)은 B8에서 본다. order 버그(교외 검증 모달 버튼이 뒤바뀜: 불가 지역에 아니오/예(교내 이동), 교내 확인에 확인만)는 사용자 결정(2026-10-10)으로 그대로 이전",
   "oracle": {
     "app": "order",
     "commit": "1b51c34",
@@ -12,9 +12,6 @@
   },
   "device": "Pixel 5",
   "primaryRequest": "/stage/(address|delivery)/",
-  "stubs": {
-    "naverMaps": true
-  },
   "states": [
     {
       "name": "campus-default",
@@ -322,5 +319,8 @@
   ],
   "normalize": {
     "paths": {}
+  },
+  "live": {
+    "naverMaps": true
   }
 }

@@ -42,7 +42,7 @@ try {
       actions: noActions ? [] : state.actions,
       auth: state.auth,
       masks: unit.masks,
-      stubs: unit.stubs,
+      live: unit.live,
       mode: 'fill',
     }).catch((error) => {
       console.warn(`[${state.name}] 보충 실패: ${String(error).split('\n')[0]}`);

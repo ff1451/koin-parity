@@ -44,7 +44,7 @@ try {
       actions: state.actions,
       auth: state.auth,
       masks: unit.masks,
-      stubs: unit.stubs,
+      live: unit.live,
       mode: 'replay',
     };
     const oracleDir = join(stateDir, 'oracle');

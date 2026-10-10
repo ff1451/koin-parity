@@ -94,11 +94,14 @@ function bodyRegion(capture, chrome) {
   return { top: CHROME_HEADER_HEIGHT, bottom: capture.footerTop ?? capture.page.height };
 }
 
-function cropPng(img, region, dpr) {
+// 비정수 DPR(Pixel 5: 393 × 2.75 = 1080.75)이면 마지막 기기 픽셀 열은 일부만 덮인다. 그 열의 값은 레이어 구성(fixed/sticky 헤더 등)에
+// 따라 래스터마다 달라지고 사용자 화면에서는 구분되지 않는다(engineering-log 33·40). 완전히 덮인 열까지만 비교한다
+function cropPng(img, region, dpr, cssWidth) {
   const top = Math.round(region.top * dpr);
   const bottom = Math.min(img.height, Math.round(region.bottom * dpr));
-  const out = new PNG({ width: img.width, height: Math.max(0, bottom - top) });
-  if (out.height > 0) PNG.bitblt(img, out, 0, top, img.width, out.height, 0, 0);
+  const width = cssWidth ? Math.min(img.width, Math.floor(cssWidth * dpr)) : img.width;
+  const out = new PNG({ width, height: Math.max(0, bottom - top) });
+  if (out.height > 0) PNG.bitblt(img, out, 0, top, width, out.height, 0, 0);
   return out;
 }
 
@@ -123,8 +126,8 @@ function gateAnalytics(oracle, candidate) {
 function gateVisual(oracleDir, candidateDir, outDir, oracle, candidate, chrome) {
   const oracleRegion = bodyRegion(oracle, chrome);
   const candidateRegion = bodyRegion(candidate, chrome);
-  const a = cropPng(PNG.sync.read(readFileSync(join(oracleDir, 'screenshot.png'))), oracleRegion, oracle.devicePixelRatio ?? 1);
-  const b = cropPng(PNG.sync.read(readFileSync(join(candidateDir, 'screenshot.png'))), candidateRegion, candidate.devicePixelRatio ?? 1);
+  const a = cropPng(PNG.sync.read(readFileSync(join(oracleDir, 'screenshot.png'))), oracleRegion, oracle.devicePixelRatio ?? 1, oracle.page.width);
+  const b = cropPng(PNG.sync.read(readFileSync(join(candidateDir, 'screenshot.png'))), candidateRegion, candidate.devicePixelRatio ?? 1, candidate.page.width);
   const width = Math.max(a.width, b.width);
   const height = Math.max(a.height, b.height);
   const pad = (img) => {
