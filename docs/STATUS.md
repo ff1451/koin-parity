@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 … (결정 39) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 … (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -61,7 +61,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | B2 주문 가능 상점 상세 | `shop/true/:id` → `/order/shops/[id]` | ✅ draft PR #1586. 상태 5개. 주문 화면은 order viewport meta 사용(접근성 재검토 필요) |
 | B3 메뉴 상세 | `shop/true/:id/menus/:menuId` → `/order/shops/[id]/menus/[menuId]` | ✅ draft PR #1587. 상태 9개(담기 성공은 기록 시점 영업시간 아님 → B6에서 확인) |
 | B4 상점 정보 | `shop-detail/true/:id` → `/order/shops/[id]/info` | ✅ draft PR #1589. 상태 4개(해시 스크롤 상태는 헤더 띠 가림 + scrollY 비교, engineering-log 34) |
-| B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ⏳ |
+| B5 리뷰 | `review/true/:id` → `/order/shops/[id]/reviews` | ✅ draft PR #1590. 상태 7개. order의 주문 상점 번호/상점 번호 혼동 버그는 고쳐서 이전(사용자 결정, engineering-log 35). 내 리뷰 수정·삭제는 A6에서 검증(주문 상점에 테스트 계정 리뷰 없음) |
 | B6 장바구니 | `cart` → `/order/cart` | ⏳ (로그인, 테스트 계정으로 장바구니 실제 등록) |
 | B7 배달지 | `delivery/campus`·`outside`·`outside/detail` → `/order/delivery/...` | ⏳ |
 | B8 결제 | `payment` → `/order/checkout` | ⏳ (결제 위젯까지, 결정 38) |
