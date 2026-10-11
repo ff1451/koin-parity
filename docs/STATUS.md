@@ -41,7 +41,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | KOIN `feat/#1572/order-a7-review-new` | PR **#1581** → A6 |
 | KOIN `feat/#1572/order-a8-review-edit` | PR **#1582** → A7 |
 | KOIN `feat/#1572/order-a9-review-report` | PR **#1583** → A8 |
-| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 → #1598 B8 → #1599 B9 → #1600 B10 → #1602 B11 … (결정 39) |
+| KOIN `refactor/order-track-b` | Track B trunk(주문 흐름 경로 헬퍼, #1584 위). 단위별 draft PR 스택 **#1588**: #1586 B2 → #1587 B3 → #1589 B4 → #1590 B5 → #1593 B6 → #1594 B7 → #1598 B8 → #1599 B9 → #1600 B10 → #1602 B11 → #1603 B1 → #1604 진입 차단 (결정 39) |
 | KOIN `feat/#1572/order-transition` | PR **#1584** → A9 (P6: 진입 링크 교체, Track A 헤더 통일, 아이콘 폴더 `Store/` 정리) |
 | 이슈 **#1572** | `[비즈니스] 모바일 상점 화면 KOIN_ORDER_WEBVIEW 이전` (진행 체크리스트) |
 
@@ -68,7 +68,7 @@ KOIN_ORDER_WEBVIEW(order.koreatech.in)의 모바일 상점 화면을 KOIN_WEB_RE
 | B9 결제 승인 | `payment/return` → `/order/checkout/return` | ✅ draft PR #1599. 상태 3개(서버 오류·중복 승인·파라미터 부족). Toss 테스트 결제를 기록 직전에 만든다(`prepare.payment`). **승인 성공은 stage 500으로 미검증** — 백엔드 확인 필요(errorTraceId a6448d6c-1668-4295-b842-c339bcb0f665) |
 | B10 주문 완료·취소 | `result/:paymentId`, `orderCancel/:paymentId` → `/order/result/[paymentId]`, `/order/cancel/[paymentId]` | ✅ draft PR #1600. 상태 12개, 테스트 계정 기존 주문(42·33·45·441·3·1·437)으로 상태별 검증. 오라클 패치 0010(포장 빈 화면)·0011(중복 마커). 취소 "계속하기"는 실제 취소라 제외 |
 | B11 주문 내역 | `orders` → `/order/orders` | ✅ draft PR #1602. 상태 6개(지난 주문·준비 중·필터·검색) |
-| B1 주문 홈 | `home` → `/order` | ⏳ |
+| B1 주문 홈 | `home` → `/order` | ✅ draft PR #1603. 상태 9개(기본·카테고리 3·정렬 2·영업중 끄기·최소주문금액 2). stage는 전체보기+필터 없음에서만 500 |
 | P6 전환 | 링크 교체, 헤더 높이 통일(Track A), 아이콘 폴더 정리 | ✅ PR #1584. order 301은 하지 않음(결정 33). Track B 헤더는 Track B 완료 때 통일. 남은 것: 스택 리뷰·머지 → develop |
 
 ## 6. 바로 다음 할 일
@@ -152,6 +152,8 @@ KOIN `.claude/settings.local.json` (git 추적 안 됨, 루프 실행 중 하네
 - 테스트 계정 장바구니 기준 상태는 `fixtures/_cart-states/b6-base.json`(상점 2: 후라이드 x2(순살 변경)·x1, 양념 x2). 수동 확인 뒤에는 `node cart-state.mjs restore b6-base`로 되돌린다
 - Track B 결제는 order와 같은 Toss **공개 테스트 키**를 쓴다. 웹 주문을 열기 전에 운영 키(환경 변수)로 바꿀 것
 - stage `POST /payments/confirm`이 Toss 문서용 테스트 키 결제에 500(2026-10-10). 백엔드 확인 전까지 결제 승인 성공·결제 직후 주문 완료 흐름은 검증 불가(B9)
+- Track B 진입 차단(#1604): `NEXT_PUBLIC_ORDER_ENABLED`가 없으면 middleware가 `/order`, `/order/*`를 404로. 하네스는 `lib/apps.mjs` webEnv에서 켜고 빌드
+- 하네스 간헐 정지: B7(실제 지도) 검증 중 캡처 사이에 정확히 약 15분씩 멈추는 현상(10/10, 10/11 재현). 결과는 통과하지만 시간이 길어진다. `--ipc=host`·연결 제한 적용, capture.json `timings`로 다음 발생 시 위치 확인(engineering-log 47)
 - 아직 없는 게이트: G5(브릿지, 결제 단위에서), G7(SSR DOM 파괴율), G9(301·SEO)
 - 하네스가 띄운 서버는 예외 종료 시에도 정리된다(`lib/apps.mjs` exit 핸들러). 프로세스를 직접 죽일 때 `pkill -f <패턴>`은 실행 중인 셸 자신과 매칭돼 셸이 죽으니 PID로 죽일 것
 - `docs/foundation.md` F3이 참조하는 `css-improvement-survey.md`는 KOIN 저장소에서 추적되지 않는 로컬 문서(원래 기기에만 있음). F3은 완료돼 필요 없음

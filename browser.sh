@@ -14,7 +14,8 @@ PORT=3999
 case "${1:-start}" in
 start)
   docker rm -f "$NAME" >/dev/null 2>&1 || true
-  docker run -d --rm --init --name "$NAME" \
+  # --ipc=host: 컨테이너 기본 /dev/shm(64MB)은 Chrome이 큰 페이지(전체 페이지 스크린샷·실제 지도)에서 멈출 수 있다(Playwright Docker 권장 설정)
+  docker run -d --rm --init --ipc=host --name "$NAME" \
     -p "127.0.0.1:$PORT:$PORT" \
     --add-host=host.docker.internal:host-gateway \
     -v "$(cd "$(dirname "$0")" && pwd)/lib/browser-forward.cjs:/parity/browser-forward.cjs:ro" \

@@ -47,7 +47,9 @@ const DETERMINISTIC_ARGS = [
 export function launchBrowser() {
   const ws = process.env.PARITY_BROWSER_WS;
   if (!ws) return chromium.launch({ args: DETERMINISTIC_ARGS });
-  return chromium.connect(ws, { headers: { 'x-playwright-launch-options': JSON.stringify({ args: DETERMINISTIC_ARGS }) } });
+  // 연결 시간 제한이 없으면(Playwright 기본 0) 컨테이너가 바쁠 때 무한히 기다린다. 60초 뒤 한 번 다시 시도한다
+  const connect = () => chromium.connect(ws, { timeout: 60_000, headers: { 'x-playwright-launch-options': JSON.stringify({ args: DETERMINISTIC_ARGS }) } });
+  return connect().catch(() => connect());
 }
 
 // 실제로 불러 비교하는 외부 서비스(단위 스펙 live). 녹화하지 않고 매번 실제 서버에서 받는다.
@@ -503,9 +505,17 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
   const maskSelectors = masks.map((m) => m.selector);
   mkdirSync(outDir, { recursive: true });
   const tag = createHash('sha1').update(`${outDir}:${Date.now()}`).digest('hex').slice(0, 16);
+  // 단계별 소요 시간(ms). 간헐적으로 캡처 사이가 약 15분 멈추는 현상의 위치를 찾기 위해 남긴다(engineering-log 47)
+  const startedAt = Date.now();
+  const timings = {};
+  const mark = (name) => {
+    timings[name] = Date.now() - startedAt;
+  };
   await proxyControl('session', { mode, cassette, session: outDir, tag });
+  mark('session');
 
   const { browser, page, assetLog, consoleErrors, settled: openSettled } = await openPage({ baseURL, path, assetsDir, mode, device, beforeGoto, actions, chrome, auth, tag, live });
+  mark('open');
   let settled = openSettled;
   const mutationApplied = mutate ? await mutate(page) : null;
 
@@ -570,7 +580,9 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
     await page.evaluate((y) => window.scrollTo(0, y), scrollBefore);
     await page.waitForTimeout(100);
   }
+  mark('before-screenshot');
   await page.screenshot({ path: join(outDir, 'screenshot.png'), fullPage: true, mask: [dynamic, ...declared, toasts, ...(live.toss ? [frameLocator] : [])], maskColor: '#FF00FF' });
+  mark('screenshot');
   const inventory = await page.evaluate(collectInventory, [...maskSelectors, chrome.toastSelector]);
   const pageSize = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight }));
   // 본문 영역 비교(foundation D1)용: 푸터 시작 위치. 헤더는 두 앱 모두 60px로 맞춰 compare가 위쪽을 잘라낸다
@@ -584,11 +596,14 @@ export async function capture({ baseURL, path, outDir, cassette, assetsDir, mode
 
   if (mode !== 'replay') await proxyControl('flush', {});
   const { log, foreign } = await proxyControl('log');
+  mark('proxy-log');
   if (foreign.length) console.warn(`[capture] 외부 클라이언트 요청 ${foreign.length}건을 거절함(하네스 포트를 쓰는 다른 탭?): ${foreign.slice(0, 3).map((f) => `${f.method} ${f.path} ${f.origin ?? ''}`).join(', ')}`);
 
-  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, scrollY: scroll, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, frames: frameShots, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors };
+  const result = { baseURL, path, device, mode, auth, url: page.url(), settled, mutationApplied, page: pageSize, footerTop, scrollY: scroll, devicePixelRatio, inventory, dynamicRegions, candidateOnly: candidateOnlyFound, frames: frameShots, requests: log, foreignRequests: foreign, assets: assetLog, gtag: instrumented.gtag, toasts: instrumented.toasts, consoleErrors, timings };
   writeFileSync(join(outDir, 'capture.json'), `${JSON.stringify(result, null, 2)}\n`);
 
   await browser.close();
+  timings.close = Date.now() - startedAt;
+  if (timings.close > 120_000) console.warn(`[capture] 느린 캡처 ${Math.round(timings.close / 1000)}s ${path}: ${JSON.stringify(timings)}`);
   return result;
 }
