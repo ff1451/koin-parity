@@ -1,6 +1,6 @@
 {
   "id": "B1-order-home",
-  "description": "주문 홈(주문 가능 상점 목록). 오라클 /home(패치 0009) — 주문 불가 상점 목록(/shops)은 A2에서 /store로 이전됨, 두 화면은 order에서도 하단 탭으로 나뉜 별개 화면. 2026-10-11 stage의 order/shops가 기본(전체보기, category_filter=1)과 필터 없음에서 500(errorTraceId 38c9c6e4-acad-4c9a-b5e6-9b05ad9e9274)이라 기본 진입 화면은 오류 상태 그대로 비교하고, 목록은 카테고리를 고른 상태로 본다: 치킨(2곳), 중국집(2곳), 족발(0곳). 정렬·필터·최소주문금액은 치킨에서",
+  "description": "주문 홈(주문 가능 상점 목록). 오라클 /home(패치 0009) — 주문 불가 상점 목록(/shops)은 A2에서 /store로 이전됨, 두 화면은 order에서도 하단 탭으로 나뉜 별개 화면. 기본 진입은 전체보기 + 영업중 필터(category_filter=1&filter=IS_OPEN). 2026-10-11 stage의 order/shops는 전체보기에서 필터가 하나도 없을 때만 500(errorTraceId 38c9c6e4-acad-4c9a-b5e6-9b05ad9e9274) — 영업중을 끄는 상태는 치킨에서 본다. 상태: 기본, 치킨(2곳), 중국집(2곳), 족발(0곳), 정렬 시트·별점순, 영업중 끄기, 최소주문금액 시트·10,000원",
   "oracle": {
     "app": "order",
     "commit": "1b51c34",
@@ -14,11 +14,16 @@
   "primaryRequest": "/stage/order/shops",
   "states": [
     {
-      "name": "default-list-error",
+      "name": "default",
       "auth": "guest",
       "params": {},
-      "cassette": "default-list-error",
-      "requiredText": []
+      "cassette": "default",
+      "requiredText": [
+        "전체보기",
+        "영업중",
+        "기본순",
+        "최소주문금액"
+      ]
     },
     {
       "name": "category-chicken",
@@ -127,10 +132,10 @@
       ]
     },
     {
-      "name": "filter-open",
+      "name": "filter-open-off",
       "auth": "guest",
       "params": {},
-      "cassette": "filter-open",
+      "cassette": "filter-open-off",
       "actions": [
         {
           "click": {
