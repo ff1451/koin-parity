@@ -287,6 +287,61 @@ async function settle(page, firstRunMs) {
 }
 
 
+// 실제로 불러오는 외부 서비스(live) 요청은 실제 시간으로 끝난다. 가짜 시계로 정착시키는 사이에 지오코딩 응답이 오면 지도가 그때 범위를
+// 바꾸고(fitBounds) 타일을 더 받는다. 응답이 캡처 전에 오느냐가 실행마다 달라 축척이 갈렸다(B10 주문 완료 지도 300m/500m, engineering-log 45).
+// live 요청이 일정 시간 없을 때까지 기다린 뒤 다시 정착시키고, 그 정착이 새 live 요청을 만들지 않을 때까지 반복한다
+function trackLive(context, live) {
+  const hosts = Object.entries(LIVE_HOSTS).flatMap(([key, list]) => (live[key] ? list : []));
+  const tracker = { pending: 0, total: 0, enabled: hosts.length > 0 };
+  if (!tracker.enabled) return tracker;
+  const isLive = (url) => {
+    try {
+      const { hostname } = new URL(url);
+      return hosts.some((h) => hostname === h || hostname.endsWith(`.${h}`));
+    } catch {
+      return false;
+    }
+  };
+  context.on('request', (request) => {
+    if (!isLive(request.url())) return;
+    tracker.pending += 1;
+    tracker.total += 1;
+  });
+  const done = (request) => {
+    if (isLive(request.url())) tracker.pending = Math.max(0, tracker.pending - 1);
+  };
+  context.on('requestfinished', done);
+  context.on('requestfailed', done);
+  return tracker;
+}
+
+async function waitLiveIdle(page, tracker, idleMs = 700, timeoutMs = 15_000) {
+  const start = Date.now();
+  let idleSince = null;
+  while (Date.now() - start < timeoutMs) {
+    if (tracker.pending === 0) {
+      idleSince ??= Date.now();
+      if (Date.now() - idleSince >= idleMs) return true;
+    } else {
+      idleSince = null;
+    }
+    await page.waitForTimeout(100);
+  }
+  return false;
+}
+
+async function settleWithLive(page, tracker, firstRunMs) {
+  let stable = await settle(page, firstRunMs);
+  if (!tracker?.enabled) return stable;
+  for (let i = 0; i < 4; i += 1) {
+    await waitLiveIdle(page, tracker);
+    const before = tracker.total;
+    stable = (await settle(page, 0)) && stable;
+    if (tracker.total === before) break;
+  }
+  return stable;
+}
+
 // 상태 도달용 상호작용. click.role+name(접근 가능한 이름) 또는 click.css(+nth, 이름 없는 아이콘 버튼 등)
 export async function performAction(page, action) {
   if (action.click?.css) {
@@ -351,6 +406,7 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
   if (tag) await context.setExtraHTTPHeaders({ 'x-parity-session': tag });
   const assetLog = [];
   await routeAssets(context, { assetsDir, mode, assetLog, live });
+  const liveTracker = trackLive(context, live);
   if (auth === 'auth') await applyAuth(context, mode);
   await context.addInitScript(INSTRUMENT, { toastSelector: chrome.toastSelector });
   // 부드러운 스크롤은 가짜 시계가 아니라 실제 시간으로 움직여 캐러셀 자동 넘김 중간이 실행마다 다르게 찍힌다(A4).
@@ -407,21 +463,21 @@ export async function openPage({ baseURL, path, assetsDir, mode, device = 'Pixel
     }),
     new Promise((resolve) => setTimeout(resolve, 10_000)),
   ]);
-  let settled = await settle(page, SETTLE_MS);
+  let settled = await settleWithLive(page, liveTracker, SETTLE_MS);
 
   // 상태 도달: 도달하지 못하면(요소 없음) 예외 → 캡처 실패 = 해당 상태 FAIL
   // 실패하면 브라우저를 닫고 던진다: 컨테이너 브라우저(browser.sh) 연결이 남으면 프로세스가 끝나지 않는다
   try {
     for (const action of actions) {
       await performAction(page, action);
-      settled = (await settle(page, SETTLE_MS)) && settled;
+      settled = (await settleWithLive(page, liveTracker, SETTLE_MS)) && settled;
     }
   } catch (error) {
     await browser.close().catch(() => {});
     throw error;
   }
 
-  return { browser, context, page, assetLog, consoleErrors, settled };
+  return { browser, context, page, assetLog, consoleErrors, settled, liveTracker };
 }
 
 /**
